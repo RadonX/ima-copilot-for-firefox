@@ -7639,41 +7639,110 @@ var In = ((e) => (
 ))(In || {});
 const Tp = ({ action: e, params: t }) => {
     var r, s, n;
-    console.warn("[callNative] 触发终端调用：", e),
-      (n =
-        (s =
-          (r = globalThis == null ? void 0 : globalThis.chrome) == null
-            ? void 0
-            : r.imaFrame) == null
-          ? void 0
-          : s.invoke) == null || n.call(s, { action: e, params: Ue(t) });
+    console.warn("[callNative] 触发终端调用：", e);
+    console.log("[DEBUG] callNative: Full parameters:", { action: e, params: t });
+    console.log("[DEBUG] callNative: globalThis.chrome exists:", !!globalThis.chrome);
+    console.log("[DEBUG] callNative: globalThis.chrome.imaFrame exists:", !!(globalThis.chrome?.imaFrame));
+    console.log("[DEBUG] callNative: globalThis.chrome.imaFrame.invoke exists:", !!(globalThis.chrome?.imaFrame?.invoke));
+    
+    const chromeRef = (r = globalThis == null ? void 0 : globalThis.chrome);
+    const imaFrameRef = (s = chromeRef == null ? void 0 : r.imaFrame);
+    const invokeRef = (n = imaFrameRef == null ? void 0 : s.invoke);
+    
+    console.log("[DEBUG] callNative: chromeRef:", chromeRef);
+    console.log("[DEBUG] callNative: imaFrameRef:", imaFrameRef);
+    console.log("[DEBUG] callNative: invokeRef:", typeof invokeRef);
+    
+    if (!invokeRef) {
+      console.error("[DEBUG] callNative: invoke function not available, skipping call");
+      return;
+    }
+    
+    const callParams = { action: e, params: Ue(t) };
+    console.log("[DEBUG] callNative: Calling invoke with:", JSON.stringify(callParams));
+    
+    try {
+      const result = invokeRef.call(imaFrameRef, callParams);
+      console.log("[DEBUG] callNative: invoke call result:", result);
+    } catch (callError) {
+      console.error("[DEBUG] callNative: Error calling invoke:", callError);
+    }
   },
-  ny = () => globalThis.navigator.userAgent.includes("IMA"),
+  ny = () => {
+    const userAgent = globalThis.navigator.userAgent;
+    const hasIMA = userAgent.includes("IMA");
+    console.log("[DEBUG] ny: User agent check - userAgent:", userAgent);
+    console.log("[DEBUG] ny: User agent check - includes 'IMA':", hasIMA);
+    console.log("[DEBUG] ny: Browser info - Firefox:", userAgent.includes("Firefox"));
+    console.log("[DEBUG] ny: Browser info - Chrome:", userAgent.includes("Chrome"));
+    return hasIMA;
+  },
   eL = async ({ action: e, params: t, timeout: r = 5e3 }) => {
     console.warn("[callNativePromise] 触发终端调用：", e, JSON.stringify(t));
+    console.log("[DEBUG] callNativePromise: Full parameters:", { action: e, params: t, timeout: r });
+    console.log("[DEBUG] callNativePromise: globalThis.chrome exists:", !!globalThis.chrome);
+    console.log("[DEBUG] callNativePromise: globalThis.chrome.imaFrame exists:", !!(globalThis.chrome?.imaFrame));
+    console.log("[DEBUG] callNativePromise: globalThis.chrome.imaFrame.invokeWithCallback exists:", !!(globalThis.chrome?.imaFrame?.invokeWithCallback));
+    
+    const userAgentCheck = ny();
+    console.log("[DEBUG] callNativePromise: ny() user agent check result:", userAgentCheck);
+    
     try {
-      return ny()
-        ? new Promise((s) => {
-            var n, i, o;
-            setTimeout(() => {
-              s({ code: In.Timeout, msg: "接口执行超时", data: null });
-            }, r),
-              (o =
-                (i = (n = globalThis.chrome) == null ? void 0 : n.imaFrame) ==
-                null
-                  ? void 0
-                  : i.invokeWithCallback) == null ||
-                o.call(i, { action: e, params: Ue(t) }, (a) => {
-                  s(a);
-                });
-          })
-        : Promise.resolve({ code: 0, msg: "", data: null });
+      if (userAgentCheck) {
+        console.log("[DEBUG] callNativePromise: Using native bridge (Chrome path)");
+        return new Promise((s) => {
+          var n, i, o;
+          console.log("[DEBUG] callNativePromise: Setting up timeout (", r, "ms)");
+          
+          const timeoutId = setTimeout(() => {
+            console.log("[DEBUG] callNativePromise: Timeout reached, resolving with timeout response");
+            s({ code: In.Timeout, msg: "接口执行超时", data: null });
+          }, r);
+          
+          const chromeImaFrame = (n = globalThis.chrome) == null ? void 0 : n.imaFrame;
+          const invokeCallback = (i = chromeImaFrame) == null ? void 0 : i.invokeWithCallback;
+          
+          console.log("[DEBUG] callNativePromise: chromeImaFrame:", chromeImaFrame);
+          console.log("[DEBUG] callNativePromise: invokeCallback function:", typeof invokeCallback);
+          
+          if (!invokeCallback) {
+            console.error("[DEBUG] callNativePromise: invokeWithCallback not available, resolving with null data");
+            clearTimeout(timeoutId);
+            s({ code: 0, msg: "invokeWithCallback not available", data: null });
+            return;
+          }
+          
+          const callParams = { action: e, params: Ue(t) };
+          console.log("[DEBUG] callNativePromise: Calling invokeWithCallback with:", JSON.stringify(callParams));
+          
+          try {
+            const result = invokeCallback.call(chromeImaFrame, callParams, (a) => {
+              console.log("[DEBUG] callNativePromise: Callback fired with response:", JSON.stringify(a));
+              clearTimeout(timeoutId);
+              s(a);
+            });
+            console.log("[DEBUG] callNativePromise: invokeWithCallback call result:", result);
+          } catch (callError) {
+            console.error("[DEBUG] callNativePromise: Error calling invokeWithCallback:", callError);
+            clearTimeout(timeoutId);
+            s({ code: In.FrontendException, msg: `Invoke error: ${callError}`, data: null });
+          }
+        });
+      } else {
+        console.log("[DEBUG] callNativePromise: User agent check failed, returning null data (Firefox fallback)");
+        const fallbackResponse = { code: 0, msg: "User agent check failed - Firefox compatibility issue", data: null };
+        console.log("[DEBUG] callNativePromise: Fallback response:", JSON.stringify(fallbackResponse));
+        return Promise.resolve(fallbackResponse);
+      }
     } catch (s) {
-      return {
+      console.error("[DEBUG] callNativePromise: Exception caught:", s);
+      const errorResponse = {
         code: In.FrontendException,
         msg: `执行异常: ${Ue(s)}`,
         data: null,
       };
+      console.log("[DEBUG] callNativePromise: Error response:", JSON.stringify(errorResponse));
+      return errorResponse;
     }
   },
   tL = (e) =>
@@ -7761,18 +7830,31 @@ let Xe = class {
       (this.onLoginDialogClose = r),
       (this.logger = s),
       (this.getAccountInfo = async () => {
+        console.log("[DEBUG] getAccountInfo: Starting account info retrieval");
+        console.log("[DEBUG] getAccountInfo: Calling invokeWithPromise with action='getAccountInfo'");
+        
         const n = await this.invokeWithPromise({
             action: "getAccountInfo",
             params: {},
-          }),
-          i = this.handleResponse(n);
-        return (
-          this.logger.info(
-            `当前用户登录信息: ${this.getAccountInfoLog(i)}`,
-            `${Xe.tag}.getAccountInfo`,
-          ),
-          i
+          });
+          
+        console.log("[DEBUG] getAccountInfo: Raw response from invokeWithPromise:", JSON.stringify(n));
+        console.log("[DEBUG] getAccountInfo: Response type:", typeof n);
+        console.log("[DEBUG] getAccountInfo: Response code:", n?.code);
+        console.log("[DEBUG] getAccountInfo: Response data:", n?.data);
+        
+        const i = this.handleResponse(n);
+        
+        console.log("[DEBUG] getAccountInfo: Processed response:", JSON.stringify(i));
+        console.log("[DEBUG] getAccountInfo: Processed response type:", typeof i);
+        
+        this.logger.info(
+          `当前用户登录信息: ${this.getAccountInfoLog(i)}`,
+          `${Xe.tag}.getAccountInfo`,
         );
+        
+        console.log("[DEBUG] getAccountInfo: Final result:", JSON.stringify(i));
+        return i;
       }),
       (this.refreshToken = async (n = !1) => {
         const i = await this.invokeWithPromise({
@@ -7797,27 +7879,39 @@ let Xe = class {
         );
       }),
       (this.verifyWxCode = async (n, i = !1) => {
+        console.log("[DEBUG] verifyWxCode: Starting WeChat code verification");
+        console.log("[DEBUG] verifyWxCode: WeChat code:", n);
+        console.log("[DEBUG] verifyWxCode: Is retry:", i);
+        
         const o = await this.invokeWithPromise({
           action: "verifyWxCode",
           params: { wxCode: n, loginType: hg.WX },
           timeout: gr.Request,
         });
-        if (o.code === De.CallNativeTimeout && !i)
-          return (
-            this.logger.info(
-              `verifyWxCode ${n} 超时，重试一次`,
-              `${Xe.tag}.verifyWxCode`,
-            ),
-            this.verifyWxCode(n, !0)
-          );
-        const a = this.handleResponse(o);
-        return (
+        
+        console.log("[DEBUG] verifyWxCode: Raw response:", JSON.stringify(o));
+        console.log("[DEBUG] verifyWxCode: Response code:", o?.code);
+        console.log("[DEBUG] verifyWxCode: Timeout threshold:", De.CallNativeTimeout);
+        
+        if (o.code === De.CallNativeTimeout && !i) {
+          console.log("[DEBUG] verifyWxCode: Request timed out, retrying...");
           this.logger.info(
-            `当前用户登录信息: ${this.getAccountInfoLog(a)}`,
+            `verifyWxCode ${n} 超时，重试一次`,
             `${Xe.tag}.verifyWxCode`,
-          ),
-          a
+          );
+          return this.verifyWxCode(n, !0);
+        }
+        
+        const a = this.handleResponse(o);
+        console.log("[DEBUG] verifyWxCode: Processed response:", JSON.stringify(a));
+        
+        this.logger.info(
+          `当前用户登录信息: ${this.getAccountInfoLog(a)}`,
+          `${Xe.tag}.verifyWxCode`,
         );
+        
+        console.log("[DEBUG] verifyWxCode: Final result:", JSON.stringify(a));
+        return a;
       }),
       (this.showLoginPanel = async () => {
         this.logger.info("展示用户登录弹窗", `${Xe.tag}.showLoginPanel`);
@@ -7829,20 +7923,39 @@ let Xe = class {
           this.invokeWithPromise({ action: "closeLoginDialog" });
       }),
       (this.loginAsync = () => {
-        this.logger.info("LoginAsync", `${Xe.tag}.LoginAsync`),
-          this.showLoginPanel();
+        console.log("[DEBUG] loginAsync: Starting login process");
+        this.logger.info("LoginAsync", `${Xe.tag}.LoginAsync`);
+        
+        console.log("[DEBUG] loginAsync: Calling showLoginPanel");
+        this.showLoginPanel();
+        
         const n = Promise.withResolvers();
+        console.log("[DEBUG] loginAsync: Created promise resolvers");
+        
         return (
           this.onAccountInfoChange((i, o) => {
+            console.log("[DEBUG] loginAsync: Account info changed event fired");
+            console.log("[DEBUG] loginAsync: Previous account info:", JSON.stringify(i));
+            console.log("[DEBUG] loginAsync: New account info:", JSON.stringify(o));
+            
             this.logger.info(
               `用户信息发生变化 ${this.getAccountInfoLog(o)}`,
               `${Xe.tag}.LoginAsync`,
-            ),
-              this.validateAccountInfo(o) && n.resolve(o);
+            );
+            
+            const isValid = this.validateAccountInfo(o);
+            console.log("[DEBUG] loginAsync: Account validation result:", isValid);
+            
+            if (isValid) {
+              console.log("[DEBUG] loginAsync: Resolving login promise with account info");
+              n.resolve(o);
+            }
           }),
           this.onLoginDialogClose(() => {
-            this.logger.info("用户关闭登录弹窗", `${Xe.tag}.LoginAsync`),
-              n.resolve(null);
+            console.log("[DEBUG] loginAsync: Login dialog close event fired");
+            this.logger.info("用户关闭登录弹窗", `${Xe.tag}.LoginAsync`);
+            console.log("[DEBUG] loginAsync: Resolving login promise with null (dialog closed)");
+            n.resolve(null);
           }),
           n.promise
         );
@@ -7897,12 +8010,45 @@ let Xe = class {
         };
       }),
       (this.handleResponse = (n) => {
-        if (!(n != null && n.data))
-          return this.logger.error(`终端接口空响应: ${Ue(n)}`, Xe.tag), null;
-        if ((n == null ? void 0 : n.code) !== 0)
-          return this.logger.error(`异常返回码: ${Ue(n)}`, Xe.tag), null;
+        console.log("[DEBUG] handleResponse: Input response:", JSON.stringify(n));
+        console.log("[DEBUG] handleResponse: Response type:", typeof n);
+        console.log("[DEBUG] handleResponse: Response is null/undefined:", n == null);
+        console.log("[DEBUG] handleResponse: Response.data exists:", !!(n?.data));
+        console.log("[DEBUG] handleResponse: Response.data:", n?.data);
+        console.log("[DEBUG] handleResponse: Response.code:", n?.code);
+        
+        if (!(n != null && n.data)) {
+          console.error("[DEBUG] handleResponse: EMPTY RESPONSE DETECTED - returning null");
+          console.error("[DEBUG] handleResponse: Response validation failed:", {
+            responseExists: n != null,
+            dataExists: !!(n?.data),
+            fullResponse: JSON.stringify(n)
+          });
+          this.logger.error(`终端接口空响应: ${Ue(n)}`, Xe.tag);
+          return null;
+        }
+        
+        if ((n == null ? void 0 : n.code) !== 0) {
+          console.error("[DEBUG] handleResponse: ERROR CODE DETECTED - returning null");
+          console.error("[DEBUG] handleResponse: Invalid response code:", {
+            code: n?.code,
+            expected: 0,
+            fullResponse: JSON.stringify(n)
+          });
+          this.logger.error(`异常返回码: ${Ue(n)}`, Xe.tag);
+          return null;
+        }
+        
+        console.log("[DEBUG] handleResponse: Response validation passed, processing data");
+        console.log("[DEBUG] handleResponse: Raw data before Rc processing:", JSON.stringify(n.data));
+        
         const i = Rc(n.data, {});
-        return this.formatServerAccountInfo(i);
+        console.log("[DEBUG] handleResponse: Data after Rc processing:", JSON.stringify(i));
+        
+        const result = this.formatServerAccountInfo(i);
+        console.log("[DEBUG] handleResponse: Final formatted result:", JSON.stringify(result));
+        
+        return result;
       }),
       (this.getAccountInfoLog = (n) =>
         JSON.stringify({
@@ -24927,58 +25073,149 @@ const Mn = () =>
   uM = "wx0d63f5de059f1d52",
   dM = "https://ima.qq.com",
   hM = async (e) => {
+    console.log("[DEBUG] hM: Starting WeChat verification with code:", e);
+    console.log("[DEBUG] hM: Target URL:", `${dM}/cgi-bin/auth_login/login`);
+    console.log("[DEBUG] hM: WeChat App ID:", uM);
+    
     try {
+      const clientInfo = await vM();
+      console.log("[DEBUG] hM: Client info:", JSON.stringify(clientInfo));
+      
+      const requestBody = {
+        client_info: { ...clientInfo },
+        account_type: 2,
+        code: e,
+        auth_appid: uM,
+      };
+      console.log("[DEBUG] hM: Request body:", JSON.stringify(requestBody));
+      
       const t = await fetch(`${dM}/cgi-bin/auth_login/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          client_info: { ...(await vM()) },
-          account_type: 2,
-          code: e,
-          auth_appid: uM,
-        }),
+        body: JSON.stringify(requestBody),
       });
-      if (!t.ok) throw new Error(`HTTP error! status: ${t.status}`);
+      
+      console.log("[DEBUG] hM: Response status:", t.status);
+      console.log("[DEBUG] hM: Response ok:", t.ok);
+      console.log("[DEBUG] hM: Response headers:", JSON.stringify([...t.headers.entries()]));
+      
+      if (!t.ok) {
+        const errorText = await t.text();
+        console.error("[DEBUG] hM: HTTP error response body:", errorText);
+        throw new Error(`HTTP error! status: ${t.status}, body: ${errorText}`);
+      }
+      
       const r = await t.json();
-      return Xs(r);
-    } catch {
-      return Mn;
+      console.log("[DEBUG] hM: Raw API response:", JSON.stringify(r));
+      
+      const processedResult = Xs(r);
+      console.log("[DEBUG] hM: Processed result:", JSON.stringify(processedResult));
+      
+      return processedResult;
+    } catch (error) {
+      console.error("[DEBUG] hM: Exception occurred:", error);
+      console.error("[DEBUG] hM: Error stack:", error.stack);
+      
+      const fallbackResult = Mn();
+      console.log("[DEBUG] hM: Returning fallback result:", JSON.stringify(fallbackResult));
+      
+      return fallbackResult;
     }
   },
   fM = async () => {
-    const t = (await chrome.storage.local.get(sr.userInfo))[sr.userInfo],
-      { userId: r, refreshToken: s } = t;
-    if (!r || !s) return null;
+    console.log("[DEBUG] fM: Starting logout API call");
+    
+    const t = (await chrome.storage.local.get(sr.userInfo))[sr.userInfo];
+    console.log("[DEBUG] fM: Current stored user info:", JSON.stringify(t));
+    
+    const { userId: r, refreshToken: s } = t || {};
+    console.log("[DEBUG] fM: User ID:", r);
+    console.log("[DEBUG] fM: Has refresh token:", !!s);
+    
+    if (!r || !s) {
+      console.log("[DEBUG] fM: Missing userId or refreshToken, returning null");
+      return null;
+    }
+    
+    const requestBody = {
+      user_id: r,
+      fresh_token: s,
+      token_type: 2,
+      session_id: "",
+      logout_type: 0,
+    };
+    console.log("[DEBUG] fM: Logout request body:", JSON.stringify(requestBody));
+    
     const n = await fetch("https://ima.qq.com/auth_login/logout", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        user_id: r,
-        fresh_token: s,
-        token_type: 2,
-        session_id: "",
-        logout_type: 0,
-      }),
+      body: JSON.stringify(requestBody),
     });
-    if (!n.ok) throw new Error(`HTTP error! status: ${n.status}`);
-    return n.json();
+    
+    console.log("[DEBUG] fM: Logout response status:", n.status);
+    console.log("[DEBUG] fM: Logout response ok:", n.ok);
+    
+    if (!n.ok) {
+      const errorText = await n.text();
+      console.error("[DEBUG] fM: Logout failed, response body:", errorText);
+      throw new Error(`HTTP error! status: ${n.status}`);
+    }
+    
+    const result = await n.json();
+    console.log("[DEBUG] fM: Logout API response:", JSON.stringify(result));
+    
+    return result;
   },
   gM = async () => {
-    const t = (await chrome.storage.local.get(sr.userInfo))[sr.userInfo],
-      { userId: r, refreshToken: s } = t;
-    if (!r || !s) return null;
+    console.log("[DEBUG] gM: Starting token refresh");
+    
+    const t = (await chrome.storage.local.get(sr.userInfo))[sr.userInfo];
+    console.log("[DEBUG] gM: Current stored user info:", JSON.stringify(t));
+    
+    const { userId: r, refreshToken: s } = t || {};
+    console.log("[DEBUG] gM: User ID:", r);
+    console.log("[DEBUG] gM: Has refresh token:", !!s);
+    
+    if (!r || !s) {
+      console.log("[DEBUG] gM: Missing userId or refreshToken, returning null");
+      return null;
+    }
+    
+    const requestBody = { user_id: r, refresh_token: s };
+    console.log("[DEBUG] gM: Refresh request body:", JSON.stringify(requestBody));
+    
     const n = await fetch("https://ima.qq.com/cgi-bin/auth_login/refresh", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ user_id: r, refresh_token: s }),
+      body: JSON.stringify(requestBody),
     });
-    if (!n.ok) throw new Error(`HTTP error! status: ${n.status}`);
-    const i = await n.json(),
-      o = Xs(i);
+    
+    console.log("[DEBUG] gM: Refresh response status:", n.status);
+    console.log("[DEBUG] gM: Refresh response ok:", n.ok);
+    
+    if (!n.ok) {
+      const errorText = await n.text();
+      console.error("[DEBUG] gM: Refresh failed, response body:", errorText);
+      throw new Error(`HTTP error! status: ${n.status}`);
+    }
+    
+    const i = await n.json();
+    console.log("[DEBUG] gM: Raw refresh response:", JSON.stringify(i));
+    
+    const o = Xs(i);
+    console.log("[DEBUG] gM: Processed refresh response:", JSON.stringify(o));
+    
     if (o.userId && o.token) {
       const a = { ...t, ...o };
-      return await chrome.storage.local.set({ [sr.userInfo]: a }), a;
+      console.log("[DEBUG] gM: Updating stored user info:", JSON.stringify(a));
+      
+      await chrome.storage.local.set({ [sr.userInfo]: a });
+      console.log("[DEBUG] gM: Successfully updated storage");
+      
+      return a;
     }
+    
+    console.log("[DEBUG] gM: Refresh response missing userId or token, returning default");
     return Mn();
   },
   gl = (e) =>
@@ -25022,10 +25259,20 @@ const Mn = () =>
   };
 let na;
 const vM = async () => {
+    console.log("[DEBUG] vM: Creating client info");
+    
     if (!na) {
-      const e = navigator.userAgent,
-        t = await pM(),
-        r = await _M();
+      console.log("[DEBUG] vM: Client info not cached, generating new");
+      
+      const e = navigator.userAgent;
+      const t = await pM();
+      const r = await _M();
+      
+      console.log("[DEBUG] vM: Extension ID:", chrome.runtime.id);
+      console.log("[DEBUG] vM: User Agent:", e);
+      console.log("[DEBUG] vM: GUID:", t);
+      console.log("[DEBUG] vM: QIMEI36:", r);
+      
       na = {
         extId: chrome.runtime.id,
         platform: 4,
@@ -25034,22 +25281,48 @@ const vM = async () => {
         guid: t,
         qimei36: r,
       };
+      
+      console.log("[DEBUG] vM: Generated client info:", JSON.stringify(na));
+    } else {
+      console.log("[DEBUG] vM: Using cached client info:", JSON.stringify(na));
     }
+    
     return na;
   },
   $L = () => {
     chrome.runtime.onMessageExternal.addListener((e, t, r) => {
       try {
-        if ((e == null ? void 0 : e.action) === "verifyWxCode")
+        console.log("[DEBUG] External message received:", JSON.stringify(e));
+        console.log("[DEBUG] Sender info:", JSON.stringify(t));
+        
+        if ((e == null ? void 0 : e.action) === "verifyWxCode") {
+          console.log("[DEBUG] Processing verifyWxCode action");
+          console.log("[DEBUG] WeChat code:", e?.params?.wxCode);
+          
           return (
             hM(e == null ? void 0 : e.params.wxCode).then((s) => {
-              s.userId &&
-                s.token &&
-                chrome.storage.local.set({ [sr.userInfo]: s }),
-                r(s);
+              console.log("[DEBUG] hM function result:", JSON.stringify(s));
+              console.log("[DEBUG] Has userId:", !!s.userId);
+              console.log("[DEBUG] Has token:", !!s.token);
+              
+              if (s.userId && s.token) {
+                console.log("[DEBUG] Storing user info in chrome.storage.local");
+                console.log("[DEBUG] Storage key:", sr.userInfo);
+                console.log("[DEBUG] Storage value:", JSON.stringify(s));
+                chrome.storage.local.set({ [sr.userInfo]: s });
+              } else {
+                console.log("[DEBUG] NOT storing user info - missing userId or token");
+              }
+              
+              console.log("[DEBUG] Sending response:", JSON.stringify(s));
+              r(s);
+            }).catch((error) => {
+              console.error("[DEBUG] Error in hM function:", error);
+              r({ code: -1, msg: "WeChat verification failed", data: null });
             }),
             !0
           );
+        }
         if ((e == null ? void 0 : e.action) === Rr.CloseLoginDialog)
           return (
             gl({ action: "hideLoginPanel" }).then(() => {
@@ -25135,9 +25408,16 @@ const vM = async () => {
         break;
       }
       case Rr.GetAccountInfo: {
+        console.log("[DEBUG] GetAccountInfo: Retrieving user info from storage");
+        console.log("[DEBUG] GetAccountInfo: Storage key:", sr.userInfo);
+        
         const r = await chrome.storage.local.get(sr.userInfo);
-        t == null ||
-          t(bi({ data: (r == null ? void 0 : r[sr.userInfo]) || Mn() }));
+        console.log("[DEBUG] GetAccountInfo: Storage result:", JSON.stringify(r));
+        
+        const userInfo = (r == null ? void 0 : r[sr.userInfo]) || Mn();
+        console.log("[DEBUG] GetAccountInfo: Final user info:", JSON.stringify(userInfo));
+        
+        t == null || t(bi({ data: userInfo }));
         break;
       }
       case Rr.RefreshToken: {
@@ -25153,10 +25433,23 @@ const vM = async () => {
       }
     }
   },
-  gv = async () =>
-    fM().then((e) =>
-      e.code === 0 ? (chrome.storage.local.remove(sr.userInfo), !0) : !1,
-    ),
+  gv = async () => {
+    console.log("[DEBUG] gv: Starting logout process");
+    
+    return fM().then((e) => {
+      console.log("[DEBUG] gv: Logout API response:", JSON.stringify(e));
+      
+      if (e.code === 0) {
+        console.log("[DEBUG] gv: Logout successful, removing user info from storage");
+        chrome.storage.local.remove(sr.userInfo);
+        console.log("[DEBUG] gv: Storage cleared, returning true");
+        return true;
+      } else {
+        console.log("[DEBUG] gv: Logout failed, code:", e.code);
+        return false;
+      }
+    });
+  },
   mM = "1.0.8",
   NL = { version: mM };
 export {
