@@ -1,0 +1,68 @@
+[callNativePromise] 触发终端调用： getAccountInfo undefined index-9xhPJVFT.js:42:8088
+[callNativePromise] 触发终端调用： getDeviceInfo undefined index-9xhPJVFT.js:42:8088
+忽略不支持的 entryTypes: longtask。 index-9xhPJVFT.js:59:840
+无有效的 entryTypes，中止注册。 index-9xhPJVFT.js:59:840
+终端接口空响应 index-9xhPJVFT.js:42:9855
+[initLogger] -> accountInfo, deviceInfo: null null index-9xhPJVFT.js:73:902
+由于“https://ima.qq.com/universal-login/?extId=vh8lx6lps9@Manual_XPIPorter&extId=vh8lx6lps9%40Manual_XPIPorter&platform=4&deviceId=u05hku1vjhobuppzm6u470jhcnnlxrqnt2l1&qua=Mozilla%2F5.0%20(Macintosh%3B%20Intel%20Mac%20OS%20X%2010.15%3B%20rv%3A139.0)%20Gecko%2F20100101%20Firefox%2F139.0&guid=gjch3m0wmtqx6rdla2yntlmt4k5idu7q&qimei36=u05hku1vjhobuppzm6u470jhcnnlxrqnt2l1&parentreport=1”加载自第三方上下文，并已开启动态状态分区功能，已授权该网站访问分区的 Cookie 或存储空间。 index-9xhPJVFT.js:54:25935
+[callNative] 触发终端调用： log index-9xhPJVFT.js:42:7807
+已在页面完全加载前强制排版。若样式表尚未加载，则可能会导致无样式内容闪烁。 stylesheets-manager.js:664:11
+fast_login:  0 qrconnect:280:8419
+fastLogin_enabled:  false qrconnect:280:8463
+qrcode loaded， duration:  1642 qrconnect:280:5971
+A resource is blocked by OpaqueResponseBlocking, please check browser console for details. cube
+扫码redirect_uri:  https://ima.qq.com/universal-login/#/weixin-login?code=081zZKkl2lstOf47xXll2dFOkr0zZKki&state=JTdCJTIyZ3VpZCUyMjolMjJnamNoM20wd210cXg2cmRsYTJ5bnRsbXQ0azVpZHU3cSUyMiwlMjJxaW1laTM2JTIyOiUyMnUwNWhrdTF2amhvYnVwcHptNnU0NzBqaGNubmx4cnFudDJsMSUyMiwlMjJleHRJZCUyMjolMjJ2aDhseDZscHM5QE1hbnVhbF9YUElQb3J0ZXIlMjIlN0Q= qrconnect:279:7509
+[callNativePromise] 触发终端调用： getAccountInfo undefined index-9xhPJVFT.js:42:8088
+[callNativePromise] 触发终端调用： getDeviceInfo undefined index-9xhPJVFT.js:42:8088
+忽略不支持的 entryTypes: longtask。 index-9xhPJVFT.js:59:840
+无有效的 entryTypes，中止注册。 index-9xhPJVFT.js:59:840
+终端接口空响应 index-9xhPJVFT.js:42:9855
+    Rv https://qbtool.static.qq.com/ima/assets/universal-login/assets/index-9xhPJVFT.js:42
+    Pv https://qbtool.static.qq.com/ima/assets/universal-login/assets/index-9xhPJVFT.js:42
+    Mp https://qbtool.static.qq.com/ima/assets/universal-login/assets/index-9xhPJVFT.js:73
+    <anonymous> https://qbtool.static.qq.com/ima/assets/universal-login/assets/index-9xhPJVFT.js:73
+[initLogger] -> accountInfo, deviceInfo: null null index-9xhPJVFT.js:73:902
+[callNative] 触发终端调用： log 3 index-9xhPJVFT.js:42:7807
+[callNative] 触发终端调用： log 2 index-9xhPJVFT.js:42:7807
+由于“https://ima.qq.com/universal-login/#/weixin-login?code=081zZKkl2lstOf47xXll2dFOkr0zZKki&state=JTdCJTIyZ3VpZCUyMjolMjJnamNoM20wd210cXg2cmRsYTJ5bnRsbXQ0azVpZHU3cSUyMiwlMjJxaW1laTM2JTIyOiUyMnUwNWhrdTF2amhvYnVwcHptNnU0NzBqaGNubmx4cnFudDJsMSUyMiwlMjJleHRJZCUyMjolMjJ2aDhseDZscHM5QE1hbnVhbF9YUElQb3J0ZXIlMjIlN0Q=”加载自第三方上下文，并已开启动态状态分区功能，已授权该网站访问分区的 Cookie 或存储空间。 index-9xhPJVFT.js:54:25935
+fast_login:  0 qrconnect:280:8419
+fastLogin_enabled:  false qrconnect:280:8463
+qrcode loaded， duration:  830 qrconnect:280:5971
+[callNativePromise] 触发终端调用： getAccountInfo undefined index-9xhPJVFT.js:42:8088
+[callNativePromise] 触发终端调用： getDeviceInfo undefined index-9xhPJVFT.js:42:8088
+忽略不支持的 entryTypes: longtask。 index-9xhPJVFT.js:59:840
+无有效的 entryTypes，中止注册。 index-9xhPJVFT.js:59:840
+终端接口空响应 index-9xhPJVFT.js:42:9855
+[initLogger] -> accountInfo, deviceInfo: null null index-9xhPJVFT.js:73:902
+[callNative] 触发终端调用： log index-9xhPJVFT.js:42:7807
+由于“https://ima.qq.com/universal-login/?extId=vh8lx6lps9@Manual_XPIPorter&extId=vh8lx6lps9%40Manual_XPIPorter&platform=4&deviceId=u05hku1vjhobuppzm6u470jhcnnlxrqnt2l1&qua=Mozilla%2F5.0%20(Macintosh%3B%20Intel%20Mac%20OS%20X%2010.15%3B%20rv%3A139.0)%20Gecko%2F20100101%20Firefox%2F139.0&guid=gjch3m0wmtqx6rdla2yntlmt4k5idu7q&qimei36=u05hku1vjhobuppzm6u470jhcnnlxrqnt2l1&parentreport=1”加载自第三方上下文，并已开启动态状态分区功能，已授权该网站访问分区的 Cookie 或存储空间。 index-9xhPJVFT.js:54:25935
+已在页面完全加载前强制排版。若样式表尚未加载，则可能会导致无样式内容闪烁。 stylesheets-manager.js:664:11
+fast_login:  0 qrconnect:280:8419
+fastLogin_enabled:  false qrconnect:280:8463
+qrcode loaded， duration:  1114 qrconnect:280:5971
+扫码redirect_uri:  https://ima.qq.com/universal-login/#/weixin-login?code=081hm40w3P6a953ZIn3w3RbKYk1hm40e&state=JTdCJTIyZ3VpZCUyMjolMjJnamNoM20wd210cXg2cmRsYTJ5bnRsbXQ0azVpZHU3cSUyMiwlMjJxaW1laTM2JTIyOiUyMnUwNWhrdTF2amhvYnVwcHptNnU0NzBqaGNubmx4cnFudDJsMSUyMiwlMjJleHRJZCUyMjolMjJ2aDhseDZscHM5QE1hbnVhbF9YUElQb3J0ZXIlMjIlN0Q= qrconnect:279:7509
+[callNativePromise] 触发终端调用： getAccountInfo undefined index-9xhPJVFT.js:42:8088
+[callNativePromise] 触发终端调用： getDeviceInfo undefined index-9xhPJVFT.js:42:8088
+忽略不支持的 entryTypes: longtask。 index-9xhPJVFT.js:59:840
+无有效的 entryTypes，中止注册。 index-9xhPJVFT.js:59:840
+终端接口空响应 index-9xhPJVFT.js:42:9855
+[initLogger] -> accountInfo, deviceInfo: null null index-9xhPJVFT.js:73:902
+[callNative] 触发终端调用： log 3 index-9xhPJVFT.js:42:7807
+[callNative] 触发终端调用： log 2 index-9xhPJVFT.js:42:7807
+由于“https://ima.qq.com/universal-login/#/weixin-login?code=081hm40w3P6a953ZIn3w3RbKYk1hm40e&state=JTdCJTIyZ3VpZCUyMjolMjJnamNoM20wd210cXg2cmRsYTJ5bnRsbXQ0azVpZHU3cSUyMiwlMjJxaW1laTM2JTIyOiUyMnUwNWhrdTF2amhvYnVwcHptNnU0NzBqaGNubmx4cnFudDJsMSUyMiwlMjJleHRJZCUyMjolMjJ2aDhseDZscHM5QE1hbnVhbF9YUElQb3J0ZXIlMjIlN0Q=”加载自第三方上下文，并已开启动态状态分区功能，已授权该网站访问分区的 Cookie 或存储空间。 index-9xhPJVFT.js:54:25935
+fast_login:  0 qrconnect:280:8419
+fastLogin_enabled:  false qrconnect:280:8463
+qrcode loaded， duration:  925 qrconnect:280:5971
+指向“https://lp.open.weixin.qq.com/connect/l/qrconnect?uuid=0410FHTe0lOIFa1i”的 <script> 加载失败。 qrconnect:1:1
+[callNativePromise] 触发终端调用： getAccountInfo undefined index-9xhPJVFT.js:42:8088
+[callNativePromise] 触发终端调用： getDeviceInfo undefined index-9xhPJVFT.js:42:8088
+忽略不支持的 entryTypes: longtask。 index-9xhPJVFT.js:59:840
+无有效的 entryTypes，中止注册。 index-9xhPJVFT.js:59:840
+终端接口空响应 index-9xhPJVFT.js:42:9855
+[initLogger] -> accountInfo, deviceInfo: null null index-9xhPJVFT.js:73:902
+[callNative] 触发终端调用： log index-9xhPJVFT.js:42:7807
+由于“https://ima.qq.com/universal-login/?extId=vh8lx6lps9@Manual_XPIPorter&extId=vh8lx6lps9%40Manual_XPIPorter&platform=4&deviceId=u05hku1vjhobuppzm6u470jhcnnlxrqnt2l1&qua=Mozilla%2F5.0%20(Macintosh%3B%20Intel%20Mac%20OS%20X%2010.15%3B%20rv%3A139.0)%20Gecko%2F20100101%20Firefox%2F139.0&guid=gjch3m0wmtqx6rdla2yntlmt4k5idu7q&qimei36=u05hku1vjhobuppzm6u470jhcnnlxrqnt2l1&parentreport=1”加载自第三方上下文，并已开启动态状态分区功能，已授权该网站访问分区的 Cookie 或存储空间。 index-9xhPJVFT.js:54:25935
+已在页面完全加载前强制排版。若样式表尚未加载，则可能会导致无样式内容闪烁。 stylesheets-manager.js:664:11
+fast_login:  0 qrconnect:280:8419
+fastLogin_enabled:  false qrconnect:280:8463
+qrcode loaded， duration:  1011 qrconnect:280:5971

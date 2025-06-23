@@ -1,0 +1,80 @@
+[DEBUG] getAccountInfo: Starting account info retrieval pkg.js:7833:17
+[DEBUG] getAccountInfo: Calling invokeWithPromise with action='getAccountInfo' pkg.js:7834:17
+[DEBUG] GetAccountInfo: Retrieving user info from storage pkg.js:25411:17
+[DEBUG] GetAccountInfo: Storage key: userInfo pkg.js:25412:17
+[DEBUG] GetAccountInfo: Storage result: {} pkg.js:25415:17
+[DEBUG] GetAccountInfo: Final user info: {"code":0,"idType":"","isNewer":false,"refreshToken":"","refreshTokenValidTime":"","token":"","tokenType":14,"tokenValidTime":"","userId":""} pkg.js:25418:17
+[DEBUG] getAccountInfo: Raw response from invokeWithPromise: {"data":"{\"code\":0,\"idType\":\"\",\"isNewer\":false,\"refreshToken\":\"\",\"refreshTokenValidTime\":\"\",\"token\":\"\",\"tokenType\":14,\"tokenValidTime\":\"\",\"userId\":\"\"}","code":0,"msg":""} pkg.js:7841:17
+[DEBUG] getAccountInfo: Response type: object pkg.js:7842:17
+[DEBUG] getAccountInfo: Response code: 0 pkg.js:7843:17
+[DEBUG] getAccountInfo: Response data: {"code":0,"idType":"","isNewer":false,"refreshToken":"","refreshTokenValidTime":"","token":"","tokenType":14,"tokenValidTime":"","userId":""} pkg.js:7844:17
+[DEBUG] handleResponse: Input response: {"data":"{\"code\":0,\"idType\":\"\",\"isNewer\":false,\"refreshToken\":\"\",\"refreshTokenValidTime\":\"\",\"token\":\"\",\"tokenType\":14,\"tokenValidTime\":\"\",\"userId\":\"\"}","code":0,"msg":""} pkg.js:8013:17
+[DEBUG] handleResponse: Response type: object pkg.js:8014:17
+[DEBUG] handleResponse: Response is null/undefined: false pkg.js:8015:17
+[DEBUG] handleResponse: Response.data exists: true pkg.js:8016:17
+[DEBUG] handleResponse: Response.data: {"code":0,"idType":"","isNewer":false,"refreshToken":"","refreshTokenValidTime":"","token":"","tokenType":14,"tokenValidTime":"","userId":""} pkg.js:8017:17
+[DEBUG] handleResponse: Response.code: 0 pkg.js:8018:17
+[DEBUG] handleResponse: Response validation passed, processing data pkg.js:8042:17
+[DEBUG] handleResponse: Raw data before Rc processing: "{\"code\":0,\"idType\":\"\",\"isNewer\":false,\"refreshToken\":\"\",\"refreshTokenValidTime\":\"\",\"token\":\"\",\"tokenType\":14,\"tokenValidTime\":\"\",\"userId\":\"\"}" pkg.js:8043:17
+[DEBUG] handleResponse: Data after Rc processing: {"code":0,"idType":"","isNewer":false,"refreshToken":"","refreshTokenValidTime":"","token":"","tokenType":14,"tokenValidTime":"","userId":""} pkg.js:8046:17
+[DEBUG] handleResponse: Final formatted result: {"token":"","refreshToken":"","userId":"","idType":"","tokenType":14,"tokenValidTime":null,"refreshTokenValidTime":null} pkg.js:8049:17
+[DEBUG] getAccountInfo: Processed response: {"token":"","refreshToken":"","userId":"","idType":"","tokenType":14,"tokenValidTime":null,"refreshTokenValidTime":null} pkg.js:7848:17
+[DEBUG] getAccountInfo: Processed response type: object pkg.js:7849:17
+[DEBUG] getAccountInfo: Final result: {"token":"","refreshToken":"","userId":"","idType":"","tokenType":14,"tokenValidTime":null,"refreshTokenValidTime":null} pkg.js:7856:17
+[DEBUG] vM: Creating client info pkg.js:25262:13
+[DEBUG] vM: Client info not cached, generating new pkg.js:25265:15
+[DEBUG] vM: Extension ID: vh8lx6lps9@Manual_XPIPorter pkg.js:25271:15
+[DEBUG] vM: User Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:139.0) Gecko/20100101 Firefox/139.0 pkg.js:25272:15
+[DEBUG] vM: GUID: gjch3m0wmtqx6rdla2yntlmt4k5idu7q pkg.js:25273:15
+[DEBUG] vM: QIMEI36: hcpv8ps9z9abb0sm6kc3ttzcot95rt9adjd2 pkg.js:25274:15
+[DEBUG] vM: Generated client info: {"extId":"vh8lx6lps9@Manual_XPIPorter","platform":4,"deviceId":"hcpv8ps9z9abb0sm6kc3ttzcot95rt9adjd2","qua":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:139.0) Gecko/20100101 Firefox/139.0","guid":"gjch3m0wmtqx6rdla2yntlmt4k5idu7q","qimei36":"hcpv8ps9z9abb0sm6kc3ttzcot95rt9adjd2"} pkg.js:25285:15
+[callNativePromise] 触发终端调用： getAccountInfo undefined index-9xhPJVFT.js:42:8088
+[callNativePromise] 触发终端调用： getDeviceInfo undefined index-9xhPJVFT.js:42:8088
+忽略不支持的 entryTypes: longtask。 index-9xhPJVFT.js:59:840
+无有效的 entryTypes，中止注册。 index-9xhPJVFT.js:59:840
+终端接口空响应 index-9xhPJVFT.js:42:9855
+[initLogger] -> accountInfo, deviceInfo: null null index-9xhPJVFT.js:73:902
+由于“https://ima.qq.com/universal-login/?extId=vh8lx6lps9@Manual_XPIPorter&extId=vh8lx6lps9%40Manual_XPIPorter&platform=4&deviceId=hcpv8ps9z9abb0sm6kc3ttzcot95rt9adjd2&qua=Mozilla%2F5.0%20(Macintosh%3B%20Intel%20Mac%20OS%20X%2010.15%3B%20rv%3A139.0)%20Gecko%2F20100101%20Firefox%2F139.0&guid=gjch3m0wmtqx6rdla2yntlmt4k5idu7q&qimei36=hcpv8ps9z9abb0sm6kc3ttzcot95rt9adjd2&parentreport=1”加载自第三方上下文，并已开启动态状态分区功能，已授权该网站访问分区的 Cookie 或存储空间。 index-9xhPJVFT.js:54:25935
+[callNative] 触发终端调用： log index-9xhPJVFT.js:42:7807
+已在页面完全加载前强制排版。若样式表尚未加载，则可能会导致无样式内容闪烁。 stylesheets-manager.js:664:11
+fast_login:  0 qrconnect:280:8419
+fastLogin_enabled:  false qrconnect:280:8463
+qrcode loaded， duration:  1195 qrconnect:280:5971
+指向“https://lp.open.weixin.qq.com/connect/l/qrconnect?uuid=051I3Jd90Ou60w3n&last=404”的 <script> 加载失败。 qrconnect:1:1
+[DEBUG] getAccountInfo: Starting account info retrieval pkg.js:7833:17
+[DEBUG] getAccountInfo: Calling invokeWithPromise with action='getAccountInfo' pkg.js:7834:17
+[DEBUG] GetAccountInfo: Retrieving user info from storage pkg.js:25411:17
+[DEBUG] GetAccountInfo: Storage key: userInfo pkg.js:25412:17
+[DEBUG] GetAccountInfo: Storage result: {} pkg.js:25415:17
+[DEBUG] GetAccountInfo: Final user info: {"code":0,"idType":"","isNewer":false,"refreshToken":"","refreshTokenValidTime":"","token":"","tokenType":14,"tokenValidTime":"","userId":""} pkg.js:25418:17
+[DEBUG] getAccountInfo: Raw response from invokeWithPromise: {"data":"{\"code\":0,\"idType\":\"\",\"isNewer\":false,\"refreshToken\":\"\",\"refreshTokenValidTime\":\"\",\"token\":\"\",\"tokenType\":14,\"tokenValidTime\":\"\",\"userId\":\"\"}","code":0,"msg":""} pkg.js:7841:17
+[DEBUG] getAccountInfo: Response type: object pkg.js:7842:17
+[DEBUG] getAccountInfo: Response code: 0 pkg.js:7843:17
+[DEBUG] getAccountInfo: Response data: {"code":0,"idType":"","isNewer":false,"refreshToken":"","refreshTokenValidTime":"","token":"","tokenType":14,"tokenValidTime":"","userId":""} pkg.js:7844:17
+[DEBUG] handleResponse: Input response: {"data":"{\"code\":0,\"idType\":\"\",\"isNewer\":false,\"refreshToken\":\"\",\"refreshTokenValidTime\":\"\",\"token\":\"\",\"tokenType\":14,\"tokenValidTime\":\"\",\"userId\":\"\"}","code":0,"msg":""} pkg.js:8013:17
+[DEBUG] handleResponse: Response type: object pkg.js:8014:17
+[DEBUG] handleResponse: Response is null/undefined: false pkg.js:8015:17
+[DEBUG] handleResponse: Response.data exists: true pkg.js:8016:17
+[DEBUG] handleResponse: Response.data: {"code":0,"idType":"","isNewer":false,"refreshToken":"","refreshTokenValidTime":"","token":"","tokenType":14,"tokenValidTime":"","userId":""} pkg.js:8017:17
+[DEBUG] handleResponse: Response.code: 0 pkg.js:8018:17
+[DEBUG] handleResponse: Response validation passed, processing data pkg.js:8042:17
+[DEBUG] handleResponse: Raw data before Rc processing: "{\"code\":0,\"idType\":\"\",\"isNewer\":false,\"refreshToken\":\"\",\"refreshTokenValidTime\":\"\",\"token\":\"\",\"tokenType\":14,\"tokenValidTime\":\"\",\"userId\":\"\"}" pkg.js:8043:17
+[DEBUG] handleResponse: Data after Rc processing: {"code":0,"idType":"","isNewer":false,"refreshToken":"","refreshTokenValidTime":"","token":"","tokenType":14,"tokenValidTime":"","userId":""} pkg.js:8046:17
+[DEBUG] handleResponse: Final formatted result: {"token":"","refreshToken":"","userId":"","idType":"","tokenType":14,"tokenValidTime":null,"refreshTokenValidTime":null} pkg.js:8049:17
+[DEBUG] getAccountInfo: Processed response: {"token":"","refreshToken":"","userId":"","idType":"","tokenType":14,"tokenValidTime":null,"refreshTokenValidTime":null} pkg.js:7848:17
+[DEBUG] getAccountInfo: Processed response type: object pkg.js:7849:17
+[DEBUG] getAccountInfo: Final result: {"token":"","refreshToken":"","userId":"","idType":"","tokenType":14,"tokenValidTime":null,"refreshTokenValidTime":null} pkg.js:7856:17
+[DEBUG] vM: Creating client info pkg.js:25262:13
+[DEBUG] vM: Using cached client info: {"extId":"vh8lx6lps9@Manual_XPIPorter","platform":4,"deviceId":"hcpv8ps9z9abb0sm6kc3ttzcot95rt9adjd2","qua":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:139.0) Gecko/20100101 Firefox/139.0","guid":"gjch3m0wmtqx6rdla2yntlmt4k5idu7q","qimei36":"hcpv8ps9z9abb0sm6kc3ttzcot95rt9adjd2"} pkg.js:25287:15
+[callNativePromise] 触发终端调用： getAccountInfo undefined index-9xhPJVFT.js:42:8088
+[callNativePromise] 触发终端调用： getDeviceInfo undefined index-9xhPJVFT.js:42:8088
+忽略不支持的 entryTypes: longtask。 index-9xhPJVFT.js:59:840
+无有效的 entryTypes，中止注册。 index-9xhPJVFT.js:59:840
+终端接口空响应 index-9xhPJVFT.js:42:9855
+[initLogger] -> accountInfo, deviceInfo: null null index-9xhPJVFT.js:73:902
+[callNative] 触发终端调用： log index-9xhPJVFT.js:42:7807
+由于“https://ima.qq.com/universal-login/?extId=vh8lx6lps9@Manual_XPIPorter&extId=vh8lx6lps9%40Manual_XPIPorter&platform=4&deviceId=hcpv8ps9z9abb0sm6kc3ttzcot95rt9adjd2&qua=Mozilla%2F5.0%20(Macintosh%3B%20Intel%20Mac%20OS%20X%2010.15%3B%20rv%3A139.0)%20Gecko%2F20100101%20Firefox%2F139.0&guid=gjch3m0wmtqx6rdla2yntlmt4k5idu7q&qimei36=hcpv8ps9z9abb0sm6kc3ttzcot95rt9adjd2&parentreport=1”加载自第三方上下文，并已开启动态状态分区功能，已授权该网站访问分区的 Cookie 或存储空间。 index-9xhPJVFT.js:54:25935
+已在页面完全加载前强制排版。若样式表尚未加载，则可能会导致无样式内容闪烁。 stylesheets-manager.js:664:11
+fast_login:  0 qrconnect:280:8419
+fastLogin_enabled:  false qrconnect:280:8463
+qrcode loaded， duration:  865 qrconnect:280:5971

@@ -1,0 +1,23 @@
+[DEBUG] getAccountInfo: Starting account info retrieval pkg.js:7833:17
+[DEBUG] getAccountInfo: Calling invokeWithPromise with action='getAccountInfo' pkg.js:7834:17
+[DEBUG] GetAccountInfo: Retrieving user info from storage pkg.js:25411:17
+[DEBUG] GetAccountInfo: Storage key: userInfo pkg.js:25412:17
+[DEBUG] GetAccountInfo: Storage result: {} pkg.js:25415:17
+[DEBUG] GetAccountInfo: Final user info: {"code":0,"idType":"","isNewer":false,"refreshToken":"","refreshTokenValidTime":"","token":"","tokenType":14,"tokenValidTime":"","userId":""} pkg.js:25418:17
+[DEBUG] getAccountInfo: Raw response from invokeWithPromise: {"data":"{\"code\":0,\"idType\":\"\",\"isNewer\":false,\"refreshToken\":\"\",\"refreshTokenValidTime\":\"\",\"token\":\"\",\"tokenType\":14,\"tokenValidTime\":\"\",\"userId\":\"\"}","code":0,"msg":""} pkg.js:7841:17
+[DEBUG] getAccountInfo: Response type: object pkg.js:7842:17
+[DEBUG] getAccountInfo: Response code: 0 pkg.js:7843:17
+[DEBUG] getAccountInfo: Response data: {"code":0,"idType":"","isNewer":false,"refreshToken":"","refreshTokenValidTime":"","token":"","tokenType":14,"tokenValidTime":"","userId":""} pkg.js:7844:17
+[DEBUG] handleResponse: Input response: {"data":"{\"code\":0,\"idType\":\"\",\"isNewer\":false,\"refreshToken\":\"\",\"refreshTokenValidTime\":\"\",\"token\":\"\",\"tokenType\":14,\"tokenValidTime\":\"\",\"userId\":\"\"}","code":0,"msg":""} pkg.js:8013:17
+[DEBUG] handleResponse: Response type: object pkg.js:8014:17
+[DEBUG] handleResponse: Response is null/undefined: false pkg.js:8015:17
+[DEBUG] handleResponse: Response.data exists: true pkg.js:8016:17
+[DEBUG] handleResponse: Response.data: {"code":0,"idType":"","isNewer":false,"refreshToken":"","refreshTokenValidTime":"","token":"","tokenType":14,"tokenValidTime":"","userId":""} pkg.js:8017:17
+[DEBUG] handleResponse: Response.code: 0 pkg.js:8018:17
+[DEBUG] handleResponse: Response validation passed, processing data pkg.js:8042:17
+[DEBUG] handleResponse: Raw data before Rc processing: "{\"code\":0,\"idType\":\"\",\"isNewer\":false,\"refreshToken\":\"\",\"refreshTokenValidTime\":\"\",\"token\":\"\",\"tokenType\":14,\"tokenValidTime\":\"\",\"userId\":\"\"}" pkg.js:8043:17
+[DEBUG] handleResponse: Data after Rc processing: {"code":0,"idType":"","isNewer":false,"refreshToken":"","refreshTokenValidTime":"","token":"","tokenType":14,"tokenValidTime":"","userId":""} pkg.js:8046:17
+[DEBUG] handleResponse: Final formatted result: {"token":"","refreshToken":"","userId":"","idType":"","tokenType":14,"tokenValidTime":null,"refreshTokenValidTime":null} pkg.js:8049:17
+[DEBUG] getAccountInfo: Processed response: {"token":"","refreshToken":"","userId":"","idType":"","tokenType":14,"tokenValidTime":null,"refreshTokenValidTime":null} pkg.js:7848:17
+[DEBUG] getAccountInfo: Processed response type: object pkg.js:7849:17
+[DEBUG] getAccountInfo: Final result: {"token":"","refreshToken":"","userId":"","idType":"","tokenType":14,"tokenValidTime":null,"refreshTokenValidTime":null} pkg.js:7856:17
