@@ -38,7 +38,7 @@
 		{
 			"matches": [
 				"<all_urls>",
-				"file://*"
+				"file:///*"
 			],
 			"resources": [
 				"assets/pkg.js",
@@ -54,7 +54,7 @@
 			],
 			"matches": [
 				"<all_urls>",
-				"file://*"
+				"file:///*"
 			],
 			"css": [
 				"./src/content-script/index.css"
