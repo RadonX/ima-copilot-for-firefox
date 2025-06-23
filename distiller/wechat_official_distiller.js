@@ -1,26 +1,31 @@
-/******/ (() => { // webpackBootstrap
-/******/ 	"use strict";
-/******/ 	var __webpack_modules__ = ([
-/* 0 */,
-/* 1 */
-/***/ (function (__unused_webpack_module, exports, __webpack_require__) {
-
-
-      var __assign = (this && this.__assign) || function () {
-        __assign = Object.assign || function (t) {
-          for (var s, i = 1, n = arguments.length; i < n; i++) {
-            s = arguments[i];
-            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-              t[p] = s[p];
-          }
-          return t;
+/******/ (() => {
+  // webpackBootstrap
+  /******/ "use strict";
+  /******/ var __webpack_modules__ = [
+    ,
+    /* 0 */ /* 1 */
+    /***/ function (__unused_webpack_module, exports, __webpack_require__) {
+      var __assign =
+        (this && this.__assign) ||
+        function () {
+          __assign =
+            Object.assign ||
+            function (t) {
+              for (var s, i = 1, n = arguments.length; i < n; i++) {
+                s = arguments[i];
+                for (var p in s)
+                  if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+              }
+              return t;
+            };
+          return __assign.apply(this, arguments);
         };
-        return __assign.apply(this, arguments);
-      };
-      var __importDefault = (this && this.__importDefault) || function (mod) {
-        return (mod && mod.__esModule) ? mod : { "default": mod };
-      };
-      Object.defineProperty(exports, "__esModule", ({ value: true }));
+      var __importDefault =
+        (this && this.__importDefault) ||
+        function (mod) {
+          return mod && mod.__esModule ? mod : { default: mod };
+        };
+      Object.defineProperty(exports, "__esModule", { value: true });
       exports.getAllMetas = void 0;
       var contentHeader_1 = __importDefault(__webpack_require__(2));
       var metas_1 = __webpack_require__(8);
@@ -30,14 +35,31 @@
         var infoMeta = (0, metas_1.getMetas)();
         var headers = (0, contentHeader_1.default)();
         var paragraphs = (0, paragraph_1.getParagraphs)();
-        if ((headers === null || headers === void 0 ? void 0 : headers.length) > 0 && (paragraphs === null || paragraphs === void 0 ? void 0 : paragraphs.length) > 0) {
+        if (
+          (headers === null || headers === void 0 ? void 0 : headers.length) >
+            0 &&
+          (paragraphs === null || paragraphs === void 0
+            ? void 0
+            : paragraphs.length) > 0
+        ) {
           var _loop_1 = function (index) {
             var text = headers[index].text;
-            var minStart = ((_b = (_a = headers[index - 1]) === null || _a === void 0 ? void 0 : _a.range) === null || _b === void 0 ? void 0 : _b[0]) || -1;
-            var startRange = paragraphs.findIndex(function (item, idex) { return item.text === text && idex > minStart; });
-            var endRange = index === headers.length - 1
-              ? paragraphs.length - 1
-              : paragraphs.findIndex(function (item) { return item.text === headers[index + 1].text; }) - 1;
+            var minStart =
+              ((_b =
+                (_a = headers[index - 1]) === null || _a === void 0
+                  ? void 0
+                  : _a.range) === null || _b === void 0
+                ? void 0
+                : _b[0]) || -1;
+            var startRange = paragraphs.findIndex(function (item, idex) {
+              return item.text === text && idex > minStart;
+            });
+            var endRange =
+              index === headers.length - 1
+                ? paragraphs.length - 1
+                : paragraphs.findIndex(function (item) {
+                    return item.text === headers[index + 1].text;
+                  }) - 1;
             if (startRange < 0 || endRange < 0 || startRange > endRange)
               return "continue";
             headers[index].range = [startRange, endRange];
@@ -46,84 +68,171 @@
             _loop_1(index);
           }
         }
-        return __assign(__assign({}, infoMeta), { headers: headers, paragraphs: paragraphs });
+        return __assign(__assign({}, infoMeta), {
+          headers: headers,
+          paragraphs: paragraphs,
+        });
       }
       exports.getAllMetas = getAllMetas;
 
-
       /***/
-    }),
-/* 2 */
-/***/ (function (__unused_webpack_module, exports, __webpack_require__) {
-
-
-      var __values = (this && this.__values) || function (o) {
-        var s = typeof Symbol === "function" && Symbol.iterator, m = s && o[s], i = 0;
-        if (m) return m.call(o);
-        if (o && typeof o.length === "number") return {
-          next: function () {
-            if (o && i >= o.length) o = void 0;
-            return { value: o && o[i++], done: !o };
-          }
+    },
+    /* 2 */
+    /***/ function (__unused_webpack_module, exports, __webpack_require__) {
+      var __values =
+        (this && this.__values) ||
+        function (o) {
+          var s = typeof Symbol === "function" && Symbol.iterator,
+            m = s && o[s],
+            i = 0;
+          if (m) return m.call(o);
+          if (o && typeof o.length === "number")
+            return {
+              next: function () {
+                if (o && i >= o.length) o = void 0;
+                return { value: o && o[i++], done: !o };
+              },
+            };
+          throw new TypeError(
+            s ? "Object is not iterable." : "Symbol.iterator is not defined.",
+          );
         };
-        throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
-      };
-      Object.defineProperty(exports, "__esModule", ({ value: true }));
+      Object.defineProperty(exports, "__esModule", { value: true });
       var const_1 = __webpack_require__(3);
       var doms_1 = __webpack_require__(4);
       var headerPicker_1 = __webpack_require__(6);
       var path_1 = __webpack_require__(7);
       var regexp_1 = __webpack_require__(5);
-      var isTableNode = function (node) { return (node === null || node === void 0 ? void 0 : node.tagName) === 'TABLE'; };
-      var isSVGNode = function (node) { return (node === null || node === void 0 ? void 0 : node.tagName) === 'svg'; };
-      var isMinishop = function (node) { var _a, _b; return (_b = (_a = node === null || node === void 0 ? void 0 : node.classList) === null || _a === void 0 ? void 0 : _a.contains) === null || _b === void 0 ? void 0 : _b.call(_a, 'minishop_iframe_wrp'); };
-      var isLinkNode = function (node) { var _a; return (node === null || node === void 0 ? void 0 : node.tagName) === 'A' || (node === null || node === void 0 ? void 0 : node.tagName) === 'AI' || ((_a = node === null || node === void 0 ? void 0 : node.querySelector) === null || _a === void 0 ? void 0 : _a.call(node, 'a')); };
+      var isTableNode = function (node) {
+        return (
+          (node === null || node === void 0 ? void 0 : node.tagName) === "TABLE"
+        );
+      };
+      var isSVGNode = function (node) {
+        return (
+          (node === null || node === void 0 ? void 0 : node.tagName) === "svg"
+        );
+      };
+      var isMinishop = function (node) {
+        var _a, _b;
+        return (_b =
+          (_a = node === null || node === void 0 ? void 0 : node.classList) ===
+            null || _a === void 0
+            ? void 0
+            : _a.contains) === null || _b === void 0
+          ? void 0
+          : _b.call(_a, "minishop_iframe_wrp");
+      };
+      var isLinkNode = function (node) {
+        var _a;
+        return (
+          (node === null || node === void 0 ? void 0 : node.tagName) === "A" ||
+          (node === null || node === void 0 ? void 0 : node.tagName) === "AI" ||
+          ((_a =
+            node === null || node === void 0 ? void 0 : node.querySelector) ===
+            null || _a === void 0
+            ? void 0
+            : _a.call(node, "a"))
+        );
+      };
       var getPrevTextContainer = function (validNodes) {
-        if (validNodes === void 0) { validNodes = []; }
-        return (validNodes === null || validNodes === void 0 ? void 0 : validNodes[validNodes.length - 2]) || null;
+        if (validNodes === void 0) {
+          validNodes = [];
+        }
+        return (
+          (validNodes === null || validNodes === void 0
+            ? void 0
+            : validNodes[validNodes.length - 2]) || null
+        );
       };
       var isPreHeaderMerged = function (currentHeaders) {
-        if (!currentHeaders || currentHeaders.length < 1)
-          return false;
+        if (!currentHeaders || currentHeaders.length < 1) return false;
         return currentHeaders[currentHeaders.length - 1].isHeaderMerged;
       };
       var isPrevNodeHeader = function (preNode, currentHeaders, prevText) {
         var _a, _b;
-        if (currentHeaders === void 0) { currentHeaders = []; }
-        if (prevText === void 0) { prevText = ''; }
+        if (currentHeaders === void 0) {
+          currentHeaders = [];
+        }
+        if (prevText === void 0) {
+          prevText = "";
+        }
         if (!preNode || !currentHeaders || currentHeaders.length < 1)
           return false;
         var prevHeader = currentHeaders[currentHeaders.length - 1];
-        if (preNode === document.querySelector(prevHeader.path))
-          return true;
-        if (prevHeader.isHeaderMerged && ((_b = (_a = prevHeader.text) === null || _a === void 0 ? void 0 : _a.endsWith) === null || _b === void 0 ? void 0 : _b.call(_a, prevText)))
+        if (preNode === document.querySelector(prevHeader.path)) return true;
+        if (
+          prevHeader.isHeaderMerged &&
+          ((_b =
+            (_a = prevHeader.text) === null || _a === void 0
+              ? void 0
+              : _a.endsWith) === null || _b === void 0
+            ? void 0
+            : _b.call(_a, prevText))
+        )
           return true;
         return false;
       };
-      var isContinuousCenteredHeadings = function (preNode, currentHeaders, _a) {
-        var isCurrentNodeBold = _a.isCurrentNodeBold, hasBackground = _a.hasBackground, fontSize = _a.fontSize, prevFontSize = _a.prevFontSize, preText = _a.preText;
-        return isPrevNodeHeader(preNode, currentHeaders, preText) &&
+      var isContinuousCenteredHeadings = function (
+        preNode,
+        currentHeaders,
+        _a,
+      ) {
+        var isCurrentNodeBold = _a.isCurrentNodeBold,
+          hasBackground = _a.hasBackground,
+          fontSize = _a.fontSize,
+          prevFontSize = _a.prevFontSize,
+          preText = _a.preText;
+        return (
+          isPrevNodeHeader(preNode, currentHeaders, preText) &&
           (isCurrentNodeBold || hasBackground) &&
-          (prevFontSize === fontSize || (0, const_1.isRawSureSerial)(preText));
+          (prevFontSize === fontSize || (0, const_1.isRawSureSerial)(preText))
+        );
       };
       var isContinuousLeftSerialHeadings = function (_a) {
-        var prevText = _a.prevText, curText = _a.curText, isPrevNodeBold = _a.isPrevNodeBold, isCurrentNodeBold = _a.isCurrentNodeBold;
-        return (0, const_1.startWithChineseSerial)(prevText) &&
+        var prevText = _a.prevText,
+          curText = _a.curText,
+          isPrevNodeBold = _a.isPrevNodeBold,
+          isCurrentNodeBold = _a.isCurrentNodeBold;
+        return (
+          (0, const_1.startWithChineseSerial)(prevText) &&
           (0, const_1.startWithChineseSerial)(curText) &&
-          (!isPrevNodeBold || isCurrentNodeBold);
+          (!isPrevNodeBold || isCurrentNodeBold)
+        );
       };
       var shouldProcessLeftSerialHeading = function (_a) {
-        var curText = _a.curText, isCurrentNodeBold = _a.isCurrentNodeBold, hasBg = _a.hasBg;
-        return (isCurrentNodeBold || hasBg) &&
-          ((0, const_1.startWithSerial)(curText) || (0, const_1.startWithCommonChineseSerial)(curText));
+        var curText = _a.curText,
+          isCurrentNodeBold = _a.isCurrentNodeBold,
+          hasBg = _a.hasBg;
+        return (
+          (isCurrentNodeBold || hasBg) &&
+          ((0, const_1.startWithSerial)(curText) ||
+            (0, const_1.startWithCommonChineseSerial)(curText))
+        );
       };
-      var saveHeaderContent = function (currentNode, currentHeaders, currentNodeConfig) {
-        var fontSize = currentNodeConfig.fontSize, _a = currentNodeConfig.align, align = _a === void 0 ? const_1.ContentAlign.CENTER : _a, _b = currentNodeConfig.hasBg, hasBg = _b === void 0 ? false : _b, _c = currentNodeConfig.isPreSerial, isPreSerial = _c === void 0 ? false : _c, _d = currentNodeConfig.hasSerial, hasSerial = _d === void 0 ? false : _d, _e = currentNodeConfig.isBiggest, isBiggest = _e === void 0 ? false : _e;
+      var saveHeaderContent = function (
+        currentNode,
+        currentHeaders,
+        currentNodeConfig,
+      ) {
+        var fontSize = currentNodeConfig.fontSize,
+          _a = currentNodeConfig.align,
+          align = _a === void 0 ? const_1.ContentAlign.CENTER : _a,
+          _b = currentNodeConfig.hasBg,
+          hasBg = _b === void 0 ? false : _b,
+          _c = currentNodeConfig.isPreSerial,
+          isPreSerial = _c === void 0 ? false : _c,
+          _d = currentNodeConfig.hasSerial,
+          hasSerial = _d === void 0 ? false : _d,
+          _e = currentNodeConfig.isBiggest,
+          isBiggest = _e === void 0 ? false : _e;
         var container = document.querySelector(const_1.CONTENT_SELECTOR_BASE);
         var curText = (0, doms_1.getNodeText)(currentNode);
         currentHeaders.push({
-          path: "".concat(const_1.CONTENT_SELECTOR_BASE, " > ").concat((0, path_1.getElementPath)(currentNode, container)),
-          text: curText.replace(/(\n)+/g, ' '),
+          path: ""
+            .concat(const_1.CONTENT_SELECTOR_BASE, " > ")
+            .concat((0, path_1.getElementPath)(currentNode, container)),
+          text: curText.replace(/(\n)+/g, " "),
           fontSize: fontSize,
           align: align,
           hasBg: hasBg,
@@ -134,18 +243,36 @@
         });
       };
       var shouldMergeCenteredHeadings = function (preNode, _a) {
-        var curText = _a.curText, preText = _a.preText, hasBackground = _a.hasBackground;
-        return !(0, const_1.mergeHeaderExcept)(preText) &&
+        var curText = _a.curText,
+          preText = _a.preText,
+          hasBackground = _a.hasBackground;
+        return (
+          !(0, const_1.mergeHeaderExcept)(preText) &&
           (0, const_1.checkMergeCondition)(curText) &&
           ((0, const_1.isRawSureSerial)(preText) ||
-            (0, doms_1.hasBackgroundColorInSelfOrAncestors)(preNode) === hasBackground);
+            (0, doms_1.hasBackgroundColorInSelfOrAncestors)(preNode) ===
+              hasBackground)
+        );
       };
       var appendPrevHeaderContent = function (currentHeaders, _a) {
-        var curText = _a.curText, _b = _a.isBiggest, isBiggest = _b === void 0 ? false : _b, _c = _a.fontSize, fontSize = _c === void 0 ? 0 : _c, _d = _a.prevFontSize, prevFontSize = _d === void 0 ? 0 : _d;
-        console.log('满足标题合并');
-        var prevHeader = currentHeaders === null || currentHeaders === void 0 ? void 0 : currentHeaders[(currentHeaders === null || currentHeaders === void 0 ? void 0 : currentHeaders.length) - 1];
+        var curText = _a.curText,
+          _b = _a.isBiggest,
+          isBiggest = _b === void 0 ? false : _b,
+          _c = _a.fontSize,
+          fontSize = _c === void 0 ? 0 : _c,
+          _d = _a.prevFontSize,
+          prevFontSize = _d === void 0 ? 0 : _d;
+        console.log("满足标题合并");
+        var prevHeader =
+          currentHeaders === null || currentHeaders === void 0
+            ? void 0
+            : currentHeaders[
+                (currentHeaders === null || currentHeaders === void 0
+                  ? void 0
+                  : currentHeaders.length) - 1
+              ];
         if (!prevHeader) {
-          console.error('获取前序标题出错了!!!');
+          console.error("获取前序标题出错了!!!");
           return;
         }
         prevHeader.text = "".concat(prevHeader.text, " ").concat(curText);
@@ -156,86 +283,150 @@
         if (fontSize > prevFontSize) {
           prevHeader.fontSize = fontSize;
         }
-        if ((curText === null || curText === void 0 ? void 0 : curText.length) > 1) {
+        if (
+          (curText === null || curText === void 0 ? void 0 : curText.length) > 1
+        ) {
           prevHeader.mergeCount = (prevHeader.mergeCount || 0) + 1;
         }
       };
-      var processContinuousCenteredHeadings = function (node, preNode, currentHeaders, _a) {
-        var curText = _a.curText, hasBackground = _a.hasBackground, fontSize = _a.fontSize, nextFontSize = _a.nextFontSize, preText = _a.preText;
+      var processContinuousCenteredHeadings = function (
+        node,
+        preNode,
+        currentHeaders,
+        _a,
+      ) {
+        var curText = _a.curText,
+          hasBackground = _a.hasBackground,
+          fontSize = _a.fontSize,
+          nextFontSize = _a.nextFontSize,
+          preText = _a.preText;
         if (!(0, doms_1.isNextToEachOther)(preNode, node)) {
-          console.log('与前序节点不相邻，单独存');
+          console.log("与前序节点不相邻，单独存");
           saveHeaderContent(node, currentHeaders, {
             fontSize: fontSize,
             hasBg: hasBackground,
           });
           return true;
         }
-        if ((0, const_1.shouldNotMerge)(curText) ||
-          ((0, const_1.startWithChineseSerial)(preText) && (0, const_1.startWithCommonChineseSerial)(curText))) {
-          console.log('命中特定不合并场景');
+        if (
+          (0, const_1.shouldNotMerge)(curText) ||
+          ((0, const_1.startWithChineseSerial)(preText) &&
+            (0, const_1.startWithCommonChineseSerial)(curText))
+        ) {
+          console.log("命中特定不合并场景");
           saveHeaderContent(node, currentHeaders, {
             fontSize: fontSize,
             hasBg: hasBackground,
           });
           return true;
         }
-        if (shouldMergeCenteredHeadings(preNode, { curText: curText, preText: preText, hasBackground: hasBackground })) {
+        if (
+          shouldMergeCenteredHeadings(preNode, {
+            curText: curText,
+            preText: preText,
+            hasBackground: hasBackground,
+          })
+        ) {
           appendPrevHeaderContent(currentHeaders, {
             curText: curText,
             isBiggest: fontSize > nextFontSize,
           });
-          console.log('【标题合并】满足居中标题合并条件');
+          console.log("【标题合并】满足居中标题合并条件");
         }
         return true;
       };
       var hasMergedLeftHeadings = function (currentHeaders, preNode, _a) {
-        var isCurrentNodeBold = _a.isCurrentNodeBold, hasBg = _a.hasBg, curText = _a.curText, prevText = _a.prevText, fontSize = _a.fontSize, prevFontSize = _a.prevFontSize, preHasBg = _a.preHasBg, isPrevNodeBold = _a.isPrevNodeBold;
+        var isCurrentNodeBold = _a.isCurrentNodeBold,
+          hasBg = _a.hasBg,
+          curText = _a.curText,
+          prevText = _a.prevText,
+          fontSize = _a.fontSize,
+          prevFontSize = _a.prevFontSize,
+          preHasBg = _a.preHasBg,
+          isPrevNodeBold = _a.isPrevNodeBold;
         var isHeaderMerged = isPreHeaderMerged(currentHeaders);
-        if (prevFontSize === fontSize &&
+        if (
+          prevFontSize === fontSize &&
           (isCurrentNodeBold || (hasBg && preHasBg)) &&
-          ((0, const_1.isLeftSureHalfSentence)(prevText) || (0, const_1.isRawNumber)(prevText))) {
-          console.log('【标题合并】满足居左标题合并');
+          ((0, const_1.isLeftSureHalfSentence)(prevText) ||
+            (0, const_1.isRawNumber)(prevText))
+        ) {
+          console.log("【标题合并】满足居左标题合并");
           appendPrevHeaderContent(currentHeaders, { curText: curText });
           return true;
         }
-        if (prevFontSize === fontSize &&
+        if (
+          prevFontSize === fontSize &&
           isCurrentNodeBold &&
           isPrevNodeBold &&
           preHasBg === hasBg &&
           (0, doms_1.isNodeLeft)(preNode) &&
-          ((prevText === null || prevText === void 0 ? void 0 : prevText.length) < 40 || isHeaderMerged)) {
-          console.log('【标题合并】满足居左标题合并[次条件]');
+          ((prevText === null || prevText === void 0
+            ? void 0
+            : prevText.length) < 40 ||
+            isHeaderMerged)
+        ) {
+          console.log("【标题合并】满足居左标题合并[次条件]");
           appendPrevHeaderContent(currentHeaders, { curText: curText });
           return true;
         }
         return false;
       };
-      var hasMergedRightHeadings = function (node, preNode, nextNode, currentHeaders, _a) {
-        var curText = _a.curText, fontSize = _a.fontSize, isCurrentNodeBold = _a.isCurrentNodeBold, isBiggest = _a.isBiggest, hasBackground = _a.hasBackground, prevFontSize = _a.prevFontSize, preText = _a.preText, nextFontSize = _a.nextFontSize;
+      var hasMergedRightHeadings = function (
+        node,
+        preNode,
+        nextNode,
+        currentHeaders,
+        _a,
+      ) {
+        var curText = _a.curText,
+          fontSize = _a.fontSize,
+          isCurrentNodeBold = _a.isCurrentNodeBold,
+          isBiggest = _a.isBiggest,
+          hasBackground = _a.hasBackground,
+          prevFontSize = _a.prevFontSize,
+          preText = _a.preText,
+          nextFontSize = _a.nextFontSize;
         var isNextNodeBold = (0, doms_1.isAllTextBold)(nextNode);
-        var isNextAlignRight = !(0, doms_1.isElementCentered)(nextNode) && !(0, doms_1.isNodeLeft)(nextNode);
-        var prevNodeIsHeader = isPrevNodeHeader(preNode, currentHeaders, preText);
-        var isPreAlignRight = !(0, doms_1.isElementCentered)(preNode) && !(0, doms_1.isNodeLeft)(preNode);
+        var isNextAlignRight =
+          !(0, doms_1.isElementCentered)(nextNode) &&
+          !(0, doms_1.isNodeLeft)(nextNode);
+        var prevNodeIsHeader = isPrevNodeHeader(
+          preNode,
+          currentHeaders,
+          preText,
+        );
+        var isPreAlignRight =
+          !(0, doms_1.isElementCentered)(preNode) &&
+          !(0, doms_1.isNodeLeft)(preNode);
         var isHeaderMerged = isPreHeaderMerged(currentHeaders);
-        if (prevNodeIsHeader &&
+        if (
+          prevNodeIsHeader &&
           isPreAlignRight &&
           ((0, const_1.isRawSureSerial)(preText) ||
             (isHeaderMerged && fontSize === prevFontSize)) &&
-          isCurrentNodeBold) {
-          console.log('【√】前序节点有居右纯序列号进行标题合并');
+          isCurrentNodeBold
+        ) {
+          console.log("【√】前序节点有居右纯序列号进行标题合并");
           appendPrevHeaderContent(currentHeaders, {
             curText: curText,
           });
           return true;
         }
-        if (isCurrentNodeBold &&
+        if (
+          isCurrentNodeBold &&
           fontSize > prevFontSize &&
           isNextNodeBold &&
-          isNextAlignRight) {
+          isNextAlignRight
+        ) {
           var nextNextNode = (0, doms_1.findNextTextElement)(nextNode);
-          var nextNextFontSize = (0, doms_1.compareFontSize)(nextNode, node, nextNextNode).nextFontSize;
+          var nextNextFontSize = (0, doms_1.compareFontSize)(
+            nextNode,
+            node,
+            nextNextNode,
+          ).nextFontSize;
           if (nextFontSize > nextNextFontSize) {
-            console.log('【√】居右连续合并');
+            console.log("【√】居右连续合并");
             saveHeaderContent(node, currentHeaders, {
               fontSize: fontSize,
               isPreSerial: false,
@@ -252,74 +443,99 @@
         return false;
       };
       var traverseNode = function (node, titleResults, validNodes) {
-        if (validNodes === void 0) { validNodes = []; }
+        if (validNodes === void 0) {
+          validNodes = [];
+        }
         if (isTableNode(node) || isSVGNode(node)) {
-          console.log('跳过表格以及SVG');
+          console.log("跳过表格以及SVG");
           return;
         }
         if (isMinishop(node)) {
-          console.log('跳过广告');
+          console.log("跳过广告");
           return;
         }
         try {
           var curText_1 = (0, doms_1.getNodeText)(node);
-          if (!curText_1 || regexp_1.BLACKLIST_ALL_REGS.some(function (endReg) { return endReg.test(curText_1); })) {
+          if (
+            !curText_1 ||
+            regexp_1.BLACKLIST_ALL_REGS.some(function (endReg) {
+              return endReg.test(curText_1);
+            })
+          ) {
             return;
           }
-        }
-        catch (e) {
+        } catch (e) {
           return;
         }
         if ((0, doms_1.isMiniParagraph)(node)) {
           return processNode(node, titleResults, validNodes);
-        }
-        else {
+        } else {
           for (var i = 0; i < node.childNodes.length; i++) {
             traverseNode(node.childNodes[i], titleResults, validNodes);
           }
         }
       };
       var processNode = function (node, currentHeaders, validNodes) {
-        if (validNodes === void 0) { validNodes = []; }
+        if (validNodes === void 0) {
+          validNodes = [];
+        }
         if ((0, doms_1.isLikeMainContentStart)(node)) {
           currentHeaders = [];
           return;
         }
-        if (!(0, doms_1.isValidNode)(node))
-          return;
+        if (!(0, doms_1.isValidNode)(node)) return;
         validNodes.push(node);
         var curText = (0, doms_1.getNodeText)(node);
-        if (regexp_1.BLACK_LIST_REGS.some(function (filterReg) { return filterReg.test(curText); })) {
-          console.log('【跳过】命中黑名单===>', curText);
+        if (
+          regexp_1.BLACK_LIST_REGS.some(function (filterReg) {
+            return filterReg.test(curText);
+          })
+        ) {
+          console.log("【跳过】命中黑名单===>", curText);
           return;
         }
         if (isLinkNode(node)) {
-          console.log('【跳过】A链接', node === null || node === void 0 ? void 0 : node.tagName);
+          console.log(
+            "【跳过】A链接",
+            node === null || node === void 0 ? void 0 : node.tagName,
+          );
           return;
         }
         if ((0, doms_1.isElementCentered)(node)) {
           return processCenteredNode(node, currentHeaders, validNodes);
-        }
-        else if ((0, doms_1.isNodeLeft)(node)) {
+        } else if ((0, doms_1.isNodeLeft)(node)) {
           return processLeftNode(node, currentHeaders, validNodes);
-        }
-        else {
-          console.log('【其余节点】', node);
+        } else {
+          console.log("【其余节点】", node);
           return processRightNode(node, currentHeaders, validNodes);
         }
       };
       var hasProcessedCenteredPrevNode = function (node, currentHeaders, _a) {
-        if (currentHeaders === void 0) { currentHeaders = []; }
-        var preNode = _a.preNode, preText = _a.preText, prevFontSize = _a.prevFontSize, fontSize = _a.fontSize, curText = _a.curText, hasBackground = _a.hasBackground, nextFontSize = _a.nextFontSize, isCurrentNodeBold = _a.isCurrentNodeBold, isBiggest = _a.isBiggest;
-        console.log('【X】前序节点居中', preText);
-        var isBiggerThanPre = fontSize > prevFontSize && fontSize >= nextFontSize;
+        if (currentHeaders === void 0) {
+          currentHeaders = [];
+        }
+        var preNode = _a.preNode,
+          preText = _a.preText,
+          prevFontSize = _a.prevFontSize,
+          fontSize = _a.fontSize,
+          curText = _a.curText,
+          hasBackground = _a.hasBackground,
+          nextFontSize = _a.nextFontSize,
+          isCurrentNodeBold = _a.isCurrentNodeBold,
+          isBiggest = _a.isBiggest;
+        console.log("【X】前序节点居中", preText);
+        var isBiggerThanPre =
+          fontSize > prevFontSize && fontSize >= nextFontSize;
         if (isBiggerThanPre && (isCurrentNodeBold || hasBackground)) {
-          console.log('【√】前序为小一号字体');
-          saveHeaderContent(node, currentHeaders, { fontSize: fontSize, hasBg: hasBackground });
+          console.log("【√】前序为小一号字体");
+          saveHeaderContent(node, currentHeaders, {
+            fontSize: fontSize,
+            hasBg: hasBackground,
+          });
           return true;
         }
         if ((0, const_1.isRawChineseSerial)(curText) && isCurrentNodeBold) {
-          console.log('【√】纯中文序列号粗体');
+          console.log("【√】纯中文序列号粗体");
           saveHeaderContent(node, currentHeaders, {
             fontSize: fontSize,
             hasBg: hasBackground,
@@ -327,25 +543,36 @@
           });
           return true;
         }
-        if (isContinuousCenteredHeadings(preNode, currentHeaders, {
-          isCurrentNodeBold: isCurrentNodeBold,
-          hasBackground: hasBackground,
-          fontSize: fontSize,
-          prevFontSize: prevFontSize,
-          preText: preText,
-        })) {
-          console.log('连续居中标题');
-          return processContinuousCenteredHeadings(node, preNode, currentHeaders, {
-            curText: curText,
+        if (
+          isContinuousCenteredHeadings(preNode, currentHeaders, {
+            isCurrentNodeBold: isCurrentNodeBold,
             hasBackground: hasBackground,
             fontSize: fontSize,
-            nextFontSize: nextFontSize,
+            prevFontSize: prevFontSize,
             preText: preText,
-          });
+          })
+        ) {
+          console.log("连续居中标题");
+          return processContinuousCenteredHeadings(
+            node,
+            preNode,
+            currentHeaders,
+            {
+              curText: curText,
+              hasBackground: hasBackground,
+              fontSize: fontSize,
+              nextFontSize: nextFontSize,
+              preText: preText,
+            },
+          );
         }
-        if ((isBiggest || isCurrentNodeBold) &&
-          ((preText === null || preText === void 0 ? void 0 : preText.length) > const_1.MAX_LEFT_TITLE_WORD_LENGTH || (0, const_1.isLeftSentence)(preText))) {
-          console.log('【√】满足最大字号且前序为居中段落');
+        if (
+          (isBiggest || isCurrentNodeBold) &&
+          ((preText === null || preText === void 0 ? void 0 : preText.length) >
+            const_1.MAX_LEFT_TITLE_WORD_LENGTH ||
+            (0, const_1.isLeftSentence)(preText))
+        ) {
+          console.log("【√】满足最大字号且前序为居中段落");
           saveHeaderContent(node, currentHeaders, {
             fontSize: fontSize,
             hasBg: hasBackground,
@@ -354,71 +581,112 @@
           return true;
         }
         if ((0, const_1.isCommentTxt)(preText)) {
-          console.log('前序居中为备注，继续后继处理');
+          console.log("前序居中为备注，继续后继处理");
           return false;
         }
-        console.log('【X】忽略');
+        console.log("【X】忽略");
         return true;
       };
       var processCenteredNextNode = function (node, currentHeaders, _a) {
-        if (currentHeaders === void 0) { currentHeaders = []; }
-        var nextNode = _a.nextNode, nextText = _a.nextText, fontSize = _a.fontSize, hasBackground = _a.hasBackground, nextFontSize = _a.nextFontSize, isCurrentNodeBold = _a.isCurrentNodeBold;
+        if (currentHeaders === void 0) {
+          currentHeaders = [];
+        }
+        var nextNode = _a.nextNode,
+          nextText = _a.nextText,
+          fontSize = _a.fontSize,
+          hasBackground = _a.hasBackground,
+          nextFontSize = _a.nextFontSize,
+          isCurrentNodeBold = _a.isCurrentNodeBold;
         if ((0, doms_1.isBoldText)(nextNode) && isCurrentNodeBold) {
-          console.log('【√】连续居中标题保留第一个');
+          console.log("【√】连续居中标题保留第一个");
           saveHeaderContent(node, currentHeaders, {
             fontSize: fontSize,
             hasBg: hasBackground,
           });
           return;
         }
-        if (isCurrentNodeBold && fontSize > nextFontSize && !(0, doms_1.isBoldText)(nextNode)) {
-          console.log('【√】后继节点居中，但是字号更小，并且不加粗');
+        if (
+          isCurrentNodeBold &&
+          fontSize > nextFontSize &&
+          !(0, doms_1.isBoldText)(nextNode)
+        ) {
+          console.log("【√】后继节点居中，但是字号更小，并且不加粗");
           saveHeaderContent(node, currentHeaders, {
             fontSize: fontSize,
             hasBg: hasBackground,
           });
           return;
         }
-        var nextHasBg = (0, doms_1.hasBackgroundColorInSelfOrAncestors)(nextNode);
-        if ((isCurrentNodeBold || (hasBackground && !nextHasBg)) &&
-          nextText.length > const_1.MAX_LEFT_TITLE_WORD_LENGTH) {
-          console.log('【√】后继节点居中为段落');
+        var nextHasBg = (0, doms_1.hasBackgroundColorInSelfOrAncestors)(
+          nextNode,
+        );
+        if (
+          (isCurrentNodeBold || (hasBackground && !nextHasBg)) &&
+          nextText.length > const_1.MAX_LEFT_TITLE_WORD_LENGTH
+        ) {
+          console.log("【√】后继节点居中为段落");
           saveHeaderContent(node, currentHeaders, {
             fontSize: fontSize,
             hasBg: hasBackground,
           });
           return;
         }
-        if (isCurrentNodeBold &&
+        if (
+          isCurrentNodeBold &&
           !(0, doms_1.isBoldText)(nextNode) &&
-          !(0, doms_1.isNextToEachOther)(node, nextNode)) {
-          console.log('【√】后继节点不加粗不相邻');
+          !(0, doms_1.isNextToEachOther)(node, nextNode)
+        ) {
+          console.log("【√】后继节点不加粗不相邻");
           saveHeaderContent(node, currentHeaders, { fontSize: fontSize });
           return;
         }
-        console.log('【X】后继节点居中，舍弃', nextText);
+        console.log("【X】后继节点居中，舍弃", nextText);
       };
       var shouldProcessPrevNodeHeader4LeftNode = function (node, preNode, _a) {
-        var hasSerial = _a.hasSerial, prevNodeIsHeader = _a.prevNodeIsHeader;
-        return !hasSerial && prevNodeIsHeader && (0, doms_1.isNextToEachOther)(preNode, node);
+        var hasSerial = _a.hasSerial,
+          prevNodeIsHeader = _a.prevNodeIsHeader;
+        return (
+          !hasSerial &&
+          prevNodeIsHeader &&
+          (0, doms_1.isNextToEachOther)(preNode, node)
+        );
       };
-      var processPrevNodeHeader4LeftNode = function (node, preNode, currentHeaders, _a) {
-        if (currentHeaders === void 0) { currentHeaders = []; }
-        var curText = _a.curText, prevText = _a.prevText, fontSize = _a.fontSize, isCurrentNodeBold = _a.isCurrentNodeBold, _b = _a.hasBg, hasBg = _b === void 0 ? false : _b, nextFontSize = _a.nextFontSize, prevFontSize = _a.prevFontSize;
-        console.log('前序节点为标题');
-        if ((0, const_1.isChineseNumber)(prevText) || (0, const_1.isRawSureSerial)(prevText)) {
-          console.log('【前序节点为纯序列号】【标题合并】');
+      var processPrevNodeHeader4LeftNode = function (
+        node,
+        preNode,
+        currentHeaders,
+        _a,
+      ) {
+        if (currentHeaders === void 0) {
+          currentHeaders = [];
+        }
+        var curText = _a.curText,
+          prevText = _a.prevText,
+          fontSize = _a.fontSize,
+          isCurrentNodeBold = _a.isCurrentNodeBold,
+          _b = _a.hasBg,
+          hasBg = _b === void 0 ? false : _b,
+          nextFontSize = _a.nextFontSize,
+          prevFontSize = _a.prevFontSize;
+        console.log("前序节点为标题");
+        if (
+          (0, const_1.isChineseNumber)(prevText) ||
+          (0, const_1.isRawSureSerial)(prevText)
+        ) {
+          console.log("【前序节点为纯序列号】【标题合并】");
           appendPrevHeaderContent(currentHeaders, { curText: curText });
           return;
         }
         var isPrevNodeBold = (0, doms_1.isAllTextBold)(preNode);
-        if (isContinuousLeftSerialHeadings({
-          prevText: prevText,
-          curText: curText,
-          isPrevNodeBold: isPrevNodeBold,
-          isCurrentNodeBold: isCurrentNodeBold,
-        })) {
-          console.log('连续序列号，并且非(前序粗体,当前非粗体)');
+        if (
+          isContinuousLeftSerialHeadings({
+            prevText: prevText,
+            curText: curText,
+            isPrevNodeBold: isPrevNodeBold,
+            isCurrentNodeBold: isCurrentNodeBold,
+          })
+        ) {
+          console.log("连续序列号，并且非(前序粗体,当前非粗体)");
           saveHeaderContent(node, currentHeaders, {
             fontSize: fontSize,
             align: const_1.ContentAlign.LEFT,
@@ -426,12 +694,14 @@
           });
           return;
         }
-        if (shouldProcessLeftSerialHeading({
-          curText: curText,
-          isCurrentNodeBold: isCurrentNodeBold,
-          hasBg: hasBg,
-        })) {
-          console.log('【当前节点为序列号标题】');
+        if (
+          shouldProcessLeftSerialHeading({
+            curText: curText,
+            isCurrentNodeBold: isCurrentNodeBold,
+            hasBg: hasBg,
+          })
+        ) {
+          console.log("【当前节点为序列号标题】");
           saveHeaderContent(node, currentHeaders, {
             fontSize: fontSize,
             align: const_1.ContentAlign.LEFT,
@@ -441,20 +711,27 @@
           return;
         }
         var preHasBg = (0, doms_1.hasBackgroundColorInSelfOrAncestors)(preNode);
-        if (hasMergedLeftHeadings(currentHeaders, preNode, {
-          isCurrentNodeBold: isCurrentNodeBold,
-          hasBg: hasBg,
-          curText: curText,
-          prevText: prevText,
-          fontSize: fontSize,
-          prevFontSize: prevFontSize,
-          preHasBg: preHasBg,
-          isPrevNodeBold: isPrevNodeBold,
-        })) {
+        if (
+          hasMergedLeftHeadings(currentHeaders, preNode, {
+            isCurrentNodeBold: isCurrentNodeBold,
+            hasBg: hasBg,
+            curText: curText,
+            prevText: prevText,
+            fontSize: fontSize,
+            prevFontSize: prevFontSize,
+            preHasBg: preHasBg,
+            isPrevNodeBold: isPrevNodeBold,
+          })
+        ) {
           return;
         }
-        if ((0, doms_1.isNodeLeft)(preNode) && hasBg && preHasBg && prevFontSize < fontSize) {
-          console.log('【有背景】【前序节点居中并且字号小于了当前节点】');
+        if (
+          (0, doms_1.isNodeLeft)(preNode) &&
+          hasBg &&
+          preHasBg &&
+          prevFontSize < fontSize
+        ) {
+          console.log("【有背景】【前序节点居中并且字号小于了当前节点】");
           saveHeaderContent(node, currentHeaders, {
             fontSize: fontSize,
             align: const_1.ContentAlign.LEFT,
@@ -462,10 +739,12 @@
           });
           return;
         }
-        if ((0, doms_1.isElementCentered)(preNode) &&
+        if (
+          (0, doms_1.isElementCentered)(preNode) &&
           isCurrentNodeBold &&
-          fontSize >= nextFontSize) {
-          console.log('前序为居中标题，当前标题加粗且字号大于后继节点');
+          fontSize >= nextFontSize
+        ) {
+          console.log("前序为居中标题，当前标题加粗且字号大于后继节点");
           saveHeaderContent(node, currentHeaders, {
             fontSize: fontSize,
             align: const_1.ContentAlign.LEFT,
@@ -474,7 +753,7 @@
           return;
         }
         if (isCurrentNodeBold && hasBg && !preHasBg) {
-          console.log('前序为不带背景的标题，当前标题带背景保留');
+          console.log("前序为不带背景的标题，当前标题带背景保留");
           saveHeaderContent(node, currentHeaders, {
             fontSize: fontSize,
             align: const_1.ContentAlign.LEFT,
@@ -484,42 +763,80 @@
         return;
       };
       var shouldIgnorePreNode = function (preNode, preText) {
-        if (preText === void 0) { preText = ''; }
-        return !(0, doms_1.hasBackgroundColorInSelfOrAncestors)(preNode) ||
-          (preText === null || preText === void 0 ? void 0 : preText.length) > const_1.MAX_LEFT_TITLE_WORD_LENGTH ||
-          (0, doms_1.isNodeLeft)(preNode);
+        if (preText === void 0) {
+          preText = "";
+        }
+        return (
+          !(0, doms_1.hasBackgroundColorInSelfOrAncestors)(preNode) ||
+          (preText === null || preText === void 0 ? void 0 : preText.length) >
+            const_1.MAX_LEFT_TITLE_WORD_LENGTH ||
+          (0, doms_1.isNodeLeft)(preNode)
+        );
       };
       var shouldProcessHasBackground = function (_a) {
-        var _b = _a.hasBackground, hasBackground = _b === void 0 ? false : _b, _c = _a.isCurrentNodeBold, isCurrentNodeBold = _c === void 0 ? false : _c, _d = _a.isBiggest, isBiggest = _d === void 0 ? false : _d, preNode = _a.preNode, _e = _a.preText, preText = _e === void 0 ? '' : _e;
-        return hasBackground &&
+        var _b = _a.hasBackground,
+          hasBackground = _b === void 0 ? false : _b,
+          _c = _a.isCurrentNodeBold,
+          isCurrentNodeBold = _c === void 0 ? false : _c,
+          _d = _a.isBiggest,
+          isBiggest = _d === void 0 ? false : _d,
+          preNode = _a.preNode,
+          _e = _a.preText,
+          preText = _e === void 0 ? "" : _e;
+        return (
+          hasBackground &&
           (isCurrentNodeBold || isBiggest) &&
-          shouldIgnorePreNode(preNode, preText);
+          shouldIgnorePreNode(preNode, preText)
+        );
       };
       var hasSerialPrefix = function (curText) {
-        if (curText === void 0) { curText = ''; }
-        return (0, const_1.startWithSerial)(curText) ||
+        if (curText === void 0) {
+          curText = "";
+        }
+        return (
+          (0, const_1.startWithSerial)(curText) ||
           (0, const_1.isRawChineseSerial)(curText) ||
-          (0, const_1.startWithComplitArabicSerial)(curText);
+          (0, const_1.startWithComplitArabicSerial)(curText)
+        );
       };
       var shouldProcessStartWithSerial = function (_a) {
-        var isCurrentNodeBold = _a.isCurrentNodeBold, isBiggest = _a.isBiggest, hasBackground = _a.hasBackground, curText = _a.curText;
-        return (isCurrentNodeBold || isBiggest || hasBackground) && hasSerialPrefix(curText);
+        var isCurrentNodeBold = _a.isCurrentNodeBold,
+          isBiggest = _a.isBiggest,
+          hasBackground = _a.hasBackground,
+          curText = _a.curText;
+        return (
+          (isCurrentNodeBold || isBiggest || hasBackground) &&
+          hasSerialPrefix(curText)
+        );
       };
       var shouldProcessBiggest = function (_a) {
-        var isCurrentNodeBold = _a.isCurrentNodeBold, isBiggest = _a.isBiggest, hasBackground = _a.hasBackground;
+        var isCurrentNodeBold = _a.isCurrentNodeBold,
+          isBiggest = _a.isBiggest,
+          hasBackground = _a.hasBackground;
         return (isCurrentNodeBold || hasBackground) && isBiggest;
       };
       var shouldProcessPrevSerial = function (_a) {
-        var isBiggest = _a.isBiggest, isSmallest = _a.isSmallest, isCurrentNodeBold = _a.isCurrentNodeBold, preText = _a.preText;
-        return (isBiggest || (!isSmallest && isCurrentNodeBold)) &&
-          (/^(Q|Part|part|PART|PART\.|Part\.|NO\.|Prediction)?\s*\d{1,3}$/.test(preText) ||
+        var isBiggest = _a.isBiggest,
+          isSmallest = _a.isSmallest,
+          isCurrentNodeBold = _a.isCurrentNodeBold,
+          preText = _a.preText;
+        return (
+          (isBiggest || (!isSmallest && isCurrentNodeBold)) &&
+          (/^(Q|Part|part|PART|PART\.|Part\.|NO\.|Prediction)?\s*\d{1,3}$/.test(
+            preText,
+          ) ||
             (0, const_1.isChineseNumber)(preText) ||
             (0, const_1.isRawNumber)(preText) ||
-            (0, const_1.isSomeLikeRawChineseSerial)(preText));
+            (0, const_1.isSomeLikeRawChineseSerial)(preText))
+        );
       };
       var isValidText4CenteredNode = function (curText, isCurrentNodeBold) {
-        if (curText === void 0) { curText = ''; }
-        if (isCurrentNodeBold === void 0) { isCurrentNodeBold = false; }
+        if (curText === void 0) {
+          curText = "";
+        }
+        if (isCurrentNodeBold === void 0) {
+          isCurrentNodeBold = false;
+        }
         if (curText.length >= const_1.CENTERED_HEADER_TEXT_LENGTH_LIMIT)
           return false;
         if (!isCurrentNodeBold && (0, const_1.isHalfSentence)(curText))
@@ -527,41 +844,73 @@
         return true;
       };
       var isNextNodeBoldAndBigger = function (nextNode, _a) {
-        var curText = _a.curText, fontSize = _a.fontSize, nextFontSize = _a.nextFontSize;
-        return (0, doms_1.isAllTextBold)(nextNode) &&
+        var curText = _a.curText,
+          fontSize = _a.fontSize,
+          nextFontSize = _a.nextFontSize;
+        return (
+          (0, doms_1.isAllTextBold)(nextNode) &&
           nextFontSize > fontSize &&
-          !(0, const_1.isRawSureSerial)(curText);
+          !(0, const_1.isRawSureSerial)(curText)
+        );
       };
       var shouldDiscardLeftNode = function (_a) {
-        var curText = _a.curText, isCurrentNodeBold = _a.isCurrentNodeBold, hasSerial = _a.hasSerial, hasBg = _a.hasBg;
-        return (!(isCurrentNodeBold && (hasSerial || hasBg)) &&
-          (0, const_1.countChineseCharsAndDigits)(curText) > const_1.MAX_LEFT_TITLE_WORD_LENGTH) ||
-          (0, const_1.checkPureEnglishChars)(curText);
+        var curText = _a.curText,
+          isCurrentNodeBold = _a.isCurrentNodeBold,
+          hasSerial = _a.hasSerial,
+          hasBg = _a.hasBg;
+        return (
+          (!(isCurrentNodeBold && (hasSerial || hasBg)) &&
+            (0, const_1.countChineseCharsAndDigits)(curText) >
+              const_1.MAX_LEFT_TITLE_WORD_LENGTH) ||
+          (0, const_1.checkPureEnglishChars)(curText)
+        );
       };
       var shouldDiscardLeftSentence = function (_a) {
-        var curText = _a.curText, isBiggest = _a.isBiggest, isCurrentNodeBold = _a.isCurrentNodeBold, hasSerial = _a.hasSerial;
-        return ((0, const_1.isSentence)(curText) ||
-          (!isBiggest && !isCurrentNodeBold && (0, const_1.isLeftSentence)(curText))) &&
+        var curText = _a.curText,
+          isBiggest = _a.isBiggest,
+          isCurrentNodeBold = _a.isCurrentNodeBold,
+          hasSerial = _a.hasSerial;
+        return (
+          ((0, const_1.isSentence)(curText) ||
+            (!isBiggest &&
+              !isCurrentNodeBold &&
+              (0, const_1.isLeftSentence)(curText))) &&
           !hasSerial &&
-          !(0, const_1.isReasonSentence)(curText);
+          !(0, const_1.isReasonSentence)(curText)
+        );
       };
       var shouldProcessLeftNodeBiggest = function (_a) {
-        var curText = _a.curText, isCurrentNodeBold = _a.isCurrentNodeBold, isBiggest = _a.isBiggest;
-        return isBiggest &&
-          (0, const_1.countChineseCharsAndDigits)(curText) < const_1.MAX_LEFT_BIGGEST_TITLE_LEGTH &&
-          (!(0, const_1.isSentence)(curText) || isCurrentNodeBold);
+        var curText = _a.curText,
+          isCurrentNodeBold = _a.isCurrentNodeBold,
+          isBiggest = _a.isBiggest;
+        return (
+          isBiggest &&
+          (0, const_1.countChineseCharsAndDigits)(curText) <
+            const_1.MAX_LEFT_BIGGEST_TITLE_LEGTH &&
+          (!(0, const_1.isSentence)(curText) || isCurrentNodeBold)
+        );
       };
       var processCommonRest4CenteredNode = function (node, currentHeaders, _a) {
         var e_1, _b;
-        if (currentHeaders === void 0) { currentHeaders = []; }
-        var isBiggest = _a.isBiggest, isCurrentNodeBold = _a.isCurrentNodeBold, hasBackground = _a.hasBackground, fontSize = _a.fontSize;
+        if (currentHeaders === void 0) {
+          currentHeaders = [];
+        }
+        var isBiggest = _a.isBiggest,
+          isCurrentNodeBold = _a.isCurrentNodeBold,
+          hasBackground = _a.hasBackground,
+          fontSize = _a.fontSize;
         var probableResults = [
-          { value: isBiggest, text: '字体最大' },
-          { value: isCurrentNodeBold, text: '粗体' },
-          { value: hasBackground, text: '有背景色' },
+          { value: isBiggest, text: "字体最大" },
+          { value: isCurrentNodeBold, text: "粗体" },
+          { value: hasBackground, text: "有背景色" },
         ];
         try {
-          for (var probableResults_1 = __values(probableResults), probableResults_1_1 = probableResults_1.next(); !probableResults_1_1.done; probableResults_1_1 = probableResults_1.next()) {
+          for (
+            var probableResults_1 = __values(probableResults),
+              probableResults_1_1 = probableResults_1.next();
+            !probableResults_1_1.done;
+            probableResults_1_1 = probableResults_1.next()
+          ) {
             var result = probableResults_1_1.value;
             if (result.value) {
               console.log("\u3010\u221A\u3011\u6EE1\u8DB3".concat(result.text));
@@ -573,29 +922,40 @@
               return true;
             }
           }
-        }
-        catch (e_1_1) { e_1 = { error: e_1_1 }; }
-        finally {
+        } catch (e_1_1) {
+          e_1 = { error: e_1_1 };
+        } finally {
           try {
-            if (probableResults_1_1 && !probableResults_1_1.done && (_b = probableResults_1.return)) _b.call(probableResults_1);
+            if (
+              probableResults_1_1 &&
+              !probableResults_1_1.done &&
+              (_b = probableResults_1.return)
+            )
+              _b.call(probableResults_1);
+          } finally {
+            if (e_1) throw e_1.error;
           }
-          finally { if (e_1) throw e_1.error; }
         }
         return false;
       };
       var processPrevNodeIsSerial = function (node, currentHeaders, _a) {
-        var curText = _a.curText, fontSize = _a.fontSize, isBiggest = _a.isBiggest, hasBackground = _a.hasBackground, prevFontSize = _a.prevFontSize;
+        var curText = _a.curText,
+          fontSize = _a.fontSize,
+          isBiggest = _a.isBiggest,
+          hasBackground = _a.hasBackground,
+          prevFontSize = _a.prevFontSize;
         if (/^\d+$/.test(curText) || (0, const_1.isChineseNumber)(curText)) {
-          console.log('前序为纯序列号，当前节点也是纯序列号');
+          console.log("前序为纯序列号，当前节点也是纯序列号");
           saveHeaderContent(node, currentHeaders, {
             fontSize: fontSize,
             hasSerial: true,
             isBiggest: isBiggest,
             hasBg: hasBackground,
           });
-        }
-        else {
-          console.log('【√】【标题合并】满足前序为序列号，字体最大加粗并且不是最小');
+        } else {
+          console.log(
+            "【√】【标题合并】满足前序为序列号，字体最大加粗并且不是最小",
+          );
           appendPrevHeaderContent(currentHeaders, {
             curText: curText,
             isBiggest: isBiggest,
@@ -605,33 +965,44 @@
         }
       };
       var processCenteredNode = function (node, currentHeaders, validNodes) {
-        if (validNodes === void 0) { validNodes = []; }
+        if (validNodes === void 0) {
+          validNodes = [];
+        }
         var curText = (0, doms_1.getNodeText)(node);
-        console.log('!!!【居中节点】', curText);
+        console.log("!!!【居中节点】", curText);
         var isCurrentNodeBold = (0, doms_1.isAllTextBold)(node);
         if (!isValidText4CenteredNode(curText, isCurrentNodeBold)) {
-          console.log('杂糅，字符超过阈值或者半句');
+          console.log("杂糅，字符超过阈值或者半句");
           return;
         }
         var preNode = getPrevTextContainer(validNodes);
         var nextNode = (0, doms_1.findNextTextElement)(node);
-        var _a = (0, doms_1.compareFontSize)(node, preNode, nextNode), isBiggest = _a.isBiggest, isSmallest = _a.isSmallest, fontSize = _a.fontSize, prevFontSize = _a.prevFontSize, nextFontSize = _a.nextFontSize;
-        var hasBackground = (0, doms_1.hasBackgroundColorInSelfOrAncestors)(node);
+        var _a = (0, doms_1.compareFontSize)(node, preNode, nextNode),
+          isBiggest = _a.isBiggest,
+          isSmallest = _a.isSmallest,
+          fontSize = _a.fontSize,
+          prevFontSize = _a.prevFontSize,
+          nextFontSize = _a.nextFontSize;
+        var hasBackground = (0, doms_1.hasBackgroundColorInSelfOrAncestors)(
+          node,
+        );
         var preText = (0, doms_1.getNodeText)(preNode);
         var nextText = (0, doms_1.getNodeText)(nextNode);
-        console.log('获取信息为', {
+        console.log("获取信息为", {
           preNode: preText,
           nextNode: nextText,
           isBiggest: isBiggest,
           hasBackground: hasBackground,
           isCurrentNodeBold: isCurrentNodeBold,
         });
-        if (shouldProcessPrevSerial({
-          isBiggest: isBiggest,
-          isSmallest: isSmallest,
-          isCurrentNodeBold: isCurrentNodeBold,
-          preText: preText,
-        })) {
+        if (
+          shouldProcessPrevSerial({
+            isBiggest: isBiggest,
+            isSmallest: isSmallest,
+            isCurrentNodeBold: isCurrentNodeBold,
+            preText: preText,
+          })
+        ) {
           processPrevNodeIsSerial(node, currentHeaders, {
             curText: curText,
             fontSize: fontSize,
@@ -642,7 +1013,7 @@
           return;
         }
         if ((0, const_1.isRawSureSerial)(curText)) {
-          console.log('【√】纯序列号');
+          console.log("【√】纯序列号");
           saveHeaderContent(node, currentHeaders, {
             fontSize: fontSize,
             hasSerial: true,
@@ -651,14 +1022,16 @@
           });
           return;
         }
-        if (shouldProcessHasBackground({
-          hasBackground: hasBackground,
-          isCurrentNodeBold: isCurrentNodeBold,
-          isBiggest: isBiggest,
-          preNode: preNode,
-          preText: preText,
-        })) {
-          console.log('【√】粗体有背景，忽略前序居中');
+        if (
+          shouldProcessHasBackground({
+            hasBackground: hasBackground,
+            isCurrentNodeBold: isCurrentNodeBold,
+            isBiggest: isBiggest,
+            preNode: preNode,
+            preText: preText,
+          })
+        ) {
+          console.log("【√】粗体有背景，忽略前序居中");
           saveHeaderContent(node, currentHeaders, {
             fontSize: fontSize,
             hasBg: true,
@@ -667,13 +1040,15 @@
           });
           return;
         }
-        if (shouldProcessStartWithSerial({
-          isCurrentNodeBold: isCurrentNodeBold,
-          isBiggest: isBiggest,
-          hasBackground: hasBackground,
-          curText: curText,
-        })) {
-          console.log('【√】粗体或者字号最大并且序列号开头');
+        if (
+          shouldProcessStartWithSerial({
+            isCurrentNodeBold: isCurrentNodeBold,
+            isBiggest: isBiggest,
+            hasBackground: hasBackground,
+            curText: curText,
+          })
+        ) {
+          console.log("【√】粗体或者字号最大并且序列号开头");
           saveHeaderContent(node, currentHeaders, {
             fontSize: fontSize,
             hasSerial: true,
@@ -682,8 +1057,14 @@
           });
           return;
         }
-        if (shouldProcessBiggest({ isCurrentNodeBold: isCurrentNodeBold, hasBackground: hasBackground, isBiggest: isBiggest })) {
-          console.log('【√】粗体或者有背景并且字体最大');
+        if (
+          shouldProcessBiggest({
+            isCurrentNodeBold: isCurrentNodeBold,
+            hasBackground: hasBackground,
+            isBiggest: isBiggest,
+          })
+        ) {
+          console.log("【√】粗体或者有背景并且字体最大");
           saveHeaderContent(node, currentHeaders, {
             fontSize: fontSize,
             isBiggest: isBiggest,
@@ -691,7 +1072,8 @@
           });
           return;
         }
-        if ((0, doms_1.isElementCentered)(preNode) &&
+        if (
+          (0, doms_1.isElementCentered)(preNode) &&
           (0, doms_1.isNextToEachOther)(preNode, node) &&
           hasProcessedCenteredPrevNode(node, currentHeaders, {
             preNode: preNode,
@@ -703,7 +1085,8 @@
             nextFontSize: nextFontSize,
             isCurrentNodeBold: isCurrentNodeBold,
             isBiggest: isBiggest,
-          })) {
+          })
+        ) {
           return;
         }
         if ((0, doms_1.isElementCentered)(nextNode)) {
@@ -717,42 +1100,59 @@
           });
         }
         if (isSmallest && !hasBackground) {
-          console.log('【X】小于上下');
+          console.log("【X】小于上下");
           return;
         }
-        if (processCommonRest4CenteredNode(node, currentHeaders, {
-          isBiggest: isBiggest,
-          isCurrentNodeBold: isCurrentNodeBold,
-          hasBackground: hasBackground,
-          fontSize: fontSize,
-        })) {
+        if (
+          processCommonRest4CenteredNode(node, currentHeaders, {
+            isBiggest: isBiggest,
+            isCurrentNodeBold: isCurrentNodeBold,
+            hasBackground: hasBackground,
+            fontSize: fontSize,
+          })
+        ) {
           return;
         }
-        console.log('!!居中节点，未匹配到任何条件!!', node);
+        console.log("!!居中节点，未匹配到任何条件!!", node);
       };
       var processLeftNode = function (node, currentHeaders, validNodes) {
-        if (validNodes === void 0) { validNodes = []; }
+        if (validNodes === void 0) {
+          validNodes = [];
+        }
         var curText = (0, doms_1.getNodeText)(node);
-        console.log('!!!【左节点】', curText);
+        console.log("!!!【左节点】", curText);
         var isCurrentNodeBold = (0, doms_1.isAllTextBold)(node);
-        var hasSerial = (0, const_1.startWithChineseSerial)(curText) || (0, const_1.isRawSureSerial)(curText);
+        var hasSerial =
+          (0, const_1.startWithChineseSerial)(curText) ||
+          (0, const_1.isRawSureSerial)(curText);
         var hasBg = (0, doms_1.hasBackgroundColorInSelfOrAncestors)(node);
-        if (shouldDiscardLeftNode({
-          curText: curText,
-          isCurrentNodeBold: isCurrentNodeBold,
-          hasSerial: hasSerial,
-          hasBg: hasBg,
-        })) {
-          console.log('超过阈值，【舍弃】');
+        if (
+          shouldDiscardLeftNode({
+            curText: curText,
+            isCurrentNodeBold: isCurrentNodeBold,
+            hasSerial: hasSerial,
+            hasBg: hasBg,
+          })
+        ) {
+          console.log("超过阈值，【舍弃】");
           return;
         }
         var preNode = getPrevTextContainer(validNodes);
         var nextNode = (0, doms_1.findNextTextElement)(node);
-        var _a = (0, doms_1.compareFontSize)(node, preNode, nextNode), isSmallest = _a.isSmallest, isBiggest = _a.isBiggest, fontSize = _a.fontSize, nextFontSize = _a.nextFontSize, prevFontSize = _a.prevFontSize;
+        var _a = (0, doms_1.compareFontSize)(node, preNode, nextNode),
+          isSmallest = _a.isSmallest,
+          isBiggest = _a.isBiggest,
+          fontSize = _a.fontSize,
+          nextFontSize = _a.nextFontSize,
+          prevFontSize = _a.prevFontSize;
         var prevText = (0, doms_1.getNodeText)(preNode);
         var nextText = (0, doms_1.getNodeText)(nextNode);
-        var prevNodeIsHeader = isPrevNodeHeader(preNode, currentHeaders, prevText);
-        console.log('当前节点获取结果', {
+        var prevNodeIsHeader = isPrevNodeHeader(
+          preNode,
+          currentHeaders,
+          prevText,
+        );
+        console.log("当前节点获取结果", {
           isCurrentNodeBold: isCurrentNodeBold,
           isBiggest: isBiggest,
           fontSize: fontSize,
@@ -761,9 +1161,15 @@
           nextText: nextText,
           hasBg: hasBg,
         });
-        if (shouldProcessLeftNodeBiggest({ curText: curText, isCurrentNodeBold: isCurrentNodeBold, isBiggest: isBiggest })) {
-          console.log('【√】满足比上下大条件条件', curText);
-          if (isCurrentNodeBold || !curText.endsWith('：')) {
+        if (
+          shouldProcessLeftNodeBiggest({
+            curText: curText,
+            isCurrentNodeBold: isCurrentNodeBold,
+            isBiggest: isBiggest,
+          })
+        ) {
+          console.log("【√】满足比上下大条件条件", curText);
+          if (isCurrentNodeBold || !curText.endsWith("：")) {
             if (prevNodeIsHeader && (0, const_1.isRawSureSerial)(prevText)) {
               appendPrevHeaderContent(currentHeaders, {
                 curText: curText,
@@ -771,8 +1177,7 @@
                 fontSize: fontSize,
                 prevFontSize: prevFontSize,
               });
-            }
-            else {
+            } else {
               saveHeaderContent(node, currentHeaders, {
                 fontSize: fontSize,
                 isBiggest: true,
@@ -784,19 +1189,23 @@
             return;
           }
         }
-        if (shouldDiscardLeftSentence({
-          curText: curText,
-          isBiggest: isBiggest,
-          isCurrentNodeBold: isCurrentNodeBold,
-          hasSerial: hasSerial,
-        })) {
-          console.log('居左句子，【舍弃】');
+        if (
+          shouldDiscardLeftSentence({
+            curText: curText,
+            isBiggest: isBiggest,
+            isCurrentNodeBold: isCurrentNodeBold,
+            hasSerial: hasSerial,
+          })
+        ) {
+          console.log("居左句子，【舍弃】");
           return;
         }
-        if (shouldProcessPrevNodeHeader4LeftNode(node, preNode, {
-          hasSerial: hasSerial,
-          prevNodeIsHeader: prevNodeIsHeader,
-        })) {
+        if (
+          shouldProcessPrevNodeHeader4LeftNode(node, preNode, {
+            hasSerial: hasSerial,
+            prevNodeIsHeader: prevNodeIsHeader,
+          })
+        ) {
           return processPrevNodeHeader4LeftNode(node, preNode, currentHeaders, {
             curText: curText,
             prevText: prevText,
@@ -808,11 +1217,11 @@
           });
         }
         if (isSmallest && !hasSerial) {
-          console.log('字号最小【舍弃】');
+          console.log("字号最小【舍弃】");
           return;
         }
         if (hasBg) {
-          console.log('【√】满足背景颜色条件');
+          console.log("【√】满足背景颜色条件");
           saveHeaderContent(node, currentHeaders, {
             fontSize: fontSize,
             align: const_1.ContentAlign.LEFT,
@@ -824,11 +1233,17 @@
           return;
         }
         if (isCurrentNodeBold) {
-          if (isNextNodeBoldAndBigger(nextNode, { curText: curText, fontSize: fontSize, nextFontSize: nextFontSize })) {
-            console.log('后继有更大的粗体标题');
+          if (
+            isNextNodeBoldAndBigger(nextNode, {
+              curText: curText,
+              fontSize: fontSize,
+              nextFontSize: nextFontSize,
+            })
+          ) {
+            console.log("后继有更大的粗体标题");
             return;
           }
-          console.log('【√】满足粗体条件', curText);
+          console.log("【√】满足粗体条件", curText);
           saveHeaderContent(node, currentHeaders, {
             fontSize: fontSize,
             align: const_1.ContentAlign.LEFT,
@@ -839,10 +1254,10 @@
         }
         if (hasSerial) {
           if ((0, const_1.isLikeSentence)(curText)) {
-            console.log('【X】序列号开头，但是为句子');
+            console.log("【X】序列号开头，但是为句子");
             return;
           }
-          console.log('【√】序列号开头');
+          console.log("【√】序列号开头");
           saveHeaderContent(node, currentHeaders, {
             fontSize: fontSize,
             align: const_1.ContentAlign.LEFT,
@@ -850,20 +1265,28 @@
           });
           return;
         }
-        console.log('没有匹配上任何策略');
+        console.log("没有匹配上任何策略");
       };
       var processRightNode = function (node, currentHeaders, validNodes) {
-        if (validNodes === void 0) { validNodes = []; }
+        if (validNodes === void 0) {
+          validNodes = [];
+        }
         var curText = (0, doms_1.getNodeText)(node);
-        console.log('!!!【右节点】', curText);
+        console.log("!!!【右节点】", curText);
         try {
           var preNode = getPrevTextContainer(validNodes);
           var nextNode = (0, doms_1.findNextTextElement)(node);
-          var _a = (0, doms_1.compareFontSize)(node, preNode, nextNode), isBiggest = _a.isBiggest, fontSize = _a.fontSize, prevFontSize = _a.prevFontSize, nextFontSize = _a.nextFontSize;
-          var hasBackground = (0, doms_1.hasBackgroundColorInSelfOrAncestors)(node);
+          var _a = (0, doms_1.compareFontSize)(node, preNode, nextNode),
+            isBiggest = _a.isBiggest,
+            fontSize = _a.fontSize,
+            prevFontSize = _a.prevFontSize,
+            nextFontSize = _a.nextFontSize;
+          var hasBackground = (0, doms_1.hasBackgroundColorInSelfOrAncestors)(
+            node,
+          );
           var isCurrentNodeBold = (0, doms_1.isAllTextBold)(node);
           var preText = (0, doms_1.getNodeText)(preNode);
-          console.log('当前节点获取结果', {
+          console.log("当前节点获取结果", {
             isCurrentNodeBold: isCurrentNodeBold,
             isBiggest: isBiggest,
             fontSize: fontSize,
@@ -872,21 +1295,20 @@
           });
           if ((0, const_1.isRawSureSerial)(curText)) {
             if (isBiggest && isCurrentNodeBold) {
-              console.log('【√】纯序列号大字号加粗');
+              console.log("【√】纯序列号大字号加粗");
               saveHeaderContent(node, currentHeaders, {
                 fontSize: fontSize,
                 isBiggest: isBiggest,
                 hasSerial: true,
                 align: const_1.ContentAlign.OTHER,
               });
-            }
-            else {
+            } else {
               validNodes.pop();
             }
             return;
           }
           if (isCurrentNodeBold && (0, const_1.startWithSerial)(curText)) {
-            console.log('【√】粗体并且序列号开头');
+            console.log("【√】粗体并且序列号开头");
             saveHeaderContent(node, currentHeaders, {
               fontSize: fontSize,
               hasSerial: true,
@@ -895,7 +1317,7 @@
             return;
           }
           if (isCurrentNodeBold && isBiggest && hasBackground) {
-            console.log('【√】粗体最大有背景');
+            console.log("【√】粗体最大有背景");
             saveHeaderContent(node, currentHeaders, {
               fontSize: fontSize,
               hasSerial: false,
@@ -916,7 +1338,7 @@
             return;
           }
           if ((isCurrentNodeBold || hasBackground) && isBiggest) {
-            console.log('【√】粗体最大或者粗体有背景');
+            console.log("【√】粗体最大或者粗体有背景");
             saveHeaderContent(node, currentHeaders, {
               fontSize: fontSize,
               isPreSerial: false,
@@ -926,26 +1348,27 @@
             });
             return;
           }
-          if (hasMergedRightHeadings(node, preNode, nextNode, currentHeaders, {
-            curText: curText,
-            fontSize: fontSize,
-            isCurrentNodeBold: isCurrentNodeBold,
-            isBiggest: isBiggest,
-            hasBackground: hasBackground,
-            prevFontSize: prevFontSize,
-            preText: preText,
-            nextFontSize: nextFontSize,
-          })) {
+          if (
+            hasMergedRightHeadings(node, preNode, nextNode, currentHeaders, {
+              curText: curText,
+              fontSize: fontSize,
+              isCurrentNodeBold: isCurrentNodeBold,
+              isBiggest: isBiggest,
+              hasBackground: hasBackground,
+              prevFontSize: prevFontSize,
+              preText: preText,
+              nextFontSize: nextFontSize,
+            })
+          ) {
             return;
           }
           if (isCurrentNodeBold && hasBackground) {
-            console.log('【√】粗体有背景');
+            console.log("【√】粗体有背景");
             if ((0, const_1.isRawSureSerial)(preText)) {
               appendPrevHeaderContent(currentHeaders, {
                 curText: curText,
               });
-            }
-            else {
+            } else {
               saveHeaderContent(node, currentHeaders, {
                 fontSize: fontSize,
                 isPreSerial: false,
@@ -956,52 +1379,96 @@
             }
             return;
           }
-          console.log('【X】居右，暂时未匹配到任何条件');
-        }
-        catch (e) {
-          console.error('右节点抽取，报错');
+          console.log("【X】居右，暂时未匹配到任何条件");
+        } catch (e) {
+          console.error("右节点抽取，报错");
         }
       };
       function getContentHeaders() {
         var titleResults = [];
         var container = document.querySelector(const_1.CONTENT_SELECTOR_BASE);
-        if (!container)
-          return titleResults;
+        if (!container) return titleResults;
         var validNodes = [];
         try {
           traverseNode(container, titleResults, validNodes);
+        } catch (e) {
+          if (e.message !== "正文已结束") console.error(e);
         }
-        catch (e) {
-          if (e.message !== '正文已结束')
-            console.error(e);
-        }
-        console.log('获取到的全标题为', titleResults);
+        console.log("获取到的全标题为", titleResults);
         return (0, headerPicker_1.pickHeaders)(titleResults);
       }
       exports["default"] = getContentHeaders;
 
-
       /***/
-    }),
-/* 3 */
-/***/ (function (__unused_webpack_module, exports) {
-
-
-      var __assign = (this && this.__assign) || function () {
-        __assign = Object.assign || function (t) {
-          for (var s, i = 1, n = arguments.length; i < n; i++) {
-            s = arguments[i];
-            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-              t[p] = s[p];
-          }
-          return t;
+    },
+    /* 3 */
+    /***/ function (__unused_webpack_module, exports) {
+      var __assign =
+        (this && this.__assign) ||
+        function () {
+          __assign =
+            Object.assign ||
+            function (t) {
+              for (var s, i = 1, n = arguments.length; i < n; i++) {
+                s = arguments[i];
+                for (var p in s)
+                  if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+              }
+              return t;
+            };
+          return __assign.apply(this, arguments);
         };
-        return __assign.apply(this, arguments);
-      };
-      Object.defineProperty(exports, "__esModule", ({ value: true }));
-      exports.fixHeadersSubfix = exports.isAllValidArabicSerialHeaders = exports.isAllArabicSerialHeaders = exports.isAllChineseHeaders = exports.isAllSerialHeaders = exports.ContentAlign = exports.countChineseCharsAndDigits = exports.shortEnglishTitleWhiteList = exports.checkPureEnglishChars = exports.shouldSaveTitle = exports.shouldNotMerge = exports.checkMergeCondition = exports.mergeHeaderExcept = exports.isLeftSureHalfSentence = exports.isLikeSentence = exports.isLeftSentence = exports.isReasonSentence = exports.isSentence = exports.isCommentTxt = exports.isHalfSentence = exports.startWithCommonChineseSerial = exports.isRawChineseSerial = exports.startWithChineseSerial = exports.isSomeLikeRawChineseSerial = exports.isRawSureSerial = exports.twoChineseAtLeast = exports.startWithComplitArabicSerial = exports.startWithSerial = exports.startWithArabicSerial = exports.isChineseNumber = exports.isRawNumber = exports.TITLE_MERGE_COUNT_LIMIT = exports.COMMON_LINE_HEIGHT = exports.PARAGRAPH_TEXT_LENGTH_LIMIT = exports.CENTERED_HEADER_TEXT_LENGTH_LIMIT = exports.MIN_HEADERS_SIZE = exports.HAS_BACKGROUND_PRE_LIMIT = exports.MAX_FONTSIZE_HEADERS_LIMIT = exports.CENTERED_HEADERS_LIMIT = exports.MAX_LEFT_TITLE_WORD_LENGTH = exports.MAX_REVISE_TITLE_LIMIT = exports.MAX_LEFT_BIGGEST_TITLE_LEGTH = exports.MAX_HEADERS_LENGTH = exports.HEADER_REPEAT_THREHOLD = exports.HEADER_SIZE_THREHOLD = exports.HX_TAG_WHITELIST = exports.CONTENT_SELECTOR_BASE = void 0;
-      exports.CONTENT_SELECTOR_BASE = '#js_content';
-      exports.HX_TAG_WHITELIST = ['H1', 'H2', 'H3', 'H4'];
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.fixHeadersSubfix =
+        exports.isAllValidArabicSerialHeaders =
+        exports.isAllArabicSerialHeaders =
+        exports.isAllChineseHeaders =
+        exports.isAllSerialHeaders =
+        exports.ContentAlign =
+        exports.countChineseCharsAndDigits =
+        exports.shortEnglishTitleWhiteList =
+        exports.checkPureEnglishChars =
+        exports.shouldSaveTitle =
+        exports.shouldNotMerge =
+        exports.checkMergeCondition =
+        exports.mergeHeaderExcept =
+        exports.isLeftSureHalfSentence =
+        exports.isLikeSentence =
+        exports.isLeftSentence =
+        exports.isReasonSentence =
+        exports.isSentence =
+        exports.isCommentTxt =
+        exports.isHalfSentence =
+        exports.startWithCommonChineseSerial =
+        exports.isRawChineseSerial =
+        exports.startWithChineseSerial =
+        exports.isSomeLikeRawChineseSerial =
+        exports.isRawSureSerial =
+        exports.twoChineseAtLeast =
+        exports.startWithComplitArabicSerial =
+        exports.startWithSerial =
+        exports.startWithArabicSerial =
+        exports.isChineseNumber =
+        exports.isRawNumber =
+        exports.TITLE_MERGE_COUNT_LIMIT =
+        exports.COMMON_LINE_HEIGHT =
+        exports.PARAGRAPH_TEXT_LENGTH_LIMIT =
+        exports.CENTERED_HEADER_TEXT_LENGTH_LIMIT =
+        exports.MIN_HEADERS_SIZE =
+        exports.HAS_BACKGROUND_PRE_LIMIT =
+        exports.MAX_FONTSIZE_HEADERS_LIMIT =
+        exports.CENTERED_HEADERS_LIMIT =
+        exports.MAX_LEFT_TITLE_WORD_LENGTH =
+        exports.MAX_REVISE_TITLE_LIMIT =
+        exports.MAX_LEFT_BIGGEST_TITLE_LEGTH =
+        exports.MAX_HEADERS_LENGTH =
+        exports.HEADER_REPEAT_THREHOLD =
+        exports.HEADER_SIZE_THREHOLD =
+        exports.HX_TAG_WHITELIST =
+        exports.CONTENT_SELECTOR_BASE =
+          void 0;
+      exports.CONTENT_SELECTOR_BASE = "#js_content";
+      exports.HX_TAG_WHITELIST = ["H1", "H2", "H3", "H4"];
       exports.HEADER_SIZE_THREHOLD = 58;
       exports.HEADER_REPEAT_THREHOLD = 20;
       exports.MAX_HEADERS_LENGTH = 30;
@@ -1017,172 +1484,272 @@
       exports.COMMON_LINE_HEIGHT = 30;
       exports.TITLE_MERGE_COUNT_LIMIT = 2;
       var isRawNumber = function (txt) {
-        if (txt === void 0) { txt = ''; }
+        if (txt === void 0) {
+          txt = "";
+        }
         return /^[-]?\s*\d+\s*[.|、|-|#]?$/.test(txt);
       };
       exports.isRawNumber = isRawNumber;
       var isChineseNumber = function (txt) {
-        if (txt === void 0) { txt = ''; }
+        if (txt === void 0) {
+          txt = "";
+        }
         return /^([-])*\s*[一二三四五六七八九十]\s*([.|、|-])*$/.test(txt);
       };
       exports.isChineseNumber = isChineseNumber;
       var startWithArabicSerial = function (txt) {
-        if (txt === void 0) { txt = ''; }
-        return /^(1[0-9]|[1-9]|0[1-9])([\.|、|，|,|\s|\#])/.test(txt) &&
-          !/^(1[0-9]|[1-9]|0[1-9])([\.|、|，|,|\s|\#])(\d)/.test(txt);
+        if (txt === void 0) {
+          txt = "";
+        }
+        return (
+          /^(1[0-9]|[1-9]|0[1-9])([\.|、|，|,|\s|\#])/.test(txt) &&
+          !/^(1[0-9]|[1-9]|0[1-9])([\.|、|，|,|\s|\#])(\d)/.test(txt)
+        );
       };
       exports.startWithArabicSerial = startWithArabicSerial;
       var startWithSerial = function (txt) {
-        if (txt === void 0) { txt = ''; }
-        return (0, exports.startWithChineseSerial)(txt) ||
+        if (txt === void 0) {
+          txt = "";
+        }
+        return (
+          (0, exports.startWithChineseSerial)(txt) ||
           (0, exports.startWithArabicSerial)(txt) ||
-          /^(0)?[0-9]$/.test(txt);
+          /^(0)?[0-9]$/.test(txt)
+        );
       };
       exports.startWithSerial = startWithSerial;
       var startWithComplitArabicSerial = function (txt) {
-        if (txt === void 0) { txt = ''; }
+        if (txt === void 0) {
+          txt = "";
+        }
         return /^0[1-9][\u4e00-\u9fa5“]/.test(txt);
       };
       exports.startWithComplitArabicSerial = startWithComplitArabicSerial;
       var twoChineseAtLeast = function (txt) {
-        if (txt === void 0) { txt = ''; }
+        if (txt === void 0) {
+          txt = "";
+        }
         return /^[\u4e00-\u9fa5]{2,}$/.test(txt);
       };
       exports.twoChineseAtLeast = twoChineseAtLeast;
       var isRawSureSerial = function (txt) {
-        if (txt === void 0) { txt = ''; }
-        return /^(\#|NO\.)?([0-9]|0[1-9]|1[0-9]|2[0-9]|Q[1-9])(\.|\s*\/\s*)?$/.test(txt) ||
+        if (txt === void 0) {
+          txt = "";
+        }
+        return (
+          /^(\#|NO\.)?([0-9]|0[1-9]|1[0-9]|2[0-9]|Q[1-9])(\.|\s*\/\s*)?$/.test(
+            txt,
+          ) ||
           (0, exports.isRawChineseSerial)(txt) ||
-          (0, exports.isSomeLikeRawChineseSerial)(txt);
+          (0, exports.isSomeLikeRawChineseSerial)(txt)
+        );
       };
       exports.isRawSureSerial = isRawSureSerial;
       var isSomeLikeRawChineseSerial = function (txt) {
-        if (txt === void 0) { txt = ''; }
+        if (txt === void 0) {
+          txt = "";
+        }
         return /^第[一二三四五六七八九十]+(站|问\s*\:\s*)$/.test(txt);
       };
       exports.isSomeLikeRawChineseSerial = isSomeLikeRawChineseSerial;
       var startWithChineseSerial = function (txt) {
-        if (txt === void 0) { txt = ''; }
+        if (txt === void 0) {
+          txt = "";
+        }
         return /^(第)?[一二三四五六七八九十]{1,2}([.|、|，|,|\s|是])/.test(txt);
       };
       exports.startWithChineseSerial = startWithChineseSerial;
       var isRawChineseSerial = function (txt) {
-        if (txt === void 0) { txt = ''; }
+        if (txt === void 0) {
+          txt = "";
+        }
         return /^[一二三四五六七八九十]+$/.test(txt);
       };
       exports.isRawChineseSerial = isRawChineseSerial;
       var startWithCommonChineseSerial = function (txt) {
-        if (txt === void 0) { txt = ''; }
+        if (txt === void 0) {
+          txt = "";
+        }
         return /^(\(|（)[一二三四五六七八九十]+(\)|）)/.test(txt);
       };
       exports.startWithCommonChineseSerial = startWithCommonChineseSerial;
       var isHalfSentence = function (txt) {
-        if (txt === void 0) { txt = ''; }
+        if (txt === void 0) {
+          txt = "";
+        }
         return /^“.*，$/.test(txt) && !/”/.test(txt);
       };
       exports.isHalfSentence = isHalfSentence;
       var isCommentTxt = function (txt) {
         var _a;
-        if (txt === void 0) { txt = ''; }
-        return /^（.*）$/.test(txt) ||
-          ((_a = txt.match(/\//g)) === null || _a === void 0 ? void 0 : _a.length) > 6 ||
+        if (txt === void 0) {
+          txt = "";
+        }
+        return (
+          /^（.*）$/.test(txt) ||
+          ((_a = txt.match(/\//g)) === null || _a === void 0
+            ? void 0
+            : _a.length) > 6 ||
           /\s+摄$/.test(txt) ||
-          /^网络供图$/.test(txt);
+          /^网络供图$/.test(txt)
+        );
       };
       exports.isCommentTxt = isCommentTxt;
       var isSentence = function (txt) {
-        if (txt === void 0) { txt = ''; }
-        return /[。！；](”)?$/.test(txt) ||
+        if (txt === void 0) {
+          txt = "";
+        }
+        return (
+          /[。！；](”)?$/.test(txt) ||
           /(？？|？～|？”)$/.test(txt) ||
-          (/(，(”)?|：)$/.test(txt) && countChineseCharsAndDigits(txt) > 12);
+          (/(，(”)?|：)$/.test(txt) && countChineseCharsAndDigits(txt) > 12)
+        );
       };
       exports.isSentence = isSentence;
       var isReasonSentence = function (txt) {
-        if (txt === void 0) { txt = ''; }
-        return /^原因[一二三四五六七八九十]\s*：.*！$/.test(txt) ||
-          /^细节[一二三四五六七八九十]\s*(，|：)/.test(txt);
+        if (txt === void 0) {
+          txt = "";
+        }
+        return (
+          /^原因[一二三四五六七八九十]\s*：.*！$/.test(txt) ||
+          /^细节[一二三四五六七八九十]\s*(，|：)/.test(txt)
+        );
       };
       exports.isReasonSentence = isReasonSentence;
       var isLeftSentence = function (txt) {
-        if (txt === void 0) { txt = ''; }
+        if (txt === void 0) {
+          txt = "";
+        }
         return /(。|！|？|——)(”)?$/.test(txt) || /(？？|？～|~)$/.test(txt);
       };
       exports.isLeftSentence = isLeftSentence;
       var isLikeSentence = function (txt) {
-        if (txt === void 0) { txt = ''; }
+        if (txt === void 0) {
+          txt = "";
+        }
         return /[。|！|；|，](”)?$/.test(txt);
       };
       exports.isLikeSentence = isLikeSentence;
       var isLeftSureHalfSentence = function (txt) {
-        if (txt === void 0) { txt = ''; }
+        if (txt === void 0) {
+          txt = "";
+        }
         return /[，：\d的]$/.test(txt) && !/\d+:\d+\-\d+:\d+/.test(txt);
       };
       exports.isLeftSureHalfSentence = isLeftSureHalfSentence;
       var mergeHeaderExcept = function (preText) {
-        if (preText === void 0) { preText = ''; }
-        return /^《.*》$/.test(preText) &&
-          !/^《.*(工作办法|管理办法（送审稿）)》$/.test(preText);
+        if (preText === void 0) {
+          preText = "";
+        }
+        return (
+          /^《.*》$/.test(preText) &&
+          !/^《.*(工作办法|管理办法（送审稿）)》$/.test(preText)
+        );
       };
       exports.mergeHeaderExcept = mergeHeaderExcept;
       var checkMergeCondition = function (curText) {
-        if (curText === void 0) { curText = ''; }
-        return !/^第[一二三四五六七八九十]{1,2}步：/.test(curText) &&
-          !/^第[一二三四五六七八九十]{1,2}章\s/.test(curText);
+        if (curText === void 0) {
+          curText = "";
+        }
+        return (
+          !/^第[一二三四五六七八九十]{1,2}步：/.test(curText) &&
+          !/^第[一二三四五六七八九十]{1,2}章\s/.test(curText)
+        );
       };
       exports.checkMergeCondition = checkMergeCondition;
       var shouldNotMerge = function (curText) {
-        if (curText === void 0) { curText = ''; }
+        if (curText === void 0) {
+          curText = "";
+        }
         return /^第[一二三四五六七八九十]{1,2}章\s/.test(curText);
       };
       exports.shouldNotMerge = shouldNotMerge;
       var shouldSaveTitle = function (preText, curText) {
-        if (preText === void 0) { preText = ''; }
-        if (curText === void 0) { curText = ''; }
+        if (preText === void 0) {
+          preText = "";
+        }
+        if (curText === void 0) {
+          curText = "";
+        }
         var reg = /^..地区$/;
         return reg.test(preText) && reg.test(curText);
       };
       exports.shouldSaveTitle = shouldSaveTitle;
       var checkPureEnglishChars = function (txt) {
-        if (txt === void 0) { txt = ''; }
+        if (txt === void 0) {
+          txt = "";
+        }
         return !/[\u4e00-\u9fa5]/g.test(txt) && txt.length > 120;
       };
       exports.checkPureEnglishChars = checkPureEnglishChars;
       var shortEnglishTitleWhiteList = function (txt) {
-        if (txt === void 0) { txt = ''; }
+        if (txt === void 0) {
+          txt = "";
+        }
         return /^APP$/.test(txt);
       };
       exports.shortEnglishTitleWhiteList = shortEnglishTitleWhiteList;
       function countChineseCharsAndDigits(str) {
-        if (str === void 0) { str = ''; }
+        if (str === void 0) {
+          str = "";
+        }
         var chineseCharAndDigitRegex = /[\u4e00-\u9fa5]|[0-9]/g;
-        var matchedChars = str === null || str === void 0 ? void 0 : str.match(chineseCharAndDigitRegex);
+        var matchedChars =
+          str === null || str === void 0
+            ? void 0
+            : str.match(chineseCharAndDigitRegex);
         return matchedChars ? matchedChars.length : 0;
       }
       exports.countChineseCharsAndDigits = countChineseCharsAndDigits;
       var ContentAlign;
       (function (ContentAlign) {
-        ContentAlign[ContentAlign["CENTER"] = 0] = "CENTER";
-        ContentAlign[ContentAlign["LEFT"] = 1] = "LEFT";
-        ContentAlign[ContentAlign["OTHER"] = 2] = "OTHER";
+        ContentAlign[(ContentAlign["CENTER"] = 0)] = "CENTER";
+        ContentAlign[(ContentAlign["LEFT"] = 1)] = "LEFT";
+        ContentAlign[(ContentAlign["OTHER"] = 2)] = "OTHER";
       })(ContentAlign || (exports.ContentAlign = ContentAlign = {}));
       function isAllSerialHeaders(headers) {
-        if (headers === void 0) { headers = []; }
-        return headers.every(function (item) { return (0, exports.startWithSerial)(item.text); });
+        if (headers === void 0) {
+          headers = [];
+        }
+        return headers.every(function (item) {
+          return (0, exports.startWithSerial)(item.text);
+        });
       }
       exports.isAllSerialHeaders = isAllSerialHeaders;
       function isAllChineseHeaders(headers) {
-        if (headers === void 0) { headers = []; }
-        return headers.every(function (item) { return (0, exports.startWithChineseSerial)(item.text); });
+        if (headers === void 0) {
+          headers = [];
+        }
+        return headers.every(function (item) {
+          return (0, exports.startWithChineseSerial)(item.text);
+        });
       }
       exports.isAllChineseHeaders = isAllChineseHeaders;
       function isAllArabicSerialHeaders(headers) {
-        if (headers === void 0) { headers = []; }
-        return headers.every(function (item) { return (0, exports.startWithArabicSerial)(item.text); });
+        if (headers === void 0) {
+          headers = [];
+        }
+        return headers.every(function (item) {
+          return (0, exports.startWithArabicSerial)(item.text);
+        });
       }
       exports.isAllArabicSerialHeaders = isAllArabicSerialHeaders;
       function isAllValidArabicSerialHeaders(headers) {
-        if (headers === void 0) { headers = []; }
-        var serials = headers.map(function (item) { var _a, _b; return parseInt((_b = (_a = item.text) === null || _a === void 0 ? void 0 : _a.match(/^\d+/)) === null || _b === void 0 ? void 0 : _b[0], 10); });
+        if (headers === void 0) {
+          headers = [];
+        }
+        var serials = headers.map(function (item) {
+          var _a, _b;
+          return parseInt(
+            (_b =
+              (_a = item.text) === null || _a === void 0
+                ? void 0
+                : _a.match(/^\d+/)) === null || _b === void 0
+              ? void 0
+              : _b[0],
+            10,
+          );
+        });
         for (var i = 1; i < serials.length; i++) {
           if (serials[i] > serials[i - 1] + 3) {
             return false;
@@ -1192,9 +1759,13 @@
       }
       exports.isAllValidArabicSerialHeaders = isAllValidArabicSerialHeaders;
       function fixHeadersSubfix(headers) {
-        if (headers === void 0) { headers = []; }
+        if (headers === void 0) {
+          headers = [];
+        }
         var fixTextSubfix = function (text) {
-          if (text === void 0) { text = ''; }
+          if (text === void 0) {
+            text = "";
+          }
           var subfixReg = /(,|，)$/;
           if (subfixReg.test(text)) {
             return text.slice(0, -1);
@@ -1208,46 +1779,80 @@
       }
       exports.fixHeadersSubfix = fixHeadersSubfix;
 
-
       /***/
-    }),
-/* 4 */
-/***/ (function (__unused_webpack_module, exports, __webpack_require__) {
-
-
-      var __read = (this && this.__read) || function (o, n) {
-        var m = typeof Symbol === "function" && o[Symbol.iterator];
-        if (!m) return o;
-        var i = m.call(o), r, ar = [], e;
-        try {
-          while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
-        }
-        catch (error) { e = { error: error }; }
-        finally {
+    },
+    /* 4 */
+    /***/ function (__unused_webpack_module, exports, __webpack_require__) {
+      var __read =
+        (this && this.__read) ||
+        function (o, n) {
+          var m = typeof Symbol === "function" && o[Symbol.iterator];
+          if (!m) return o;
+          var i = m.call(o),
+            r,
+            ar = [],
+            e;
           try {
-            if (r && !r.done && (m = i["return"])) m.call(i);
+            while ((n === void 0 || n-- > 0) && !(r = i.next()).done)
+              ar.push(r.value);
+          } catch (error) {
+            e = { error: error };
+          } finally {
+            try {
+              if (r && !r.done && (m = i["return"])) m.call(i);
+            } finally {
+              if (e) throw e.error;
+            }
           }
-          finally { if (e) throw e.error; }
-        }
-        return ar;
-      };
-      var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
-        if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
-          if (ar || !(i in from)) {
-            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
-            ar[i] = from[i];
-          }
-        }
-        return to.concat(ar || Array.prototype.slice.call(from));
-      };
-      Object.defineProperty(exports, "__esModule", ({ value: true }));
-      exports.isNextToEachOther = exports.hasBackgroundColorInSelfOrAncestors = exports.isNodeLeft = exports.compareFontSize = exports.isInlineElement = exports.isBlockElement = exports.isElementCentered = exports.isRectCentered = exports.isInlineBlockParentNode = exports.isNearestTextParentNode = exports.isAllTextBold = exports.isBoldText = exports.getFirstTextNodeStyles = exports.findNextTextElement = exports.isPreRawSerialNumber = exports.isValidNode = exports.isLikeMainContentStart = exports.isMiniParagraph = exports.getNodeText = void 0;
+          return ar;
+        };
+      var __spreadArray =
+        (this && this.__spreadArray) ||
+        function (to, from, pack) {
+          if (pack || arguments.length === 2)
+            for (var i = 0, l = from.length, ar; i < l; i++) {
+              if (ar || !(i in from)) {
+                if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+                ar[i] = from[i];
+              }
+            }
+          return to.concat(ar || Array.prototype.slice.call(from));
+        };
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.isNextToEachOther =
+        exports.hasBackgroundColorInSelfOrAncestors =
+        exports.isNodeLeft =
+        exports.compareFontSize =
+        exports.isInlineElement =
+        exports.isBlockElement =
+        exports.isElementCentered =
+        exports.isRectCentered =
+        exports.isInlineBlockParentNode =
+        exports.isNearestTextParentNode =
+        exports.isAllTextBold =
+        exports.isBoldText =
+        exports.getFirstTextNodeStyles =
+        exports.findNextTextElement =
+        exports.isPreRawSerialNumber =
+        exports.isValidNode =
+        exports.isLikeMainContentStart =
+        exports.isMiniParagraph =
+        exports.getNodeText =
+          void 0;
       var const_1 = __webpack_require__(3);
       var regexp_1 = __webpack_require__(5);
       var getNodeText = function (node) {
         var _a, _b;
-        var txt = ((_b = (_a = node === null || node === void 0 ? void 0 : node.textContent) === null || _a === void 0 ? void 0 : _a.trim) === null || _b === void 0 ? void 0 : _b.call(_a)) || '';
-        return txt.replace(/\u200D+/g, '');
+        var txt =
+          ((_b =
+            (_a =
+              node === null || node === void 0 ? void 0 : node.textContent) ===
+              null || _a === void 0
+              ? void 0
+              : _a.trim) === null || _b === void 0
+            ? void 0
+            : _b.call(_a)) || "";
+        return txt.replace(/\u200D+/g, "");
       };
       exports.getNodeText = getNodeText;
       var hasValidWord = function (node) {
@@ -1255,54 +1860,89 @@
       };
       var isMiniParagraph = function (node) {
         var _a;
-        var textLength = ((_a = (0, exports.getNodeText)(node)) === null || _a === void 0 ? void 0 : _a.length) || 0;
-        return ((isNearestTextParentNode(node) || isInlineBlockParentNode(node)) &&
-          textLength < const_1.PARAGRAPH_TEXT_LENGTH_LIMIT);
+        var textLength =
+          ((_a = (0, exports.getNodeText)(node)) === null || _a === void 0
+            ? void 0
+            : _a.length) || 0;
+        return (
+          (isNearestTextParentNode(node) || isInlineBlockParentNode(node)) &&
+          textLength < const_1.PARAGRAPH_TEXT_LENGTH_LIMIT
+        );
       };
       exports.isMiniParagraph = isMiniParagraph;
       var isLikeMainContentStart = function (node) {
-        return regexp_1.MAIN_CONTENT_START_REGS.some(function (reg) { return reg.test((0, exports.getNodeText)(node)); });
+        return regexp_1.MAIN_CONTENT_START_REGS.some(function (reg) {
+          return reg.test((0, exports.getNodeText)(node));
+        });
       };
       exports.isLikeMainContentStart = isLikeMainContentStart;
       var isValidNode = function (node, checkEndings) {
         var _a;
-        if (checkEndings === void 0) { checkEndings = true; }
+        if (checkEndings === void 0) {
+          checkEndings = true;
+        }
         var curText = (0, exports.getNodeText)(node);
-        if ((_a = node === null || node === void 0 ? void 0 : node.querySelector) === null || _a === void 0 ? void 0 : _a.call(node, '.mp-video-player')) {
-          checkEndings && console.log('【跳过】视频===>', node.classList);
+        if (
+          (_a =
+            node === null || node === void 0 ? void 0 : node.querySelector) ===
+            null || _a === void 0
+            ? void 0
+            : _a.call(node, ".mp-video-player")
+        ) {
+          checkEndings && console.log("【跳过】视频===>", node.classList);
           return false;
         }
-        if (checkEndings && regexp_1.ENDING_REGS.some(function (endReg) { return endReg.test(curText); })) {
-          console.log('【结束】命中正文结束===>', curText);
-          throw new Error('正文已结束');
+        if (
+          checkEndings &&
+          regexp_1.ENDING_REGS.some(function (endReg) {
+            return endReg.test(curText);
+          })
+        ) {
+          console.log("【结束】命中正文结束===>", curText);
+          throw new Error("正文已结束");
         }
-        if (checkEndings &&
+        if (
+          checkEndings &&
           regexp_1.ENDING_REGS_WITH_CONDITION.some(function (endReg) {
             var _a;
-            return endReg.test(curText) &&
-              !endReg.test((_a = document.querySelector(const_1.CONTENT_SELECTOR_BASE)) === null || _a === void 0 ? void 0 : _a.innerText);
-          })) {
-          console.log('【结束】待条件命中正文结束===>', curText);
-          throw new Error('正文已结束');
+            return (
+              endReg.test(curText) &&
+              !endReg.test(
+                (_a = document.querySelector(const_1.CONTENT_SELECTOR_BASE)) ===
+                  null || _a === void 0
+                  ? void 0
+                  : _a.innerText,
+              )
+            );
+          })
+        ) {
+          console.log("【结束】待条件命中正文结束===>", curText);
+          throw new Error("正文已结束");
         }
         var reg = /[\u4e00-\u9fa5a-zA-Z0-9]+/;
         if (!curText || !reg.test(curText)) {
-          checkEndings && console.log('【跳过】字符不满足要求控制===>', curText);
+          checkEndings &&
+            console.log("【跳过】字符不满足要求控制===>", curText);
           return false;
         }
-        if (!/[\u4e00-\u9fa50-9]/.test(curText) &&
+        if (
+          !/[\u4e00-\u9fa50-9]/.test(curText) &&
           curText.length <= 3 &&
-          !(0, const_1.shortEnglishTitleWhiteList)(curText)) {
-          checkEndings && console.log('【跳过】仅仅英文加符号长度限制===>', curText);
+          !(0, const_1.shortEnglishTitleWhiteList)(curText)
+        ) {
+          checkEndings &&
+            console.log("【跳过】仅仅英文加符号长度限制===>", curText);
           return false;
         }
         return true;
       };
       exports.isValidNode = isValidNode;
       function isPreRawSerialNumber(node) {
-        var textContent = '';
+        var textContent = "";
         var isRawSerialNumber = function (txt) {
-          if (txt === void 0) { txt = ''; }
+          if (txt === void 0) {
+            txt = "";
+          }
           return /^\d+$/.test(txt) || (0, const_1.isChineseNumber)(txt);
         };
         while (node) {
@@ -1328,10 +1968,14 @@
       function findNextTextElement(node) {
         var nextNodeBlackRegs = [/^[<]{1,}滑动查看下一张图片[>]{1,}$/];
         var isValidNextNode = function (node) {
-          return (isBlockElement(node) &&
+          return (
+            isBlockElement(node) &&
             isNearestTextParentNode(node) &&
             (0, exports.isValidNode)(node, false) &&
-            !nextNodeBlackRegs.some(function (reg) { return reg.test((0, exports.getNodeText)(node)); }));
+            !nextNodeBlackRegs.some(function (reg) {
+              return reg.test((0, exports.getNodeText)(node));
+            })
+          );
         };
         while (node) {
           while (node.nextSibling) {
@@ -1370,39 +2014,39 @@
         }
         var firstTextNode = findFirstTextNode(node);
         if (!firstTextNode) {
-          console.log('没有找到文本节点', node);
+          console.log("没有找到文本节点", node);
           return null;
         }
         return firstTextNode.parentElement;
       }
       function getFirstTextNodeStyles(node) {
         var parentElement = getFirstTextContainerNode(node);
-        if (!parentElement)
-          return null;
+        if (!parentElement) return null;
         var computedStyle = window.getComputedStyle(parentElement);
         return {
-          fontSize: computedStyle.getPropertyValue('font-size'),
-          fontWeight: computedStyle.getPropertyValue('font-weight'),
+          fontSize: computedStyle.getPropertyValue("font-size"),
+          fontWeight: computedStyle.getPropertyValue("font-weight"),
         };
       }
       exports.getFirstTextNodeStyles = getFirstTextNodeStyles;
       function isBoldText(node) {
-        if (!node)
-          return false;
+        if (!node) return false;
         function isBold(computedStyle) {
-          var fontWeight = computedStyle.getPropertyValue('font-weight');
-          return fontWeight === 'bold' || parseInt(fontWeight, 10) >= 600;
+          var fontWeight = computedStyle.getPropertyValue("font-weight");
+          return fontWeight === "bold" || parseInt(fontWeight, 10) >= 600;
         }
         var parentElement = getFirstTextContainerNode(node);
         if (!parentElement) {
-          console.log('没有找到非空的文本节点');
+          console.log("没有找到非空的文本节点");
           return false;
         }
         var parentText = (0, exports.getNodeText)(parentElement);
-        if (parentText.length < 3 &&
+        if (
+          parentText.length < 3 &&
           !(0, const_1.isChineseNumber)(parentText) &&
-          !(0, const_1.twoChineseAtLeast)(parentText)) {
-          console.log('无效节点', parentElement);
+          !(0, const_1.twoChineseAtLeast)(parentText)
+        ) {
+          console.log("无效节点", parentElement);
           return false;
         }
         var computedStyle = window.getComputedStyle(parentElement);
@@ -1413,11 +2057,10 @@
         function isBold(element) {
           var fontWeight = window
             .getComputedStyle(element)
-            .getPropertyValue('font-weight');
-          return fontWeight === 'bold' || parseInt(fontWeight, 10) >= 600;
+            .getPropertyValue("font-weight");
+          return fontWeight === "bold" || parseInt(fontWeight, 10) >= 600;
         }
-        if (!node)
-          return true;
+        if (!node) return true;
         if (node.nodeType === Node.TEXT_NODE && hasValidWord(node)) {
           if (!isBold(node.parentNode)) {
             return false;
@@ -1433,54 +2076,93 @@
       exports.isAllTextBold = isAllTextBold;
       function isNearestTextParentNode(element) {
         var _a;
-        if (!(element === null || element === void 0 ? void 0 : element.childNodes))
+        if (
+          !(element === null || element === void 0
+            ? void 0
+            : element.childNodes)
+        )
           return false;
         var childNodes = __spreadArray([], __read(element.childNodes), false);
-        var isInlineElementTags = (element.tagName === 'SPAN' || element.tagName === 'STRONG') &&
-          !childNodes.every(function (subNode) { return ['SECTION', 'P'].includes(subNode.tagName); });
-        var isChildrenContainTextNode = childNodes.some(function (subNode) { return (subNode === null || subNode === void 0 ? void 0 : subNode.nodeType) === 3 && !!(0, exports.getNodeText)(subNode); });
+        var isInlineElementTags =
+          (element.tagName === "SPAN" || element.tagName === "STRONG") &&
+          !childNodes.every(function (subNode) {
+            return ["SECTION", "P"].includes(subNode.tagName);
+          });
+        var isChildrenContainTextNode = childNodes.some(function (subNode) {
+          return (
+            (subNode === null || subNode === void 0
+              ? void 0
+              : subNode.nodeType) === 3 && !!(0, exports.getNodeText)(subNode)
+          );
+        });
         var isAllChildrenInline = childNodes.every(function (subNode) {
-          return (subNode === null || subNode === void 0 ? void 0 : subNode.nodeType) === 3 ||
+          return (
+            (subNode === null || subNode === void 0
+              ? void 0
+              : subNode.nodeType) === 3 ||
             isInlineElement(subNode) ||
-            isNoneElement(subNode);
+            isNoneElement(subNode)
+          );
         });
         var isSpanContainBlockNode = function () {
-          if (childNodes.length !== 1)
-            return false;
-          if (childNodes[0].tagName !== 'SPAN')
-            return false;
+          if (childNodes.length !== 1) return false;
+          if (childNodes[0].tagName !== "SPAN") return false;
           var subChild = childNodes[0];
-          if (!(subChild === null || subChild === void 0 ? void 0 : subChild.childNodes))
+          if (
+            !(subChild === null || subChild === void 0
+              ? void 0
+              : subChild.childNodes)
+          )
             return false;
-          var subSubChildNodes = __spreadArray([], __read(subChild.childNodes), false);
-          if (subSubChildNodes.every(function (subNode) {
-            return ['SECTION', 'P'].includes(subNode.tagName);
-          })) {
+          var subSubChildNodes = __spreadArray(
+            [],
+            __read(subChild.childNodes),
+            false,
+          );
+          if (
+            subSubChildNodes.every(function (subNode) {
+              return ["SECTION", "P"].includes(subNode.tagName);
+            })
+          ) {
             return true;
           }
           return false;
         };
-        var isBrNodeValid = ((_a = childNodes.filter(function (item) { return item.tagName === 'BR'; })) === null || _a === void 0 ? void 0 : _a.length) < 2;
-        return (isInlineElementTags ||
+        var isBrNodeValid =
+          ((_a = childNodes.filter(function (item) {
+            return item.tagName === "BR";
+          })) === null || _a === void 0
+            ? void 0
+            : _a.length) < 2;
+        return (
+          isInlineElementTags ||
           isChildrenContainTextNode ||
-          (isAllChildrenInline && isBrNodeValid && !isSpanContainBlockNode()));
+          (isAllChildrenInline && isBrNodeValid && !isSpanContainBlockNode())
+        );
       }
       exports.isNearestTextParentNode = isNearestTextParentNode;
       function isInlineBlockParentNode(element) {
-        if (!(element === null || element === void 0 ? void 0 : element.childNodes))
+        if (
+          !(element === null || element === void 0
+            ? void 0
+            : element.childNodes)
+        )
           return false;
-        if (!isInlineBlockElement(element))
-          return false;
+        if (!isInlineBlockElement(element)) return false;
         var childNodes = __spreadArray([], __read(element.childNodes), false);
         return childNodes.every(function (subNode) {
-          return isInlineBlockElement(subNode) ||
+          return (
+            isInlineBlockElement(subNode) ||
             isInlineElement(subNode) ||
-            isNoneElement(subNode);
+            isNoneElement(subNode)
+          );
         });
       }
       exports.isInlineBlockParentNode = isInlineBlockParentNode;
       function isRectCentered(node, limit) {
-        if (limit === void 0) { limit = 0; }
+        if (limit === void 0) {
+          limit = 0;
+        }
         var parentNodeRect = document
           .querySelector(const_1.CONTENT_SELECTOR_BASE)
           .getBoundingClientRect();
@@ -1488,54 +2170,50 @@
         var leftMargin = nodeRect.left - parentNodeRect.left;
         var rightMargin = parentNodeRect.right - nodeRect.right;
         var errorMargin = 30;
-        return (Math.abs(leftMargin - rightMargin) <= errorMargin &&
-          Math.abs(leftMargin) >= limit);
+        return (
+          Math.abs(leftMargin - rightMargin) <= errorMargin &&
+          Math.abs(leftMargin) >= limit
+        );
       }
       exports.isRectCentered = isRectCentered;
       function getEffectiveTextAlign(element) {
         var rootNode = document.querySelector(const_1.CONTENT_SELECTOR_BASE);
         while (element !== rootNode) {
           var style = window.getComputedStyle(element);
-          var textAlign = style.getPropertyValue('text-align');
-          if (textAlign && textAlign !== 'inherit' && textAlign !== 'justify') {
-            if (textAlign === 'start')
-              return 'left';
-            if (textAlign === '-webkit-center')
-              return 'center';
+          var textAlign = style.getPropertyValue("text-align");
+          if (textAlign && textAlign !== "inherit" && textAlign !== "justify") {
+            if (textAlign === "start") return "left";
+            if (textAlign === "-webkit-center") return "center";
             return textAlign;
           }
-          var justifyContent = style.getPropertyValue('justify-content');
-          var justifyMap = { center: 'center', 'flex-start': 'left' };
+          var justifyContent = style.getPropertyValue("justify-content");
+          var justifyMap = { center: "center", "flex-start": "left" };
           if (justifyMap[justifyContent]) {
             return justifyMap[justifyContent];
           }
           element = element.parentElement;
         }
-        return 'justify';
+        return "justify";
       }
       function isElementCentered(element) {
         try {
-          if (!element)
-            return false;
-          if (getEffectiveTextAlign(element) === 'center')
-            return true;
+          if (!element) return false;
+          if (getEffectiveTextAlign(element) === "center") return true;
           var textNode = getFirstTextContainerNode(element);
-          if (!textNode)
-            return false;
+          if (!textNode) return false;
           var textAlign = getEffectiveTextAlign(textNode);
-          if (textAlign === 'center')
-            return true;
-          if (isInlineElement(textNode))
-            return false;
-          var isTextJustified = textAlign === 'justify';
-          if (isTextJustified &&
+          if (textAlign === "center") return true;
+          if (isInlineElement(textNode)) return false;
+          var isTextJustified = textAlign === "justify";
+          if (
+            isTextJustified &&
             isRectCentered(textNode, 60) &&
-            isRectCentered(element, 40)) {
+            isRectCentered(element, 40)
+          ) {
             return true;
           }
           return false;
-        }
-        catch (e) {
+        } catch (e) {
           return false;
         }
       }
@@ -1544,11 +2222,15 @@
         var _a;
         var result = false;
         try {
-          var display = ((_a = window.getComputedStyle(element)) === null || _a === void 0 ? void 0 : _a.display) || '';
+          var display =
+            ((_a = window.getComputedStyle(element)) === null || _a === void 0
+              ? void 0
+              : _a.display) || "";
           result =
-            display.includes('block') || display === 'table' || display === 'flex';
-        }
-        catch (e) { }
+            display.includes("block") ||
+            display === "table" ||
+            display === "flex";
+        } catch (e) {}
         return result;
       }
       exports.isBlockElement = isBlockElement;
@@ -1556,24 +2238,50 @@
         var _a;
         var result = false;
         try {
-          var tagName = element === null || element === void 0 ? void 0 : element.tagName;
+          var tagName =
+            element === null || element === void 0 ? void 0 : element.tagName;
           result =
-            tagName === 'SPAN' ||
-            tagName === 'STRONG' ||
-            (((_a = window.getComputedStyle(element)) === null || _a === void 0 ? void 0 : _a.display) === 'inline' &&
-              tagName !== 'SECTION');
-        }
-        catch (e) { }
+            tagName === "SPAN" ||
+            tagName === "STRONG" ||
+            (((_a = window.getComputedStyle(element)) === null || _a === void 0
+              ? void 0
+              : _a.display) === "inline" &&
+              tagName !== "SECTION");
+        } catch (e) {}
         return result;
       }
       exports.isInlineElement = isInlineElement;
-      var isInlineBlockElement = function (element) { var _a; return ((_a = element === null || element === void 0 ? void 0 : element.style) === null || _a === void 0 ? void 0 : _a.display) === 'inline-block'; };
-      var isNoneElement = function (element) { var _a; return ((_a = element === null || element === void 0 ? void 0 : element.style) === null || _a === void 0 ? void 0 : _a.display) === 'none'; };
+      var isInlineBlockElement = function (element) {
+        var _a;
+        return (
+          ((_a =
+            element === null || element === void 0 ? void 0 : element.style) ===
+            null || _a === void 0
+            ? void 0
+            : _a.display) === "inline-block"
+        );
+      };
+      var isNoneElement = function (element) {
+        var _a;
+        return (
+          ((_a =
+            element === null || element === void 0 ? void 0 : element.style) ===
+            null || _a === void 0
+            ? void 0
+            : _a.display) === "none"
+        );
+      };
       var getAllFontSize = function (current, prev, next) {
-        var _a = (getFirstTextNodeStyles(current) || {}).fontSize, fontSize = _a === void 0 ? '0' : _a;
-        var prevFontSize = prev ? getFirstTextNodeStyles(prev).fontSize : '0';
-        var nextFontSize = next ? getFirstTextNodeStyles(next).fontSize : '0';
-        console.log('字号[前序，当前，后续]', prevFontSize, fontSize, nextFontSize);
+        var _a = (getFirstTextNodeStyles(current) || {}).fontSize,
+          fontSize = _a === void 0 ? "0" : _a;
+        var prevFontSize = prev ? getFirstTextNodeStyles(prev).fontSize : "0";
+        var nextFontSize = next ? getFirstTextNodeStyles(next).fontSize : "0";
+        console.log(
+          "字号[前序，当前，后续]",
+          prevFontSize,
+          fontSize,
+          nextFontSize,
+        );
         return {
           fontSize: parseFloat(fontSize),
           prevFontSize: parseFloat(prevFontSize),
@@ -1581,7 +2289,10 @@
         };
       };
       function compareFontSize(current, prev, next) {
-        var _a = getAllFontSize(current, prev, next), fontSize = _a.fontSize, prevFontSize = _a.prevFontSize, nextFontSize = _a.nextFontSize;
+        var _a = getAllFontSize(current, prev, next),
+          fontSize = _a.fontSize,
+          prevFontSize = _a.prevFontSize,
+          nextFontSize = _a.nextFontSize;
         return {
           isBiggest: fontSize > prevFontSize && fontSize > nextFontSize,
           isSmallest: fontSize < prevFontSize && fontSize < nextFontSize,
@@ -1593,9 +2304,8 @@
       exports.compareFontSize = compareFontSize;
       function isNodeLeft(current) {
         var alignResult = getEffectiveTextAlign(current);
-        if (alignResult === 'left')
-          return true;
-        if (alignResult === 'justify') {
+        if (alignResult === "left") return true;
+        if (alignResult === "justify") {
           var elementRect = current.getBoundingClientRect();
           var parentRect = document
             .querySelector(const_1.CONTENT_SELECTOR_BASE)
@@ -1607,48 +2317,59 @@
       exports.isNodeLeft = isNodeLeft;
       function hasBackgroundColorInSelfOrAncestors(node, levels) {
         var _a;
-        if (levels === void 0) { levels = 4; }
+        if (levels === void 0) {
+          levels = 4;
+        }
         function isBackgroundColorSet(computedStyle) {
-          var backgroundColor = computedStyle.getPropertyValue('background-color');
+          var backgroundColor =
+            computedStyle.getPropertyValue("background-color");
           var backgroundColorFilters = [
-            'rgb(253, 253, 254)',
-            'rgba(0, 0, 0, 0)',
-            'rgba(1, 0, 0, 0)',
-            'rgb(255, 255, 255)',
-            'rgb(254, 254, 254)',
-            'rgba(255, 255, 255, 0)',
-            'rgb(247, 247, 247)',
-            'rgb(247, 247, 248)',
-            'rgb(239, 239, 239)',
+            "rgb(253, 253, 254)",
+            "rgba(0, 0, 0, 0)",
+            "rgba(1, 0, 0, 0)",
+            "rgb(255, 255, 255)",
+            "rgb(254, 254, 254)",
+            "rgba(255, 255, 255, 0)",
+            "rgb(247, 247, 247)",
+            "rgb(247, 247, 248)",
+            "rgb(239, 239, 239)",
           ];
-          return (backgroundColor !== 'transparent' &&
-            !backgroundColorFilters.includes(backgroundColor));
+          return (
+            backgroundColor !== "transparent" &&
+            !backgroundColorFilters.includes(backgroundColor)
+          );
         }
         function isBackgroundImageSet(computedStyle) {
-          var backgroundImage = computedStyle.getPropertyValue('background-image');
-          return backgroundImage && backgroundImage !== 'none';
+          var backgroundImage =
+            computedStyle.getPropertyValue("background-image");
+          return backgroundImage && backgroundImage !== "none";
         }
         function isTextShadowSet(computedStyle) {
-          var textShadow = computedStyle.getPropertyValue('text-shadow');
-          return textShadow && textShadow !== 'none';
+          var textShadow = computedStyle.getPropertyValue("text-shadow");
+          return textShadow && textShadow !== "none";
         }
         function hasExplicitBorder(computedStyle) {
           var curText = (0, exports.getNodeText)(node);
-          if ((0, const_1.isLeftSentence)(curText) && (0, const_1.countChineseCharsAndDigits)(curText) > 10)
+          if (
+            (0, const_1.isLeftSentence)(curText) &&
+            (0, const_1.countChineseCharsAndDigits)(curText) > 10
+          )
             return false;
           var borderStyles = [
-            'borderTopStyle',
-            'borderRightStyle',
-            'borderBottomStyle',
-            'borderLeftStyle',
+            "borderTopStyle",
+            "borderRightStyle",
+            "borderBottomStyle",
+            "borderLeftStyle",
           ];
           var borderWidths = [
-            'borderTopWidth',
-            'borderRightWidth',
-            'borderBottomWidth',
-            'borderLeftWidth',
+            "borderTopWidth",
+            "borderRightWidth",
+            "borderBottomWidth",
+            "borderLeftWidth",
           ];
-          var explicitStyles = borderStyles.some(function (style) { return computedStyle[style] !== 'none'; });
+          var explicitStyles = borderStyles.some(function (style) {
+            return computedStyle[style] !== "none";
+          });
           if (explicitStyles) {
             return true;
           }
@@ -1659,22 +2380,26 @@
           return explicitWidths;
         }
         function isHeightLimited(computedStyle, element) {
-          var height = computedStyle.getPropertyValue('height');
-          var actualHeight = height === 'auto' ? element.offsetHeight : height;
+          var height = computedStyle.getPropertyValue("height");
+          var actualHeight = height === "auto" ? element.offsetHeight : height;
           return parseFloat(actualHeight) < 120;
         }
         var currentNode = node;
         var currentLevel = 0;
         var hasBackground = function (computedStyle, element) {
-          return (isBackgroundColorSet(computedStyle) ||
-            isBackgroundImageSet(computedStyle) ||
-            hasExplicitBorder(computedStyle) ||
-            isTextShadowSet(computedStyle)) &&
-            isHeightLimited(computedStyle, element);
+          return (
+            (isBackgroundColorSet(computedStyle) ||
+              isBackgroundImageSet(computedStyle) ||
+              hasExplicitBorder(computedStyle) ||
+              isTextShadowSet(computedStyle)) &&
+            isHeightLimited(computedStyle, element)
+          );
         };
-        while (currentNode &&
+        while (
+          currentNode &&
           currentNode.nodeType === Node.ELEMENT_NODE &&
-          currentLevel <= levels) {
+          currentLevel <= levels
+        ) {
           var computedStyle = window.getComputedStyle(currentNode);
           if (hasBackground(computedStyle, currentNode)) {
             return true;
@@ -1684,13 +2409,25 @@
         }
         var subCurrentNode = node;
         var subCurrentLevel = 0;
-        while (subCurrentNode &&
+        while (
+          subCurrentNode &&
           subCurrentNode.nodeType === Node.ELEMENT_NODE &&
-          ((_a = subCurrentNode.childNodes) === null || _a === void 0 ? void 0 : _a.length) > 0 &&
-          subCurrentLevel <= levels) {
-          subCurrentNode = __spreadArray([], __read(subCurrentNode.childNodes), false).find(function (item) { return item.nodeType === Node.ELEMENT_NODE && (0, exports.getNodeText)(item); });
-          if (!subCurrentNode)
-            return false;
+          ((_a = subCurrentNode.childNodes) === null || _a === void 0
+            ? void 0
+            : _a.length) > 0 &&
+          subCurrentLevel <= levels
+        ) {
+          subCurrentNode = __spreadArray(
+            [],
+            __read(subCurrentNode.childNodes),
+            false,
+          ).find(function (item) {
+            return (
+              item.nodeType === Node.ELEMENT_NODE &&
+              (0, exports.getNodeText)(item)
+            );
+          });
+          if (!subCurrentNode) return false;
           var computedStyle = window.getComputedStyle(subCurrentNode);
           if (hasBackground(computedStyle, subCurrentNode)) {
             return true;
@@ -1699,33 +2436,53 @@
         }
         return false;
       }
-      exports.hasBackgroundColorInSelfOrAncestors = hasBackgroundColorInSelfOrAncestors;
+      exports.hasBackgroundColorInSelfOrAncestors =
+        hasBackgroundColorInSelfOrAncestors;
       function isNextToEachOther(prevNode, nextNode) {
         var _a, _b;
-        if (!prevNode || !nextNode)
-          return false;
-        var prevRect = (_a = prevNode === null || prevNode === void 0 ? void 0 : prevNode.getBoundingClientRect) === null || _a === void 0 ? void 0 : _a.call(prevNode);
-        var nextRect = (_b = nextNode === null || nextNode === void 0 ? void 0 : nextNode.getBoundingClientRect) === null || _b === void 0 ? void 0 : _b.call(nextNode);
+        if (!prevNode || !nextNode) return false;
+        var prevRect =
+          (_a =
+            prevNode === null || prevNode === void 0
+              ? void 0
+              : prevNode.getBoundingClientRect) === null || _a === void 0
+            ? void 0
+            : _a.call(prevNode);
+        var nextRect =
+          (_b =
+            nextNode === null || nextNode === void 0
+              ? void 0
+              : nextNode.getBoundingClientRect) === null || _b === void 0
+            ? void 0
+            : _b.call(nextNode);
         var fontSize = window
           .getComputedStyle(prevNode)
-          .getPropertyValue('font-size');
+          .getPropertyValue("font-size");
         var lineHeight = parseFloat(fontSize) * 1.5;
-        var distance = Math.abs(nextRect.y - prevRect.y - prevNode.offsetHeight / 2);
+        var distance = Math.abs(
+          nextRect.y - prevRect.y - prevNode.offsetHeight / 2,
+        );
         var isNext = distance < lineHeight * 3;
-        console.log("\u4E24\u8282\u70B9".concat(isNext ? '相邻' : '不相邻'), distance, lineHeight);
+        console.log(
+          "\u4E24\u8282\u70B9".concat(isNext ? "相邻" : "不相邻"),
+          distance,
+          lineHeight,
+        );
         return isNext;
       }
       exports.isNextToEachOther = isNextToEachOther;
 
-
       /***/
-    }),
-/* 5 */
-/***/ ((__unused_webpack_module, exports) => {
-
-
-      Object.defineProperty(exports, "__esModule", ({ value: true }));
-      exports.ENDING_REGS = exports.ENDING_REGS_WITH_CONDITION = exports.BLACK_LIST_REGS = exports.MAIN_CONTENT_START_REGS = exports.BLACKLIST_ALL_REGS = void 0;
+    },
+    /* 5 */
+    /***/ (__unused_webpack_module, exports) => {
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.ENDING_REGS =
+        exports.ENDING_REGS_WITH_CONDITION =
+        exports.BLACK_LIST_REGS =
+        exports.MAIN_CONTENT_START_REGS =
+        exports.BLACKLIST_ALL_REGS =
+          void 0;
       exports.BLACKLIST_ALL_REGS = [
         /^用\sAI连接一切$/,
         /^\s*重\s*要\s*通\s*知\s*$/,
@@ -2454,46 +3211,54 @@
         /^\[1\]http(s)?\:\/\/www\./,
       ];
 
-
       /***/
-    }),
-/* 6 */
-/***/ (function (__unused_webpack_module, exports, __webpack_require__) {
-
-
-      var __read = (this && this.__read) || function (o, n) {
-        var m = typeof Symbol === "function" && o[Symbol.iterator];
-        if (!m) return o;
-        var i = m.call(o), r, ar = [], e;
-        try {
-          while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
-        }
-        catch (error) { e = { error: error }; }
-        finally {
+    },
+    /* 6 */
+    /***/ function (__unused_webpack_module, exports, __webpack_require__) {
+      var __read =
+        (this && this.__read) ||
+        function (o, n) {
+          var m = typeof Symbol === "function" && o[Symbol.iterator];
+          if (!m) return o;
+          var i = m.call(o),
+            r,
+            ar = [],
+            e;
           try {
-            if (r && !r.done && (m = i["return"])) m.call(i);
+            while ((n === void 0 || n-- > 0) && !(r = i.next()).done)
+              ar.push(r.value);
+          } catch (error) {
+            e = { error: error };
+          } finally {
+            try {
+              if (r && !r.done && (m = i["return"])) m.call(i);
+            } finally {
+              if (e) throw e.error;
+            }
           }
-          finally { if (e) throw e.error; }
-        }
-        return ar;
-      };
-      var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
-        if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
-          if (ar || !(i in from)) {
-            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
-            ar[i] = from[i];
-          }
-        }
-        return to.concat(ar || Array.prototype.slice.call(from));
-      };
-      Object.defineProperty(exports, "__esModule", ({ value: true }));
+          return ar;
+        };
+      var __spreadArray =
+        (this && this.__spreadArray) ||
+        function (to, from, pack) {
+          if (pack || arguments.length === 2)
+            for (var i = 0, l = from.length, ar; i < l; i++) {
+              if (ar || !(i in from)) {
+                if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+                ar[i] = from[i];
+              }
+            }
+          return to.concat(ar || Array.prototype.slice.call(from));
+        };
+      Object.defineProperty(exports, "__esModule", { value: true });
       exports.pickHeaders = void 0;
       var const_1 = __webpack_require__(3);
       var filterMaxFontSizeHeaders = function (headers) {
-        if (!headers || headers.length < 1)
-          return [];
+        if (!headers || headers.length < 1) return [];
         var arr = __spreadArray([], __read(headers), false);
-        arr.sort(function (a, b) { return b.fontSize - a.fontSize; });
+        arr.sort(function (a, b) {
+          return b.fontSize - a.fontSize;
+        });
         var maxFontsize = arr[0].fontSize;
         var secondMaxFontsize = null;
         var maxCount = 0;
@@ -2501,192 +3266,339 @@
         for (var i = 0; i < arr.length; i++) {
           if (arr[i].fontSize === maxFontsize) {
             maxCount++;
-          }
-          else if (secondMaxFontsize === null ||
-            arr[i].fontSize === secondMaxFontsize) {
+          } else if (
+            secondMaxFontsize === null ||
+            arr[i].fontSize === secondMaxFontsize
+          ) {
             secondMaxFontsize = arr[i].fontSize;
             secondMaxCount++;
           }
         }
         if (maxCount === 1 && secondMaxCount >= 3) {
-          return arr.filter(function (item) { return item.fontSize === secondMaxFontsize; });
-        }
-        else {
-          return arr.filter(function (item) { return item.fontSize === maxFontsize; });
+          return arr.filter(function (item) {
+            return item.fontSize === secondMaxFontsize;
+          });
+        } else {
+          return arr.filter(function (item) {
+            return item.fontSize === maxFontsize;
+          });
         }
       };
       var validArabicSerialAndBgHeaders = function (headers) {
-        return headers.length > const_1.MIN_HEADERS_SIZE &&
-          headers.every(function (item) { return item.hasBg && (0, const_1.startWithArabicSerial)(item.text); });
+        return (
+          headers.length > const_1.MIN_HEADERS_SIZE &&
+          headers.every(function (item) {
+            return item.hasBg && (0, const_1.startWithArabicSerial)(item.text);
+          })
+        );
       };
       var checkSerialRepeat = function (headers) {
-        return new Set(headers.map(function (item) { var _a; return (_a = item.text.match(/^\d+/)) === null || _a === void 0 ? void 0 : _a[0]; })).size !==
-          headers.length;
+        return (
+          new Set(
+            headers.map(function (item) {
+              var _a;
+              return (_a = item.text.match(/^\d+/)) === null || _a === void 0
+                ? void 0
+                : _a[0];
+            }),
+          ).size !== headers.length
+        );
       };
       var checkSameFontSizeNumber = function (headers, fontSizeHeaders) {
-        return fontSizeHeaders.length ===
-          headers.filter(function (item) { return item.fontSize === fontSizeHeaders[0].fontSize; })
-            .length;
+        return (
+          fontSizeHeaders.length ===
+          headers.filter(function (item) {
+            return item.fontSize === fontSizeHeaders[0].fontSize;
+          }).length
+        );
       };
       var hasSameAlign = function (headers) {
-        return new Set(headers.map(function (item) { return item.align; })).size === 1;
+        return (
+          new Set(
+            headers.map(function (item) {
+              return item.align;
+            }),
+          ).size === 1
+        );
       };
       var hasSameFontSize = function (headers) {
-        return new Set(headers.map(function (item) { return item.fontSize; })).size === 1;
+        return (
+          new Set(
+            headers.map(function (item) {
+              return item.fontSize;
+            }),
+          ).size === 1
+        );
       };
       var filterMergeCountHeaders = function (headers) {
-        return (headers || []).filter(function (item) { return item.hasSerial || item.mergeCount <= const_1.TITLE_MERGE_COUNT_LIMIT; });
+        return (headers || []).filter(function (item) {
+          return (
+            item.hasSerial || item.mergeCount <= const_1.TITLE_MERGE_COUNT_LIMIT
+          );
+        });
       };
-      var getFirstNotCenteredHeaderFontSize = function (headers) { var _a, _b; return (_b = (_a = headers.filter(function (item) { return item.align !== const_1.ContentAlign.CENTER; })) === null || _a === void 0 ? void 0 : _a[0]) === null || _b === void 0 ? void 0 : _b.fontSize; };
+      var getFirstNotCenteredHeaderFontSize = function (headers) {
+        var _a, _b;
+        return (_b =
+          (_a = headers.filter(function (item) {
+            return item.align !== const_1.ContentAlign.CENTER;
+          })) === null || _a === void 0
+            ? void 0
+            : _a[0]) === null || _b === void 0
+          ? void 0
+          : _b.fontSize;
+      };
       var getValidHeaders = function (headers, centerHeaders) {
-        return (0, const_1.fixHeadersSubfix)(centerHeaders.length >= const_1.CENTERED_HEADERS_LIMIT ? centerHeaders : headers);
+        return (0, const_1.fixHeadersSubfix)(
+          centerHeaders.length >= const_1.CENTERED_HEADERS_LIMIT
+            ? centerHeaders
+            : headers,
+        );
       };
       var shouldRevise = function (headers) {
-        return headers.length >= const_1.MAX_REVISE_TITLE_LIMIT &&
+        return (
+          headers.length >= const_1.MAX_REVISE_TITLE_LIMIT &&
           headers.every(function (item) {
-            return item.align === const_1.ContentAlign.LEFT &&
+            return (
+              item.align === const_1.ContentAlign.LEFT &&
               !item.hasBg &&
               !item.isPreSerial &&
               !item.isBiggest &&
-              !item.hasSerial;
-          });
+              !item.hasSerial
+            );
+          })
+        );
       };
       var pickAtFirst = function (headers) {
         try {
-          var hasSerialHeaders = headers.filter(function (item) { return item.hasSerial; });
-          if (validArabicSerialAndBgHeaders(hasSerialHeaders) &&
-            !checkSerialRepeat(hasSerialHeaders)) {
-            console.log('带背景数字序号标题优先匹配成功');
+          var hasSerialHeaders = headers.filter(function (item) {
+            return item.hasSerial;
+          });
+          if (
+            validArabicSerialAndBgHeaders(hasSerialHeaders) &&
+            !checkSerialRepeat(hasSerialHeaders)
+          ) {
+            console.log("带背景数字序号标题优先匹配成功");
             return hasSerialHeaders;
           }
           var maxFontSizeHeaders = filterMaxFontSizeHeaders(headers);
           var maxFontSizeHeadersLength = maxFontSizeHeaders.length;
-          var hasSerialAndBgResults = maxFontSizeHeaders.filter(function (item) { return item.hasSerial && item.hasBg; });
-          if (hasSerialAndBgResults.length > const_1.MIN_HEADERS_SIZE &&
-            hasSameAlign(hasSerialAndBgResults)) {
-            console.log('带背景带序列号过滤成功');
+          var hasSerialAndBgResults = maxFontSizeHeaders.filter(
+            function (item) {
+              return item.hasSerial && item.hasBg;
+            },
+          );
+          if (
+            hasSerialAndBgResults.length > const_1.MIN_HEADERS_SIZE &&
+            hasSameAlign(hasSerialAndBgResults)
+          ) {
+            console.log("带背景带序列号过滤成功");
             return hasSerialAndBgResults;
           }
           var isSameAlign = hasSameAlign(maxFontSizeHeaders);
-          if (maxFontSizeHeadersLength >= const_1.MIN_HEADERS_SIZE &&
+          if (
+            maxFontSizeHeadersLength >= const_1.MIN_HEADERS_SIZE &&
             isSameAlign &&
-            maxFontSizeHeaders.every(function (item) { return item.isBiggest; })) {
-            console.log('按字号最大筛选成功');
+            maxFontSizeHeaders.every(function (item) {
+              return item.isBiggest;
+            })
+          ) {
+            console.log("按字号最大筛选成功");
             return maxFontSizeHeaders;
           }
-          if (maxFontSizeHeadersLength === headers.length &&
+          if (
+            maxFontSizeHeadersLength === headers.length &&
             maxFontSizeHeadersLength > const_1.MIN_HEADERS_SIZE &&
-            maxFontSizeHeaders.every(function (item) { return item.isBiggest; })) {
-            console.log('全为大字体');
+            maxFontSizeHeaders.every(function (item) {
+              return item.isBiggest;
+            })
+          ) {
+            console.log("全为大字体");
             return maxFontSizeHeaders;
           }
-          if (maxFontSizeHeadersLength > const_1.MIN_HEADERS_SIZE &&
+          if (
+            maxFontSizeHeadersLength > const_1.MIN_HEADERS_SIZE &&
             checkSameFontSizeNumber(headers, maxFontSizeHeaders) &&
             isSameAlign &&
-            maxFontSizeHeaders.every(function (item) { return item.hasSerial; })) {
-            console.log('按序列号以及大字体过滤成功');
+            maxFontSizeHeaders.every(function (item) {
+              return item.hasSerial;
+            })
+          ) {
+            console.log("按序列号以及大字体过滤成功");
             return maxFontSizeHeaders;
           }
           return null;
-        }
-        catch (e) {
-          console.error('初筛出错', e);
+        } catch (e) {
+          console.error("初筛出错", e);
           return null;
         }
       };
       var pickFromCenter = function (centerHeaders, allHeaders) {
         var centeredLength = centerHeaders.length;
-        if (centeredLength === const_1.CENTERED_HEADERS_LIMIT - 1 &&
-          (centerHeaders.every(function (item) { return item.hasBg; }) ||
+        if (
+          centeredLength === const_1.CENTERED_HEADERS_LIMIT - 1 &&
+          (centerHeaders.every(function (item) {
+            return item.hasBg;
+          }) ||
             (hasSameFontSize(centerHeaders) &&
               centerHeaders[0].fontSize !==
-              getFirstNotCenteredHeaderFontSize(allHeaders)))) {
-          console.log('处理仅仅两个居中标题成功');
+                getFirstNotCenteredHeaderFontSize(allHeaders)))
+        ) {
+          console.log("处理仅仅两个居中标题成功");
           return (0, const_1.fixHeadersSubfix)(centerHeaders);
         }
-        if (centeredLength > 1 &&
-          centerHeaders.every(function (item) { return item.isHeaderMerged; })) {
-          console.log('按居中合并标题筛选成功');
+        if (
+          centeredLength > 1 &&
+          centerHeaders.every(function (item) {
+            return item.isHeaderMerged;
+          })
+        ) {
+          console.log("按居中合并标题筛选成功");
           return (0, const_1.fixHeadersSubfix)(centerHeaders);
         }
         return null;
       };
       var pickAtSecond = function (validHeaders) {
-        if (validHeaders.every(function (item) { return item.hasSerial || item.isPreSerial; })) {
-          console.log('按标题序列号过滤成功');
+        if (
+          validHeaders.every(function (item) {
+            return item.hasSerial || item.isPreSerial;
+          })
+        ) {
+          console.log("按标题序列号过滤成功");
           return validHeaders;
         }
-        if ((0, const_1.isAllArabicSerialHeaders)(validHeaders) &&
-          (0, const_1.isAllValidArabicSerialHeaders)(validHeaders)) {
-          console.log('纯数字规则过滤成功');
+        if (
+          (0, const_1.isAllArabicSerialHeaders)(validHeaders) &&
+          (0, const_1.isAllValidArabicSerialHeaders)(validHeaders)
+        ) {
+          console.log("纯数字规则过滤成功");
           return validHeaders;
         }
-        var hasBgPrevResult = validHeaders.filter(function (item) { return item.hasBg; });
-        var hasBgPrevSize = hasBgPrevResult === null || hasBgPrevResult === void 0 ? void 0 : hasBgPrevResult.length;
-        if (hasBgPrevSize >= const_1.HAS_BACKGROUND_PRE_LIMIT &&
-          hasBgPrevSize !== (validHeaders === null || validHeaders === void 0 ? void 0 : validHeaders.length)) {
-          console.log('有背景规则过滤成功');
+        var hasBgPrevResult = validHeaders.filter(function (item) {
+          return item.hasBg;
+        });
+        var hasBgPrevSize =
+          hasBgPrevResult === null || hasBgPrevResult === void 0
+            ? void 0
+            : hasBgPrevResult.length;
+        if (
+          hasBgPrevSize >= const_1.HAS_BACKGROUND_PRE_LIMIT &&
+          hasBgPrevSize !==
+            (validHeaders === null || validHeaders === void 0
+              ? void 0
+              : validHeaders.length)
+        ) {
+          console.log("有背景规则过滤成功");
           return hasBgPrevResult;
         }
-        var isPrevSerialResult = validHeaders.filter(function (item) { return item.isPreSerial; });
-        if ((isPrevSerialResult === null || isPrevSerialResult === void 0 ? void 0 : isPrevSerialResult.length) >= const_1.MAX_FONTSIZE_HEADERS_LIMIT) {
-          console.log('前序序列号标题规则过滤成功');
+        var isPrevSerialResult = validHeaders.filter(function (item) {
+          return item.isPreSerial;
+        });
+        if (
+          (isPrevSerialResult === null || isPrevSerialResult === void 0
+            ? void 0
+            : isPrevSerialResult.length) >= const_1.MAX_FONTSIZE_HEADERS_LIMIT
+        ) {
+          console.log("前序序列号标题规则过滤成功");
           return isPrevSerialResult;
         }
-        var hasSerialResult = validHeaders.filter(function (item) { return item.hasSerial; });
-        if ((hasSerialResult === null || hasSerialResult === void 0 ? void 0 : hasSerialResult.length) >= const_1.MAX_FONTSIZE_HEADERS_LIMIT) {
-          console.log('序列号规则过滤成功');
+        var hasSerialResult = validHeaders.filter(function (item) {
+          return item.hasSerial;
+        });
+        if (
+          (hasSerialResult === null || hasSerialResult === void 0
+            ? void 0
+            : hasSerialResult.length) >= const_1.MAX_FONTSIZE_HEADERS_LIMIT
+        ) {
+          console.log("序列号规则过滤成功");
           return hasSerialResult;
         }
         var maxFontSizeHeaders = filterMaxFontSizeHeaders(validHeaders);
-        console.log('按字号过滤结果为', maxFontSizeHeaders);
+        console.log("按字号过滤结果为", maxFontSizeHeaders);
         var maxFontSizeHeadersSize = maxFontSizeHeaders.length;
-        if (maxFontSizeHeadersSize >= const_1.MAX_FONTSIZE_HEADERS_LIMIT ||
+        if (
+          maxFontSizeHeadersSize >= const_1.MAX_FONTSIZE_HEADERS_LIMIT ||
           ((maxFontSizeHeadersSize === validHeaders.length - 1 ||
-            validHeaders.every(function (item) { return item.align === const_1.ContentAlign.LEFT; })) &&
-            maxFontSizeHeadersSize >= const_1.MAX_FONTSIZE_HEADERS_LIMIT - 1)) {
-          var hasBgResult_1 = maxFontSizeHeaders.filter(function (item) { return item.hasBg; });
-          if ((hasBgResult_1 === null || hasBgResult_1 === void 0 ? void 0 : hasBgResult_1.length) >= const_1.MAX_FONTSIZE_HEADERS_LIMIT) {
-            console.log('按大字号标题并且又背景过滤成功！');
+            validHeaders.every(function (item) {
+              return item.align === const_1.ContentAlign.LEFT;
+            })) &&
+            maxFontSizeHeadersSize >= const_1.MAX_FONTSIZE_HEADERS_LIMIT - 1)
+        ) {
+          var hasBgResult_1 = maxFontSizeHeaders.filter(function (item) {
+            return item.hasBg;
+          });
+          if (
+            (hasBgResult_1 === null || hasBgResult_1 === void 0
+              ? void 0
+              : hasBgResult_1.length) >= const_1.MAX_FONTSIZE_HEADERS_LIMIT
+          ) {
+            console.log("按大字号标题并且又背景过滤成功！");
             return hasBgResult_1;
           }
-          console.log('按标题大字号过滤成功！');
+          console.log("按标题大字号过滤成功！");
           return maxFontSizeHeaders;
         }
-        if (maxFontSizeHeadersSize >= const_1.MIN_HEADERS_SIZE &&
-          maxFontSizeHeaders.every(function (item) { return item.isPreSerial; })) {
-          console.log('标题都为大字号，并且都含前序序列号！', maxFontSizeHeaders);
+        if (
+          maxFontSizeHeadersSize >= const_1.MIN_HEADERS_SIZE &&
+          maxFontSizeHeaders.every(function (item) {
+            return item.isPreSerial;
+          })
+        ) {
+          console.log(
+            "标题都为大字号，并且都含前序序列号！",
+            maxFontSizeHeaders,
+          );
           return maxFontSizeHeaders;
         }
-        var hasBgResult = validHeaders.filter(function (item) { return item.hasBg; });
-        if (maxFontSizeHeadersSize >= const_1.MIN_HEADERS_SIZE &&
-          maxFontSizeHeaders.every(function (item) { return item.hasBg; }) &&
-          maxFontSizeHeadersSize === (hasBgResult === null || hasBgResult === void 0 ? void 0 : hasBgResult.length)) {
-          console.log('标题都为大字号，并且都有背景色');
+        var hasBgResult = validHeaders.filter(function (item) {
+          return item.hasBg;
+        });
+        if (
+          maxFontSizeHeadersSize >= const_1.MIN_HEADERS_SIZE &&
+          maxFontSizeHeaders.every(function (item) {
+            return item.hasBg;
+          }) &&
+          maxFontSizeHeadersSize ===
+            (hasBgResult === null || hasBgResult === void 0
+              ? void 0
+              : hasBgResult.length)
+        ) {
+          console.log("标题都为大字号，并且都有背景色");
           return maxFontSizeHeaders;
         }
-        if ((hasBgResult === null || hasBgResult === void 0 ? void 0 : hasBgResult.length) >= const_1.MAX_FONTSIZE_HEADERS_LIMIT) {
-          console.log('有背景过滤成功');
+        if (
+          (hasBgResult === null || hasBgResult === void 0
+            ? void 0
+            : hasBgResult.length) >= const_1.MAX_FONTSIZE_HEADERS_LIMIT
+        ) {
+          console.log("有背景过滤成功");
           return hasBgResult;
         }
         return null;
       };
       var headersValidation = function (headers) {
-        if (headers.length < const_1.HEADER_SIZE_THREHOLD)
-          return headers;
+        if (headers.length < const_1.HEADER_SIZE_THREHOLD) return headers;
         var headerRepeatCount = headers.reduce(function (acc, item) {
           var header = item.text;
           if (header in acc) {
             acc[header]++;
-          }
-          else {
+          } else {
             acc[header] = 1;
           }
           return acc;
         }, {});
-        var isRepeatReachThrehold = Object.keys(headerRepeatCount).some(function (header) { return headerRepeatCount[header] > const_1.HEADER_REPEAT_THREHOLD; });
+        var isRepeatReachThrehold = Object.keys(headerRepeatCount).some(
+          function (header) {
+            return headerRepeatCount[header] > const_1.HEADER_REPEAT_THREHOLD;
+          },
+        );
         if (isRepeatReachThrehold) {
-          console.log('标题重复达到阈值，被清理', const_1.HEADER_SIZE_THREHOLD, const_1.HEADER_REPEAT_THREHOLD, headerRepeatCount);
+          console.log(
+            "标题重复达到阈值，被清理",
+            const_1.HEADER_SIZE_THREHOLD,
+            const_1.HEADER_REPEAT_THREHOLD,
+            headerRepeatCount,
+          );
           return [];
         }
         return headers;
@@ -2697,128 +3609,174 @@
         if (topPickHeaders) {
           return headersValidation(topPickHeaders);
         }
-        var centerHeaders = headers.filter(function (item) { return item.align === const_1.ContentAlign.CENTER; });
-        console.log('居中结果：总计', centerHeaders);
+        var centerHeaders = headers.filter(function (item) {
+          return item.align === const_1.ContentAlign.CENTER;
+        });
+        console.log("居中结果：总计", centerHeaders);
         var pickCenterHeaders = pickFromCenter(centerHeaders, headers);
         if (pickCenterHeaders) {
           return headersValidation(pickCenterHeaders);
         }
         var validHeaders = getValidHeaders(headers, centerHeaders);
-        if (validHeaders.length < const_1.MIN_HEADERS_SIZE)
-          return [];
+        if (validHeaders.length < const_1.MIN_HEADERS_SIZE) return [];
         if (shouldRevise(validHeaders)) {
-          console.log('居左杂文标题修正成功');
+          console.log("居左杂文标题修正成功");
           return [];
         }
         var pickAtSecondHeaders = pickAtSecond(validHeaders);
         if (pickAtSecondHeaders) {
           return headersValidation(pickAtSecondHeaders);
         }
-        console.log('为命中分组策略，直接返回结果');
+        console.log("为命中分组策略，直接返回结果");
         return headersValidation(validHeaders);
       };
       exports.pickHeaders = pickHeaders;
 
-
       /***/
-    }),
-/* 7 */
-/***/ ((__unused_webpack_module, exports) => {
-
-
-      Object.defineProperty(exports, "__esModule", ({ value: true }));
+    },
+    /* 7 */
+    /***/ (__unused_webpack_module, exports) => {
+      Object.defineProperty(exports, "__esModule", { value: true });
       exports.getElementPath = void 0;
       var getElementPath = function (element, rootElement) {
         var path = [];
         while (element && element !== rootElement) {
           var tagName = element.tagName.toLowerCase();
           var siblings = Array.from(element.parentNode.children);
-          var index = siblings.length > 1 ? ":nth-child(".concat(siblings.indexOf(element) + 1, ")") : '';
+          var index =
+            siblings.length > 1
+              ? ":nth-child(".concat(siblings.indexOf(element) + 1, ")")
+              : "";
           path.unshift("".concat(tagName).concat(index));
           element = element.parentElement;
         }
-        return path.join(' > ');
+        return path.join(" > ");
       };
       exports.getElementPath = getElementPath;
 
-
       /***/
-    }),
-/* 8 */
-/***/ (function (__unused_webpack_module, exports) {
-
-
-      var __assign = (this && this.__assign) || function () {
-        __assign = Object.assign || function (t) {
-          for (var s, i = 1, n = arguments.length; i < n; i++) {
-            s = arguments[i];
-            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-              t[p] = s[p];
-          }
-          return t;
+    },
+    /* 8 */
+    /***/ function (__unused_webpack_module, exports) {
+      var __assign =
+        (this && this.__assign) ||
+        function () {
+          __assign =
+            Object.assign ||
+            function (t) {
+              for (var s, i = 1, n = arguments.length; i < n; i++) {
+                s = arguments[i];
+                for (var p in s)
+                  if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+              }
+              return t;
+            };
+          return __assign.apply(this, arguments);
         };
-        return __assign.apply(this, arguments);
-      };
-      var __values = (this && this.__values) || function (o) {
-        var s = typeof Symbol === "function" && Symbol.iterator, m = s && o[s], i = 0;
-        if (m) return m.call(o);
-        if (o && typeof o.length === "number") return {
-          next: function () {
-            if (o && i >= o.length) o = void 0;
-            return { value: o && o[i++], done: !o };
-          }
+      var __values =
+        (this && this.__values) ||
+        function (o) {
+          var s = typeof Symbol === "function" && Symbol.iterator,
+            m = s && o[s],
+            i = 0;
+          if (m) return m.call(o);
+          if (o && typeof o.length === "number")
+            return {
+              next: function () {
+                if (o && i >= o.length) o = void 0;
+                return { value: o && o[i++], done: !o };
+              },
+            };
+          throw new TypeError(
+            s ? "Object is not iterable." : "Symbol.iterator is not defined.",
+          );
         };
-        throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
-      };
-      Object.defineProperty(exports, "__esModule", ({ value: true }));
+      Object.defineProperty(exports, "__esModule", { value: true });
       exports.getMetas = exports.clearDom = void 0;
       function clearDom() {
         var e_1, _a;
         var _b;
-        var selectors = ['#content_bottom_area'];
+        var selectors = ["#content_bottom_area"];
         try {
-          for (var selectors_1 = __values(selectors), selectors_1_1 = selectors_1.next(); !selectors_1_1.done; selectors_1_1 = selectors_1.next()) {
+          for (
+            var selectors_1 = __values(selectors),
+              selectors_1_1 = selectors_1.next();
+            !selectors_1_1.done;
+            selectors_1_1 = selectors_1.next()
+          ) {
             var selector = selectors_1_1.value;
             var element = document.querySelector(selector);
             if (element) {
-              (_b = element.style) === null || _b === void 0 ? void 0 : _b.setProperty('display', 'none', 'important');
-              console.log(selector, '已清洗');
+              (_b = element.style) === null || _b === void 0
+                ? void 0
+                : _b.setProperty("display", "none", "important");
+              console.log(selector, "已清洗");
             }
           }
-        }
-        catch (e_1_1) { e_1 = { error: e_1_1 }; }
-        finally {
+        } catch (e_1_1) {
+          e_1 = { error: e_1_1 };
+        } finally {
           try {
-            if (selectors_1_1 && !selectors_1_1.done && (_a = selectors_1.return)) _a.call(selectors_1);
+            if (
+              selectors_1_1 &&
+              !selectors_1_1.done &&
+              (_a = selectors_1.return)
+            )
+              _a.call(selectors_1);
+          } finally {
+            if (e_1) throw e_1.error;
           }
-          finally { if (e_1) throw e_1.error; }
         }
       }
       exports.clearDom = clearDom;
       function getMetaContentsByProperties(propertyArr) {
         var e_2, _a;
         var _b;
-        if (propertyArr === void 0) { propertyArr = []; }
+        if (propertyArr === void 0) {
+          propertyArr = [];
+        }
         var results = {};
-        var metaTags = document.getElementsByTagName('meta');
+        var metaTags = document.getElementsByTagName("meta");
         try {
-          for (var propertyArr_1 = __values(propertyArr), propertyArr_1_1 = propertyArr_1.next(); !propertyArr_1_1.done; propertyArr_1_1 = propertyArr_1.next()) {
+          for (
+            var propertyArr_1 = __values(propertyArr),
+              propertyArr_1_1 = propertyArr_1.next();
+            !propertyArr_1_1.done;
+            propertyArr_1_1 = propertyArr_1.next()
+          ) {
             var property = propertyArr_1_1.value;
-            results[property] = '';
-            for (var i = 0; i < (metaTags === null || metaTags === void 0 ? void 0 : metaTags.length); i++) {
-              if (((_b = metaTags[i]) === null || _b === void 0 ? void 0 : _b.getAttribute('property')) === property) {
-                results[property] = metaTags[i].getAttribute('content');
+            results[property] = "";
+            for (
+              var i = 0;
+              i <
+              (metaTags === null || metaTags === void 0
+                ? void 0
+                : metaTags.length);
+              i++
+            ) {
+              if (
+                ((_b = metaTags[i]) === null || _b === void 0
+                  ? void 0
+                  : _b.getAttribute("property")) === property
+              ) {
+                results[property] = metaTags[i].getAttribute("content");
                 break;
               }
             }
           }
-        }
-        catch (e_2_1) { e_2 = { error: e_2_1 }; }
-        finally {
+        } catch (e_2_1) {
+          e_2 = { error: e_2_1 };
+        } finally {
           try {
-            if (propertyArr_1_1 && !propertyArr_1_1.done && (_a = propertyArr_1.return)) _a.call(propertyArr_1);
+            if (
+              propertyArr_1_1 &&
+              !propertyArr_1_1.done &&
+              (_a = propertyArr_1.return)
+            )
+              _a.call(propertyArr_1);
+          } finally {
+            if (e_2) throw e_2.error;
           }
-          finally { if (e_2) throw e_2.error; }
         }
         return results;
       }
@@ -2828,63 +3786,94 @@
         var findElement = function (selectors) {
           var e_3, _a;
           try {
-            for (var selectors_2 = __values(selectors), selectors_2_1 = selectors_2.next(); !selectors_2_1.done; selectors_2_1 = selectors_2.next()) {
+            for (
+              var selectors_2 = __values(selectors),
+                selectors_2_1 = selectors_2.next();
+              !selectors_2_1.done;
+              selectors_2_1 = selectors_2.next()
+            ) {
               var selector = selectors_2_1.value;
               var element = document.querySelector(selector);
-              if (element === null || element === void 0 ? void 0 : element.innerText) {
+              if (
+                element === null || element === void 0
+                  ? void 0
+                  : element.innerText
+              ) {
                 return { selector: selector, innerText: element.innerText };
               }
             }
-          }
-          catch (e_3_1) { e_3 = { error: e_3_1 }; }
-          finally {
+          } catch (e_3_1) {
+            e_3 = { error: e_3_1 };
+          } finally {
             try {
-              if (selectors_2_1 && !selectors_2_1.done && (_a = selectors_2.return)) _a.call(selectors_2);
+              if (
+                selectors_2_1 &&
+                !selectors_2_1.done &&
+                (_a = selectors_2.return)
+              )
+                _a.call(selectors_2);
+            } finally {
+              if (e_3) throw e_3.error;
             }
-            finally { if (e_3) throw e_3.error; }
           }
           return { selector: null, innerText: null };
         };
         var titleSelectors = [
-          '#activity-name',
-          'h1.rich_media_title',
-          '#js_video_page_title',
-          'title',
-          '#js_tag_name',
+          "#activity-name",
+          "h1.rich_media_title",
+          "#js_video_page_title",
+          "title",
+          "#js_tag_name",
         ];
         var authorSelectors = [
-          '#js_name',
-          '#js_wx_follow_nickname',
-          '.account_nickname_inner',
-          '.album__author-name',
+          "#js_name",
+          "#js_wx_follow_nickname",
+          ".account_nickname_inner",
+          ".album__author-name",
         ];
         var titleInfo = findElement(titleSelectors);
-        if (!(titleInfo === null || titleInfo === void 0 ? void 0 : titleInfo.innerText)) {
-          console.log('各种title获取失败，使用og:title兜底');
+        if (
+          !(titleInfo === null || titleInfo === void 0
+            ? void 0
+            : titleInfo.innerText)
+        ) {
+          console.log("各种title获取失败，使用og:title兜底");
           var ogTitleSelector = 'meta[property="og:title"]';
-          var innerText = ((_b = (_a = document.querySelector(ogTitleSelector)) === null || _a === void 0 ? void 0 : _a.getAttribute) === null || _b === void 0 ? void 0 : _b.call(_a, 'content')) || '';
-          console.log('og:title获取到的结果为', innerText);
+          var innerText =
+            ((_b =
+              (_a = document.querySelector(ogTitleSelector)) === null ||
+              _a === void 0
+                ? void 0
+                : _a.getAttribute) === null || _b === void 0
+              ? void 0
+              : _b.call(_a, "content")) || "";
+          console.log("og:title获取到的结果为", innerText);
           if (innerText) {
             titleInfo.innerText = innerText;
             titleInfo.selector = ogTitleSelector;
           }
         }
         var authorInfo = findElement(authorSelectors);
-        var metaProperties = ['og:url', 'og:description'];
-        var metas = __assign({ title: titleInfo.innerText, titleSelector: titleInfo.selector, author: authorInfo.innerText, authorSelector: authorInfo.selector }, getMetaContentsByProperties(metaProperties));
-        console.log('文章基础信息', metas);
+        var metaProperties = ["og:url", "og:description"];
+        var metas = __assign(
+          {
+            title: titleInfo.innerText,
+            titleSelector: titleInfo.selector,
+            author: authorInfo.innerText,
+            authorSelector: authorInfo.selector,
+          },
+          getMetaContentsByProperties(metaProperties),
+        );
+        console.log("文章基础信息", metas);
         return metas;
       }
       exports.getMetas = getMetas;
 
-
       /***/
-    }),
-/* 9 */
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
-
-
-      Object.defineProperty(exports, "__esModule", ({ value: true }));
+    },
+    /* 9 */
+    /***/ (__unused_webpack_module, exports, __webpack_require__) => {
+      Object.defineProperty(exports, "__esModule", { value: true });
       exports.getParagraphs = exports.getParagraphsBackVersion = void 0;
       var const_1 = __webpack_require__(3);
       var doms_1 = __webpack_require__(4);
@@ -2894,88 +3883,123 @@
         var paragraphs = [];
         var container = document.querySelector(const_1.CONTENT_SELECTOR_BASE);
         var baseSelector = const_1.CONTENT_SELECTOR_BASE;
-        while (container.children.length === 1 ||
+        while (
+          container.children.length === 1 ||
           (container.children.length === 2 &&
-            container.children[1].tagName === 'P' &&
-            ((_a = container.children[1].style) === null || _a === void 0 ? void 0 : _a.display) === 'none')) {
+            container.children[1].tagName === "P" &&
+            ((_a = container.children[1].style) === null || _a === void 0
+              ? void 0
+              : _a.display) === "none")
+        ) {
           container = container.children[0];
           baseSelector += " > ".concat(container.tagName.toLocaleLowerCase());
         }
-        for (var i = 0; i < (container === null || container === void 0 ? void 0 : container.children.length); i++) {
+        for (
+          var i = 0;
+          i <
+          (container === null || container === void 0
+            ? void 0
+            : container.children.length);
+          i++
+        ) {
           var node = container.children[i];
-          if (!node || !((_b = node.innerText) === null || _b === void 0 ? void 0 : _b.trim())) {
+          if (
+            !node ||
+            !((_b = node.innerText) === null || _b === void 0
+              ? void 0
+              : _b.trim())
+          ) {
             continue;
           }
           paragraphs.push({
-            path: "".concat(baseSelector, " > ").concat((0, path_1.getElementPath)(node, container)),
+            path: ""
+              .concat(baseSelector, " > ")
+              .concat((0, path_1.getElementPath)(node, container)),
             text: node.innerText,
           });
         }
-        console.log('获取到的段落信息为', paragraphs);
+        console.log("获取到的段落信息为", paragraphs);
         return paragraphs;
       }
       exports.getParagraphsBackVersion = getParagraphsBackVersion;
       function getParagraphs() {
         var paragraphs = [];
         var container = document.querySelector(const_1.CONTENT_SELECTOR_BASE);
-        if (!container)
-          return paragraphs;
+        if (!container) return paragraphs;
         function traverseContainer(node) {
           var _a, _b;
           if ((0, doms_1.isMiniParagraph)(node)) {
-            var text = (_a = node === null || node === void 0 ? void 0 : node.innerText) === null || _a === void 0 ? void 0 : _a.trim();
-            if ((_b = node === null || node === void 0 ? void 0 : node.querySelector) === null || _b === void 0 ? void 0 : _b.call(node, '.mp-video-player')) {
-              console.log('【跳过】视频===>', text);
+            var text =
+              (_a =
+                node === null || node === void 0 ? void 0 : node.innerText) ===
+                null || _a === void 0
+                ? void 0
+                : _a.trim();
+            if (
+              (_b =
+                node === null || node === void 0
+                  ? void 0
+                  : node.querySelector) === null || _b === void 0
+                ? void 0
+                : _b.call(node, ".mp-video-player")
+            ) {
+              console.log("【跳过】视频===>", text);
               return;
             }
             if (text) {
               paragraphs.push({
-                path: "".concat(const_1.CONTENT_SELECTOR_BASE, " > ").concat((0, path_1.getElementPath)(node, container)),
+                path: ""
+                  .concat(const_1.CONTENT_SELECTOR_BASE, " > ")
+                  .concat((0, path_1.getElementPath)(node, container)),
                 text: text,
               });
             }
-          }
-          else {
+          } else {
             for (var i = 0; i < node.childNodes.length; i++) {
               traverseContainer(node.childNodes[i]);
             }
           }
         }
         traverseContainer(container);
-        console.log('获取到的段落信息为', paragraphs);
+        console.log("获取到的段落信息为", paragraphs);
         return paragraphs;
       }
       exports.getParagraphs = getParagraphs;
 
-
       /***/
-    })
-/******/]);
-/************************************************************************/
-/******/ 	// The module cache
-/******/ 	var __webpack_module_cache__ = {};
-/******/
-/******/ 	// The require function
-/******/ 	function __webpack_require__(moduleId) {
-/******/ 		// Check if module is in cache
-/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
-/******/ 		if (cachedModule !== undefined) {
-/******/ 			return cachedModule.exports;
+    },
+    /******/
+  ];
+  /************************************************************************/
+  /******/ // The module cache
+  /******/ var __webpack_module_cache__ = {};
+  /******/
+  /******/ // The require function
+  /******/ function __webpack_require__(moduleId) {
+    /******/ // Check if module is in cache
+    /******/ var cachedModule = __webpack_module_cache__[moduleId];
+    /******/ if (cachedModule !== undefined) {
+      /******/ return cachedModule.exports;
       /******/
     }
-/******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = __webpack_module_cache__[moduleId] = {
-/******/ 			// no module.id needed
-/******/ 			// no module.loaded needed
-/******/ 			exports: {}
+    /******/ // Create a new module (and put it into the cache)
+    /******/ var module = (__webpack_module_cache__[moduleId] = {
+      /******/ // no module.id needed
+      /******/ // no module.loaded needed
+      /******/ exports: {},
       /******/
-    };
-/******/
-/******/ 		// Execute the module function
-/******/ 		__webpack_modules__[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-/******/
-/******/ 		// Return the exports of the module
-/******/ 		return module.exports;
+    });
+    /******/
+    /******/ // Execute the module function
+    /******/ __webpack_modules__[moduleId].call(
+      module.exports,
+      module,
+      module.exports,
+      __webpack_require__,
+    );
+    /******/
+    /******/ // Return the exports of the module
+    /******/ return module.exports;
     /******/
   }
   /******/
@@ -2986,22 +4010,27 @@
     var exports = __webpack_exports__;
 
     const getImage = () => {
-      const imgsList = Array.from(document.getElementsByTagName('img'))
-        .filter(img => img.width > 200 && img.width < 1000 && img.height > 200 && img.height < 1000)
-        .filter(img => !!img.src && img.src.startsWith('http'))
+      const imgsList = Array.from(document.getElementsByTagName("img"))
+        .filter(
+          (img) =>
+            img.width > 200 &&
+            img.width < 1000 &&
+            img.height > 200 &&
+            img.height < 1000,
+        )
+        .filter((img) => !!img.src && img.src.startsWith("http"))
         .sort((a, b) => b.width * b.height - a.width * a.height)
-        .map(img => img.src)
+        .map((img) => img.src);
       return imgsList;
-    }
+    };
 
-    Object.defineProperty(exports, "__esModule", ({ value: true }));
+    Object.defineProperty(exports, "__esModule", { value: true });
     var forall_1 = __webpack_require__(1);
     var allMetas = (0, forall_1.getAllMetas)();
-    console.log('获取到的所有信息为', allMetas);
+    console.log("获取到的所有信息为", allMetas);
     allMetas.imgs = getImage();
     window.allMetas = allMetas;
     return allMetas;
-
   })();
   return allMetas;
   /******/

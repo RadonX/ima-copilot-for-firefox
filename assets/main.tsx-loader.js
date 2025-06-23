@@ -1,5 +1,5 @@
 (function () {
-  'use strict';
+  "use strict";
 
   const injectTime = performance.now();
   (async () => {
@@ -7,7 +7,8 @@
       /* @vite-ignore */
       chrome.runtime.getURL("assets/main.tsx.js")
     );
-    onExecute?.({ perf: { injectTime, loadTime: performance.now() - injectTime } });
+    onExecute?.({
+      perf: { injectTime, loadTime: performance.now() - injectTime },
+    });
   })().catch(console.error);
-
 })();
