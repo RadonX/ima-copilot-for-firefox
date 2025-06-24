@@ -25292,32 +25292,23 @@ const vM = async () => {
   $L = () => {
     chrome.runtime.onMessageExternal.addListener((e, t, r) => {
       try {
-        console.log("[DEBUG] External message received:", JSON.stringify(e));
-        console.log("[DEBUG] Sender info:", JSON.stringify(t));
+        console.log("[MSG] Background: External message received:", e?.action, "from:", t?.url || "unknown");
         
         if ((e == null ? void 0 : e.action) === "verifyWxCode") {
-          console.log("[DEBUG] Processing verifyWxCode action");
-          console.log("[DEBUG] WeChat code:", e?.params?.wxCode);
+          console.log("[MSG] Background: Processing verifyWxCode, code:", e?.params?.wxCode);
           
           return (
             hM(e == null ? void 0 : e.params.wxCode).then((s) => {
-              console.log("[DEBUG] hM function result:", JSON.stringify(s));
-              console.log("[DEBUG] Has userId:", !!s.userId);
-              console.log("[DEBUG] Has token:", !!s.token);
+              console.log("[MSG] Background: WeChat verification result - userId:", !!s.userId, "token:", !!s.token);
               
               if (s.userId && s.token) {
-                console.log("[DEBUG] Storing user info in chrome.storage.local");
-                console.log("[DEBUG] Storage key:", sr.userInfo);
-                console.log("[DEBUG] Storage value:", JSON.stringify(s));
+                console.log("[MSG] Background: Storing user info in storage");
                 chrome.storage.local.set({ [sr.userInfo]: s });
-              } else {
-                console.log("[DEBUG] NOT storing user info - missing userId or token");
               }
               
-              console.log("[DEBUG] Sending response:", JSON.stringify(s));
               r(s);
             }).catch((error) => {
-              console.error("[DEBUG] Error in hM function:", error);
+              console.error("[MSG] Background: WeChat verification failed:", error.message);
               r({ code: -1, msg: "WeChat verification failed", data: null });
             }),
             !0
