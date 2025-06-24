@@ -7671,11 +7671,20 @@ const Tp = ({ action: e, params: t }) => {
   ny = () => {
     const userAgent = globalThis.navigator.userAgent;
     const hasIMA = userAgent.includes("IMA");
+    const isFirefoxExtension = userAgent.includes("Firefox") && !!globalThis.chrome?.storage;
+    const isChromeExtension = userAgent.includes("Chrome") && !!globalThis.chrome?.storage;
+    const isExtensionEnvironment = isFirefoxExtension || isChromeExtension;
+    
     console.log("[DEBUG] ny: User agent check - userAgent:", userAgent);
     console.log("[DEBUG] ny: User agent check - includes 'IMA':", hasIMA);
     console.log("[DEBUG] ny: Browser info - Firefox:", userAgent.includes("Firefox"));
     console.log("[DEBUG] ny: Browser info - Chrome:", userAgent.includes("Chrome"));
-    return hasIMA;
+    console.log("[DEBUG] ny: Extension environment check - Firefox extension:", isFirefoxExtension);
+    console.log("[DEBUG] ny: Extension environment check - Chrome extension:", isChromeExtension);
+    console.log("[DEBUG] ny: Extension environment check - is extension:", isExtensionEnvironment);
+    
+    // Allow both desktop IMA and browser extensions (Firefox/Chrome)
+    return hasIMA || isExtensionEnvironment;
   },
   eL = async ({ action: e, params: t, timeout: r = 5e3 }) => {
     console.warn("[callNativePromise] 触发终端调用：", e, JSON.stringify(t));
@@ -7689,45 +7698,75 @@ const Tp = ({ action: e, params: t }) => {
     
     try {
       if (userAgentCheck) {
-        console.log("[DEBUG] callNativePromise: Using native bridge (Chrome path)");
-        return new Promise((s) => {
-          var n, i, o;
-          console.log("[DEBUG] callNativePromise: Setting up timeout (", r, "ms)");
-          
-          const timeoutId = setTimeout(() => {
-            console.log("[DEBUG] callNativePromise: Timeout reached, resolving with timeout response");
-            s({ code: In.Timeout, msg: "接口执行超时", data: null });
-          }, r);
-          
-          const chromeImaFrame = (n = globalThis.chrome) == null ? void 0 : n.imaFrame;
-          const invokeCallback = (i = chromeImaFrame) == null ? void 0 : i.invokeWithCallback;
-          
-          console.log("[DEBUG] callNativePromise: chromeImaFrame:", chromeImaFrame);
-          console.log("[DEBUG] callNativePromise: invokeCallback function:", typeof invokeCallback);
-          
-          if (!invokeCallback) {
-            console.error("[DEBUG] callNativePromise: invokeWithCallback not available, resolving with null data");
-            clearTimeout(timeoutId);
-            s({ code: 0, msg: "invokeWithCallback not available", data: null });
-            return;
-          }
-          
-          const callParams = { action: e, params: Ue(t) };
-          console.log("[DEBUG] callNativePromise: Calling invokeWithCallback with:", JSON.stringify(callParams));
-          
-          try {
-            const result = invokeCallback.call(chromeImaFrame, callParams, (a) => {
-              console.log("[DEBUG] callNativePromise: Callback fired with response:", JSON.stringify(a));
+        const isExtensionEnv = !!globalThis.chrome?.storage && !globalThis.chrome?.imaFrame;
+        console.log("[DEBUG] callNativePromise: Extension environment detected:", isExtensionEnv);
+        
+        if (isExtensionEnv) {
+          // Browser extension path - use chrome.runtime.sendMessage
+          console.log("[DEBUG] callNativePromise: Using extension message passing");
+          return new Promise((s) => {
+            const timeoutId = setTimeout(() => {
+              console.log("[DEBUG] callNativePromise: Extension timeout reached");
+              s({ code: In.Timeout, msg: "接口执行超时", data: null });
+            }, r);
+            
+            const messageData = { action: e, params: Ue(t) };
+            console.log("[DEBUG] callNativePromise: Sending extension message:", JSON.stringify(messageData));
+            
+            try {
+              globalThis.chrome.runtime.sendMessage(messageData, (response) => {
+                console.log("[DEBUG] callNativePromise: Extension response received:", JSON.stringify(response));
+                clearTimeout(timeoutId);
+                s(response || { code: 0, msg: "Extension response received", data: null });
+              });
+            } catch (sendError) {
+              console.error("[DEBUG] callNativePromise: Error sending extension message:", sendError);
               clearTimeout(timeoutId);
-              s(a);
-            });
-            console.log("[DEBUG] callNativePromise: invokeWithCallback call result:", result);
-          } catch (callError) {
-            console.error("[DEBUG] callNativePromise: Error calling invokeWithCallback:", callError);
-            clearTimeout(timeoutId);
-            s({ code: In.FrontendException, msg: `Invoke error: ${callError}`, data: null });
-          }
-        });
+              s({ code: In.FrontendException, msg: `Extension message error: ${sendError}`, data: null });
+            }
+          });
+        } else {
+          // Desktop IMA path - use chrome.imaFrame.invokeWithCallback
+          console.log("[DEBUG] callNativePromise: Using native bridge (Desktop IMA path)");
+          return new Promise((s) => {
+            var n, i, o;
+            console.log("[DEBUG] callNativePromise: Setting up timeout (", r, "ms)");
+            
+            const timeoutId = setTimeout(() => {
+              console.log("[DEBUG] callNativePromise: Timeout reached, resolving with timeout response");
+              s({ code: In.Timeout, msg: "接口执行超时", data: null });
+            }, r);
+            
+            const chromeImaFrame = (n = globalThis.chrome) == null ? void 0 : n.imaFrame;
+            const invokeCallback = (i = chromeImaFrame) == null ? void 0 : i.invokeWithCallback;
+            
+            console.log("[DEBUG] callNativePromise: chromeImaFrame:", chromeImaFrame);
+            console.log("[DEBUG] callNativePromise: invokeCallback function:", typeof invokeCallback);
+            
+            if (!invokeCallback) {
+              console.error("[DEBUG] callNativePromise: invokeWithCallback not available, resolving with null data");
+              clearTimeout(timeoutId);
+              s({ code: 0, msg: "invokeWithCallback not available", data: null });
+              return;
+            }
+            
+            const callParams = { action: e, params: Ue(t) };
+            console.log("[DEBUG] callNativePromise: Calling invokeWithCallback with:", JSON.stringify(callParams));
+            
+            try {
+              const result = invokeCallback.call(chromeImaFrame, callParams, (a) => {
+                console.log("[DEBUG] callNativePromise: Callback fired with response:", JSON.stringify(a));
+                clearTimeout(timeoutId);
+                s(a);
+              });
+              console.log("[DEBUG] callNativePromise: invokeWithCallback call result:", result);
+            } catch (callError) {
+              console.error("[DEBUG] callNativePromise: Error calling invokeWithCallback:", callError);
+              clearTimeout(timeoutId);
+              s({ code: In.FrontendException, msg: `Invoke error: ${callError}`, data: null });
+            }
+          });
+        }
       } else {
         console.log("[DEBUG] callNativePromise: User agent check failed, returning null data (Firefox fallback)");
         const fallbackResponse = { code: 0, msg: "User agent check failed - Firefox compatibility issue", data: null };
