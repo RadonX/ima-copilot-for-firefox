@@ -31458,6 +31458,7 @@ const oS = Mi(rS),
     return (
       le.useEffect(() => {
         chrome.runtime.onMessage.addListener((d, g, I) => {
+          console.log("[MSG] Content: Login panel message received:", d?.action);
           if (d.action === Wl.HideLoginPanel) return i(!1), I(), !0;
           if (d.action === Wl.ShowLoginPanel) return i(!0), I(), !0;
         });
@@ -31485,6 +31486,7 @@ const oS = Mi(rS),
         loginInfo: e,
         showLogin: o,
         logout: () => {
+          console.log("[MSG] Content: Sending logout message");
           chrome.runtime.sendMessage({ action: Wl.LogoutInWeb }, () => {
             t(null), i(!0), l.report(Ln.PluginExitSuc);
           });
@@ -31947,6 +31949,7 @@ const oS = Mi(rS),
     );
   },
   Ta = () => {
+    console.log("[MSG] Content: Sending KnowledgeUpdated message");
     chrome.runtime.sendMessage({ action: E2.KnowledgeUpdated });
   },
   DS = ({ openId: e, guid: t, userId: n }) => {

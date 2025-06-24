@@ -2568,6 +2568,7 @@ const _s = async () => {
   vs = (r) => {
     const e = async (t, o, s) => {
       var l;
+      console.log("[MSG] Background: Message received:", t?.action || "unknown", "from:", o?.tab?.url || "unknown");
       if (!ur(t, dr.AddAiSession)) return !1;
       const { sessionId: n, tabId: a } = t,
         i = a || ((l = o.tab) == null ? void 0 : l.id) || 0;
@@ -2822,6 +2823,7 @@ const Rs = (r) => {
       }),
       chrome.runtime.onMessage.addListener((r, e) => {
         var t, o;
+        console.log("[MSG] Background: KnowledgeUpdated listener received:", r?.action, "from:", e?.tab?.url || "unknown");
         return (
           (r == null ? void 0 : r.action) === Gr.KnowledgeUpdated &&
             (console.log("收到KnowledgeBase消息", r),
