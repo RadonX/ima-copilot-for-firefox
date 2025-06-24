@@ -1,147 +1,156 @@
-# Firefox Extension Authentication Analysis
+# IMA Extension Authentication Analysis
 
 ## Executive Summary
 
-After adding extensive logging to the Firefox extension, we discovered that the authentication system has a **dual architecture** with one working component and one failing component. The extension is not failing due to Firefox incompatibility as initially suspected, but rather due to architectural issues between different parts of the codebase.
+Investigation into Firefox extension authentication failures revealed the **root cause**: Firefox does not support the `externally_connectable` manifest feature, which prevents external WeChat login pages from sending verification codes to the extension via `chrome.runtime.sendMessage()`.
 
-## Key Findings from Console Log Analysis
+**Status**: Chrome works (has `externally_connectable` support), Firefox fails (no `externally_connectable` support).
 
-### 1. **Dual Code Architecture Discovery**
+## Authentication Architecture
 
-The extension operates with **two separate authentication systems**:
+### WeChat Login Flow
 
-**System 1 - Background Script (pkg.js) - ✅ WORKING:**
-- Successfully operates in Firefox
-- Uses `chrome.storage.local` for account management  
-- Extension ID: `vh8lx6lps9@Manual_XPIPorter`
-- All logging shows successful operation
-- Handles: account info retrieval, token management, storage operations
+**Working Flow (Chrome)**:
+1. User scans WeChat QR code
+2. WeChat redirects to `https://ima.qq.com/universal-login/` with auth code
+3. External login page calls `chrome.runtime.sendMessage(extensionId, {action: "verifyWxCode", params: {wxCode: "..."}})`
+4. Extension background script receives message via `chrome.runtime.onMessageExternal`
+5. Extension processes verification and stores user data to `chrome.storage.local`
 
-**System 2 - Login Page Content (index-9xhPJVFT.js) - ❌ FAILING:**
-- Contains the original error messages from console logs
-- Uses different `callNativePromise` implementation
-- Still returning empty responses with "终端接口空响应" errors
-- This appears to be WeChat login page embedded content
+**Broken Flow (Firefox)**:
+1. User scans WeChat QR code
+2. WeChat redirects to `https://ima.qq.com/universal-login/` with auth code  
+3. External login page attempts `chrome.runtime.sendMessage()` ❌ **BLOCKED - Firefox doesn't support externally_connectable**
+4. Extension never receives verification message
+5. User data never stored, appears "logged out"
 
-### 2. **Detailed Component Analysis**
+### Key Components
 
-#### Working System Evidence (pkg.js)
-```
-[DEBUG] getAccountInfo: Starting account info retrieval
-[DEBUG] getAccountInfo: Raw response from invokeWithPromise: {"data":...,"code":0,"msg":""}
-[DEBUG] handleResponse: Response validation passed, processing data
-```
+#### Background Script (`assets/pkg.js`)
+- **Function**: `chrome.runtime.onMessageExternal.addListener()` - handles `verifyWxCode`
+- **Storage**: `chrome.storage.local.set({userInfo: userData})` - persists login data
+- **Status**: ✅ Works in both browsers
 
-**Key Success Indicators:**
-- ✅ Native bridge calls succeed
-- ✅ Response validation passes
-- ✅ Data processing works correctly
-- ✅ Chrome storage operations function properly
-- ✅ All authentication infrastructure is Firefox-compatible
+#### External Login Pages  
+- **Location**: `https://ima.qq.com/universal-login/`
+- **Function**: Extracts WeChat auth codes and sends to extension
+- **Chrome**: ✅ Can send messages via `externally_connectable`
+- **Firefox**: ❌ Cannot send messages (no `externally_connectable` support)
 
-#### Failing System Evidence (index-9xhPJVFT.js)
-```
-[callNativePromise] 触发终端调用： getAccountInfo undefined
-终端接口空响应
-[initLogger] -> accountInfo, deviceInfo: null null
-```
-
-**Key Failure Indicators:**
-- ❌ Native bridge calls return undefined
-- ❌ Terminal interface returns empty responses
-- ❌ Account and device info remain null
-- ❌ Expected desktop application APIs not available
-
-### 3. **Architecture Understanding**
-
-The extension structure consists of:
-- **Background Script** (`pkg.js`) - Firefox compatible, working perfectly
-- **Content Script** (`main.tsx.js`) - UI layer, also working
-- **Login Page Content** (`index-9xhPJVFT.js`) - **This is the problematic component**
-
-### 4. **Root Cause Identification**
-
-The `index-9xhPJVFT.js` file appears to be:
-- **WeChat login page JavaScript** loaded from `ima.qq.com`
-- **Designed for native desktop application** integration
-- **Expecting native desktop app APIs** that don't exist in browser extensions
-- **Attempting to call functions** that only exist in the desktop version
-
-### 5. **Authentication Flow Analysis**
-
-**Current Flow Behavior:**
-1. **QR Code Display**: ✅ Works (handled by working content scripts)
-2. **WeChat OAuth**: ✅ Works (generates authorization codes successfully)
-3. **Code Processing**: ❌ **FAILS** (login page expects native desktop APIs)
-4. **Token Storage**: ❌ Never reached due to step 3 failure
-
-**Evidence from Logs:**
-- QR codes load successfully: `qrcode loaded， duration: 1195`
-- WeChat redirect URLs generated with auth codes
-- But authentication stalls after QR scan due to native API expectations
-
-### 6. **Technical Details**
-
-#### Working Authentication System (pkg.js)
-- **Storage Operations**: Uses `chrome.storage.local` successfully
-- **Account Management**: Proper user info structure with all required fields
-- **Response Processing**: Correctly handles JSON data and validation
-- **Client Info Generation**: Successfully creates device/browser metadata
-- **WeChat Integration**: API endpoints and request formatting work correctly
-
-#### Failing Authentication System (index-9xhPJVFT.js)
-- **Native Bridge Calls**: Expects `chrome.imaFrame.invokeWithCallback` 
-- **Desktop App Integration**: Designed for native application context
-- **User Agent Dependency**: Checks for "IMA" in user agent (desktop app identifier)
-- **API Mismatch**: Calls functions that don't exist in browser extension context
-
-### 7. **Why Previous Analysis Was Misleading**
-
-The initial error messages suggested a Firefox compatibility issue, but the extensive logging revealed:
-- **Firefox APIs work perfectly** - all chrome.storage, messaging, and extension APIs function
-- **The core extension infrastructure is sound** - background scripts, content scripts, UI components all work
-- **The issue is architectural** - one component expects desktop app APIs while running in browser context
-
-### 8. **Client Information Analysis**
-
-The working system successfully generates:
+#### Manifest Configuration
 ```json
 {
-  "extId": "vh8lx6lps9@Manual_XPIPorter",
-  "platform": 4,
-  "deviceId": "hcpv8ps9z9abb0sm6kc3ttzcot95rt9adjd2", 
-  "qua": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:139.0) Gecko/20100101 Firefox/139.0",
-  "guid": "gjch3m0wmtqx6rdla2yntlmt4k5idu7q",
-  "qimei36": "hcpv8ps9z9abb0sm6kc3ttzcot95rt9adjd2"
+  "externally_connectable": {
+    "ids": ["*"],
+    "matches": ["*://*.qq.com/*"]
+  }
+}
+```
+- **Chrome**: Allows external pages to communicate with extension
+- **Firefox**: Ignored (not supported) - [Firefox Bug 1319168](https://bugzilla.mozilla.org/show_bug.cgi?id=1319168)
+
+## Evidence from Console Logs
+
+### Chrome (Working)
+```
+index.ts.js:2571 [MSG] Background: Message received: verifyWxCode from: https://ios.sspai.com/post/55130
+pkg.js:25345 [MSG] Background: External message received: verifyWxCode
+pkg.js:25348 [MSG] Background: Processing verifyWxCode, code: 021gMFkl2OVBOf4Cqdml2r9uEg4gMFkv
+pkg.js:25479 [DEBUG] GetAccountInfo: Storage result: {"userInfo":{...valid user data...}}
+```
+
+### Firefox (Failing)  
+```
+[DEBUG] GetAccountInfo: browser.storage available: false
+[DEBUG] GetAccountInfo: chrome.storage available: true
+[DEBUG] GetAccountInfo: chrome.storage result: {}
+```
+
+**Key Difference**: Firefox has no `verifyWxCode` messages because external pages cannot communicate with the extension.
+
+## Technical Implementation Details
+
+### Storage System (`pkg.js:25493-25516`)
+```javascript
+case Rr.GetAccountInfo: {
+  // Try Firefox's native browser.storage.local API if available
+  let r;
+  if (globalThis.browser?.storage?.local) {
+    r = await globalThis.browser.storage.local.get(sr.userInfo);
+  } else {
+    r = await chrome.storage.local.get(sr.userInfo);
+  }
+  const userInfo = (r?.[sr.userInfo]) || Mn(); // Default empty user
 }
 ```
 
-This proves the extension can:
-- ✅ Generate proper device identification
-- ✅ Create API-compatible client information
-- ✅ Handle extension metadata correctly
-- ✅ Format data for ima.qq.com API calls
+### WeChat Verification Handler (`pkg.js:25343-25366`)
+```javascript
+chrome.runtime.onMessageExternal.addListener((e, t, r) => {
+  if (e?.action === "verifyWxCode") {
+    hM(e?.params?.wxCode).then((s) => {
+      if (s.userId && s.token) {
+        chrome.storage.local.set({ [sr.userInfo]: s }); // Store login data
+      }
+    });
+  }
+});
+```
 
-## Recommendations
+### Message Routing (`pkg.js:25392-25426`)
+Extension attempts to route internal messages for Firefox compatibility but this doesn't solve the external communication issue.
 
-### 1. **Immediate Fix Strategy**
-Bridge the failing login page native calls to the working Firefox-compatible background script system:
-- Identify all native API calls in `index-9xhPJVFT.js`
-- Route them through the working `pkg.js` authentication system
-- Implement message passing between login page and background script
+## Solution Options for Firefox
 
-### 2. **Technical Implementation**
-- **Message Bridge**: Create communication layer between login page and background script
-- **API Mapping**: Map native desktop calls to browser extension equivalents
-- **State Synchronization**: Ensure authentication state flows properly between components
+### Option 1: URL Monitoring
+Use existing tab monitoring infrastructure to detect WeChat callback URLs:
+```javascript
+// Already exists in pkg.js:3259-3268
+chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+  if (tab.url?.includes('ima.qq.com/universal-login') && tab.url.includes('code=')) {
+    // Extract WeChat code from URL and process verification
+  }
+});
+```
 
-### 3. **Testing Approach**
-- Focus on the WeChat code verification completion flow
-- Test message passing between login page and background script
-- Verify token storage and retrieval after successful authentication
+### Option 2: Content Script Injection
+Inject content scripts into `*.qq.com` pages to intercept verification codes:
+```javascript
+// Add to manifest.json content_scripts
+{
+  "matches": ["*://*.qq.com/*"],
+  "js": ["wechat-interceptor.js"]
+}
+```
+
+### Option 3: Cross-Browser Polyfill
+Use webextension-polyfill to standardize APIs, though this won't solve the `externally_connectable` limitation.
+
+## For Future Maintenance
+
+### Browser Compatibility Matrix
+| Feature | Chrome | Firefox | Edge | Safari |
+|---------|--------|---------|------|--------|
+| `externally_connectable` | ✅ | ❌ | ✅ | ❌ |
+| `chrome.storage.local` | ✅ | ✅ | ✅ | ❌ use `browser.*` |
+| `chrome.runtime.onMessageExternal` | ✅ | ✅ | ✅ | ✅ |
+
+### Key Files for Authentication
+- `assets/pkg.js:25343` - External message listener
+- `assets/pkg.js:25493` - Storage retrieval  
+- `manifest.json:58` - externally_connectable config
+- WeChat login flow depends on external page communication
+
+### Debugging Authentication Issues
+1. Check console for `verifyWxCode` messages
+2. Verify `chrome.storage.local` contains `userInfo`
+3. Confirm external pages can communicate with extension
+4. Test WeChat login flow completion
 
 ## Conclusion
 
-The Firefox extension's core functionality is working perfectly. The authentication failures are not due to Firefox incompatibility but rather due to architectural mismatch between components designed for different environments (desktop app vs browser extension). The solution requires bridging the login page's native calls to the working browser extension infrastructure.
+**Root Cause**: Firefox lacks `externally_connectable` support, preventing external WeChat login pages from sending verification codes to the extension.
 
-The extensive logging proves that Firefox can successfully run this extension - we just need to connect the disconnected authentication components properly.
+**Impact**: Users can't complete WeChat authentication in Firefox, storage remains empty.
+
+**Solution**: Implement alternative communication method (URL monitoring or content script injection) for Firefox compatibility.
