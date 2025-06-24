@@ -25425,6 +25425,27 @@ const vM = async () => {
             return true;
           }
           
+          // Handle internal verifyWxCode messages (Firefox workaround)
+          if ((e == null ? void 0 : e.action) === "verifyWxCode") {
+            console.log("[DEBUG] Background: Internal verifyWxCode received:", e?.params?.wxCode);
+            
+            hM(e?.params?.wxCode).then((s) => {
+              console.log("[DEBUG] Background: Internal WeChat verification result - userId:", !!s.userId, "token:", !!s.token);
+              
+              if (s.userId && s.token) {
+                console.log("[DEBUG] Background: Storing user info from internal verification");
+                chrome.storage.local.set({ [sr.userInfo]: s });
+              }
+              
+              r(s);
+            }).catch((error) => {
+              console.error("[DEBUG] Background: Internal WeChat verification failed:", error);
+              r({ code: -1, msg: "Internal WeChat verification failed", data: null });
+            });
+            
+            return true;
+          }
+          
         } catch (s) {
           console.warn("initLoginForWebpage onMessage error", s);
         }
