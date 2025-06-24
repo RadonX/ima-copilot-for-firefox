@@ -25492,9 +25492,21 @@ const vM = async () => {
       case Rr.GetAccountInfo: {
         console.log("[DEBUG] GetAccountInfo: Retrieving user info from storage");
         console.log("[DEBUG] GetAccountInfo: Storage key:", sr.userInfo);
+        console.log("[DEBUG] GetAccountInfo: Using chrome.storage API");
+        console.log("[DEBUG] GetAccountInfo: browser.storage available:", !!globalThis.browser?.storage);
+        console.log("[DEBUG] GetAccountInfo: chrome.storage available:", !!globalThis.chrome?.storage);
         
-        const r = await chrome.storage.local.get(sr.userInfo);
-        console.log("[DEBUG] GetAccountInfo: Storage result:", JSON.stringify(r));
+        // Try Firefox's native browser.storage.local API if available
+        let r;
+        if (globalThis.browser?.storage?.local) {
+          console.log("[DEBUG] GetAccountInfo: Using browser.storage.local.get");
+          r = await globalThis.browser.storage.local.get(sr.userInfo);
+          console.log("[DEBUG] GetAccountInfo: browser.storage result:", JSON.stringify(r));
+        } else {
+          console.log("[DEBUG] GetAccountInfo: Using chrome.storage.local.get");
+          r = await chrome.storage.local.get(sr.userInfo);
+          console.log("[DEBUG] GetAccountInfo: chrome.storage result:", JSON.stringify(r));
+        }
         
         const userInfo = (r == null ? void 0 : r[sr.userInfo]) || Mn();
         console.log("[DEBUG] GetAccountInfo: Final user info:", JSON.stringify(userInfo));
