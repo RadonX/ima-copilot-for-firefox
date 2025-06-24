@@ -25407,6 +25407,24 @@ const vM = async () => {
             return true;
           }
           
+          if ((e == null ? void 0 : e.action) === "login") {
+            console.log("[DEBUG] Background: Routing login to wM function");
+            wM({ action: Rr.Login, callback: (response) => {
+              console.log("[DEBUG] Background: wM response for login:", JSON.stringify(response));
+              r(response);
+            }});
+            return true;
+          }
+          
+          if ((e == null ? void 0 : e.action) === "closeLoginDialog") {
+            console.log("[DEBUG] Background: Routing closeLoginDialog to wM function");
+            wM({ action: Rr.CloseLoginDialog, callback: (response) => {
+              console.log("[DEBUG] Background: wM response for closeLoginDialog:", JSON.stringify(response));
+              r(response);
+            }});
+            return true;
+          }
+          
         } catch (s) {
           console.warn("initLoginForWebpage onMessage error", s);
         }
