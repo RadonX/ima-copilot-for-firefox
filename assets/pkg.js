@@ -7714,11 +7714,22 @@ const Tp = ({ action: e, params: t }) => {
             console.log("[DEBUG] callNativePromise: Sending extension message:", JSON.stringify(messageData));
             
             try {
+              console.log("[DEBUG] callNativePromise: About to send message using chrome.runtime.sendMessage");
+              console.log("[DEBUG] callNativePromise: chrome.runtime available:", !!globalThis.chrome?.runtime);
+              console.log("[DEBUG] callNativePromise: sendMessage function available:", !!globalThis.chrome?.runtime?.sendMessage);
+              
               globalThis.chrome.runtime.sendMessage(messageData, (response) => {
                 console.log("[DEBUG] callNativePromise: Extension response received:", JSON.stringify(response));
+                
+                if (globalThis.chrome.runtime.lastError) {
+                  console.error("[DEBUG] callNativePromise: Chrome runtime error:", globalThis.chrome.runtime.lastError);
+                }
+                
                 clearTimeout(timeoutId);
                 s(response || { code: 0, msg: "Extension response received", data: null });
               });
+              
+              console.log("[DEBUG] callNativePromise: sendMessage call completed");
             } catch (sendError) {
               console.error("[DEBUG] callNativePromise: Error sending extension message:", sendError);
               clearTimeout(timeoutId);
@@ -25366,6 +25377,9 @@ const vM = async () => {
     }),
       chrome.runtime.onMessage.addListener((e, t, r) => {
         try {
+          console.log("[DEBUG] Background: Runtime message received:", JSON.stringify(e));
+          console.log("[DEBUG] Background: Message action:", e?.action);
+          
           if ((e == null ? void 0 : e.action) === Zi.LogoutInWeb)
             return (
               gv().then((s) => {
@@ -25373,6 +25387,26 @@ const vM = async () => {
               }),
               !0
             );
+          
+          // Handle getAccountInfo and getDeviceInfo messages from content script
+          if ((e == null ? void 0 : e.action) === "getAccountInfo") {
+            console.log("[DEBUG] Background: Routing getAccountInfo to wM function");
+            wM({ action: Rr.GetAccountInfo, callback: (response) => {
+              console.log("[DEBUG] Background: wM response for getAccountInfo:", JSON.stringify(response));
+              r(response);
+            }});
+            return true;
+          }
+          
+          if ((e == null ? void 0 : e.action) === "getDeviceInfo") {
+            console.log("[DEBUG] Background: Routing getDeviceInfo to wM function");
+            wM({ action: Tl.GetDeviceInfo, callback: (response) => {
+              console.log("[DEBUG] Background: wM response for getDeviceInfo:", JSON.stringify(response));
+              r(response);
+            }});
+            return true;
+          }
+          
         } catch (s) {
           console.warn("initLoginForWebpage onMessage error", s);
         }
