@@ -32001,3 +32001,46 @@ $S.render(
     }),
   }),
 );
+
+// Firefox WeChat verification workaround - Content script detection
+(function() {
+  // Check if we're on a WeChat callback page
+  if (window.location.href.includes('ima.qq.com/universal-login') && window.location.href.includes('code=')) {
+    console.log("[DEBUG] Content Script: WeChat callback detected:", window.location.href);
+    
+    try {
+      // Extract WeChat code from current URL
+      const urlObj = new URL(window.location.href);
+      const wxCode = urlObj.searchParams.get('code');
+      
+      if (wxCode) {
+        console.log("[DEBUG] Content Script: Extracted WeChat code:", wxCode);
+        
+        // Send to background script for verification
+        chrome.runtime.sendMessage({
+          action: "verifyWxCode",
+          params: { wxCode: wxCode }
+        }, (response) => {
+          console.log("[DEBUG] Content Script: WeChat verification response:", response);
+          
+          // Show success message or redirect
+          if (response && response.userId) {
+            console.log("[DEBUG] Content Script: WeChat login successful!");
+            
+            // Optional: Show success message or close window
+            const successDiv = document.createElement('div');
+            successDiv.style.cssText = 'position:fixed;top:20px;right:20px;background:#4CAF50;color:white;padding:15px;border-radius:5px;z-index:9999;';
+            successDiv.textContent = 'WeChat login successful! You can close this page.';
+            document.body.appendChild(successDiv);
+            
+            setTimeout(() => {
+              successDiv.remove();
+            }, 5000);
+          }
+        });
+      }
+    } catch (error) {
+      console.error("[DEBUG] Content Script: Error processing WeChat callback:", error);
+    }
+  }
+})();
