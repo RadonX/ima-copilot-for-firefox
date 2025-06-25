@@ -54,13 +54,18 @@ window.postMessage({ type: "FROM_PAGE", payload: "hello" }, "*");
 
 ⸻
 
-## ✅ **IMPLEMENTED SOLUTION: DOM Script Injection**
+## ✅ **IMPLEMENTED SOLUTION: External Script Injection (CSP-Safe)**
 
-We've successfully implemented a complete Firefox-compatible bridge that solves the `callNative` API issues on ima.qq.com by using **DOM script injection** to bypass Firefox's context isolation.
+We've successfully implemented a complete Firefox-compatible bridge that solves the `callNative` API issues on ima.qq.com by using **external script injection** to bypass both Firefox's context isolation and Content Security Policy restrictions.
 
 ### **Root Cause Analysis**
 
-**Problem**: Firefox's strict context isolation prevents content scripts from injecting objects into the webpage's global context that the webpage can access.
+**Problem 1**: Firefox's strict context isolation prevents content scripts from injecting objects into the webpage's global context that the webpage can access.
+
+**Problem 2**: Firefox blocks inline script execution due to Content Security Policy violations:
+```
+Refused to execute inline script because it violates CSP … "script-src 'self' …"
+```
 
 **Evidence from logs:**
 ```javascript
@@ -71,17 +76,17 @@ We've successfully implemented a complete Firefox-compatible bridge that solves 
 
 ### **Solution Architecture**
 
-**Previous (Broken) Approach:**
+**Previous (Broken) Inline Script Approach:**
 ```
-Content Script Context: window.chrome.imaFrame = {} 
-     ↑ ISOLATED ↑
+Content Script → Inline <script> with textContent
+     ↑ CSP BLOCKS THIS ↑
 Webpage Context: chrome.imaFrame → undefined
 ```
 
-**New (Working) DOM Script Injection:**
+**New (Working) External Script Injection:**
 ```
-1. Content script injects <script> tag into DOM
-2. Script runs in webpage context (not content script context)  
+1. Content script loads external script via chrome.runtime.getURL()
+2. External script runs in webpage context (CSP-exempt for extension resources)
 3. Creates chrome.imaFrame API webpage can access
 4. Uses window.postMessage for content script ↔ webpage communication
 5. Content script forwards to background script handlers
@@ -90,14 +95,17 @@ Webpage Context: chrome.imaFrame → undefined
 ### **Implementation Details**
 
 #### Files Modified:
-- **`assets/ima-bridge.js`** - Updated to use DOM script injection with postMessage communication
+- **`assets/ima-bridge.js`** - Updated to use external script loading instead of inline script
+- **`assets/page-bridge.js`** - New external script file containing the webpage API injection code
+- **`manifest.json`** - Added web_accessible_resources for page-bridge.js
 
 #### How It Works:
 
-1. **DOM Injection**: Content script creates a `<script>` element and injects it into the DOM, allowing the code to run in the webpage context
-2. **API Creation**: The injected script creates `chrome.imaFrame.invoke()` and `chrome.imaFrame.invokeWithCallback()` functions
-3. **Message Bridge**: Uses `window.postMessage()` for communication between webpage and content script contexts
-4. **Background Forwarding**: Content script forwards messages to background script handlers
+1. **External Script Loading**: Content script uses `chrome.runtime.getURL('assets/page-bridge.js')` to load the external script
+2. **CSP Compliance**: Extension resources (moz-extension://) are exempt from page CSP restrictions
+3. **API Creation**: The external script creates `chrome.imaFrame.invoke()` and `chrome.imaFrame.invokeWithCallback()` functions
+4. **Message Bridge**: Uses `window.postMessage()` for communication between webpage and content script contexts
+5. **Background Forwarding**: Content script forwards messages to background script handlers
 
 #### Supported Actions:
 - **`getAccountInfo`** → Returns user authentication data
@@ -107,7 +115,8 @@ Webpage Context: chrome.imaFrame → undefined
 
 ### **Key Features:**
 
-✅ **Firefox Compatible** - Bypasses context isolation using DOM script injection  
+✅ **Firefox Compatible** - Bypasses context isolation using external script injection  
+✅ **CSP Compliant** - Uses extension resources which are exempt from page CSP
 ✅ **Chrome Compatible** - Works alongside existing `externally_connectable` support  
 ✅ **Automatic Injection** - Bridge loads on all `*.ima.qq.com` domains  
 ✅ **Error Handling** - Fallback values when extension functions fail  
@@ -126,6 +135,13 @@ Webpage Context: chrome.imaFrame → undefined
       "all_frames": true
     }
   ],
+  "web_accessible_resources": [
+    {
+      "matches": ["*://*.ima.qq.com/*"],
+      "resources": ["assets/page-bridge.js"],
+      "use_dynamic_url": false
+    }
+  ],
   "externally_connectable": {
     "ids": ["*"],
     "matches": ["*://*.qq.com/*"]
@@ -136,9 +152,10 @@ Webpage Context: chrome.imaFrame → undefined
 ### **Expected Results:**
 
 - ✅ `chrome.imaFrame` API available to webpage in Firefox
+- ✅ No CSP violations or script execution blocks
 - ✅ Authentication flow completes successfully
 - ✅ Account/device info retrieved without errors
 - ✅ No more "终端接口空响应" (Terminal interface empty response) errors
 - ✅ Seamless login experience across Chrome and Firefox
 
-This DOM script injection approach successfully resolves Firefox's context isolation limitations while maintaining security and functionality.
+This external script injection approach successfully resolves both Firefox's context isolation limitations and CSP restrictions while maintaining security and functionality.
