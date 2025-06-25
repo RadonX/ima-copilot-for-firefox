@@ -156,6 +156,25 @@
       });
     }
     
+    // Handle chrome.runtime.sendMessage calls
+    if (event.data.type === 'IMA_RUNTIME_MESSAGE') {
+      const { action } = event.data.payload;
+      const messageId = event.data.id;
+      const extId = event.data.extId;
+      
+      console.log('[IMA Bridge] Handling runtime message:', action, 'id:', messageId, 'extId:', extId);
+      
+      // Forward runtime message to background script
+      chrome.runtime.sendMessage(event.data.payload, function(response) {
+        console.log('[IMA Bridge] Runtime message response:', response);
+        window.postMessage({
+          type: 'IMA_RUNTIME_RESPONSE',
+          id: messageId,
+          payload: response || { code: 0, msg: "OK", data: null }
+        }, '*');
+      });
+    }
+
     // Handle asynchronous messages
     if (event.data.type === 'IMA_BRIDGE_ASYNC') {
       const { action } = event.data.payload;

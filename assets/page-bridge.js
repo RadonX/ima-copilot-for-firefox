@@ -1,13 +1,17 @@
 (function() {
-  console.log('[IMA Bridge] Injecting chrome.imaFrame API into webpage context');
+  console.log('[IMA Bridge] Injecting chrome.imaFrame and chrome.runtime APIs into webpage context');
   
-  // Create the chrome.imaFrame bridge that the webpage expects
+  // Create the chrome object and its APIs that the webpage expects
   if (!window.chrome) {
     window.chrome = {};
   }
   
   if (!window.chrome.imaFrame) {
     window.chrome.imaFrame = {};
+  }
+  
+  if (!window.chrome.runtime) {
+    window.chrome.runtime = {};
   }
   
   // Synchronous invoke method (for Tp function)
@@ -50,5 +54,33 @@
     }, '*');
   };
   
-  console.log('[IMA Bridge] chrome.imaFrame API injected successfully');
+  // chrome.runtime.sendMessage method (for extension context detection)
+  window.chrome.runtime.sendMessage = function(extId, message, callback) {
+    console.log('[IMA Bridge] Runtime sendMessage called:', extId, message);
+    
+    const id = 'runtime_' + Date.now() + '_' + Math.random();
+    
+    // Set up response listener if callback provided
+    if (callback) {
+      const responseHandler = function(event) {
+        if (event.data.type === 'IMA_RUNTIME_RESPONSE' && event.data.id === id) {
+          window.removeEventListener('message', responseHandler);
+          console.log('[IMA Bridge] Runtime response received for id:', id, event.data.payload);
+          callback(event.data.payload);
+        }
+      };
+      
+      window.addEventListener('message', responseHandler);
+    }
+    
+    // Send request to content script
+    window.postMessage({
+      type: 'IMA_RUNTIME_MESSAGE',
+      id: id,
+      extId: extId,
+      payload: message
+    }, '*');
+  };
+  
+  console.log('[IMA Bridge] chrome.imaFrame and chrome.runtime APIs injected successfully');
 })();
