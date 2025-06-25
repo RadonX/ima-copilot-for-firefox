@@ -2834,6 +2834,79 @@ const Rs = (r) => {
           !0
         );
       }),
+      chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
+        console.log("[MSG] Background: IMA Bridge handler received:", request?.action, "from:", sender?.tab?.url || "unknown");
+        
+        // Handle IMA bridge requests from ima.qq.com
+        if (request?.action === 'getAccountInfo') {
+          try {
+            const accountInfo = await Xt.getAccountInfo();
+            console.log("[MSG] Background: getAccountInfo result:", accountInfo);
+            sendResponse(accountInfo || {
+              userId: "",
+              token: "",
+              refreshToken: "",
+              idType: "",
+              tokenType: 14,
+              tokenValidTime: null,
+              refreshTokenValidTime: null
+            });
+          } catch (error) {
+            console.error("[MSG] Background: getAccountInfo error:", error);
+            sendResponse({
+              userId: "",
+              token: "",
+              refreshToken: "",
+              idType: "",
+              tokenType: 14,
+              tokenValidTime: null,
+              refreshTokenValidTime: null
+            });
+          }
+          return true;
+        }
+        
+        if (request?.action === 'getDeviceInfo') {
+          try {
+            const deviceInfo = await Kt();
+            console.log("[MSG] Background: getDeviceInfo result:", deviceInfo);
+            sendResponse(deviceInfo || {
+              guid: 'k' + Math.random().toString(36).substr(2, 31),
+              qimei36: 'c' + Math.random().toString(36).substr(2, 31),
+              qua: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:139.0) Gecko/20100101 Firefox/139.0',
+              extId: chrome.runtime.id,
+              platform: 4,
+              deviceId: 'c' + Math.random().toString(36).substr(2, 31)
+            });
+          } catch (error) {
+            console.error("[MSG] Background: getDeviceInfo error:", error);
+            sendResponse({
+              guid: 'k' + Math.random().toString(36).substr(2, 31),
+              qimei36: 'c' + Math.random().toString(36).substr(2, 31),
+              qua: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:139.0) Gecko/20100101 Firefox/139.0',
+              extId: chrome.runtime.id,
+              platform: 4,
+              deviceId: 'c' + Math.random().toString(36).substr(2, 31)
+            });
+          }
+          return true;
+        }
+        
+        if (request?.action === 'login') {
+          try {
+            console.log("[MSG] Background: login request:", request.params);
+            const loginResult = await Xt.loginAsync();
+            console.log("[MSG] Background: login result:", loginResult);
+            sendResponse(loginResult || { code: 0, msg: "Login processed", data: null });
+          } catch (error) {
+            console.error("[MSG] Background: login error:", error);
+            sendResponse({ code: -1, msg: "Login failed", data: null });
+          }
+          return true;
+        }
+        
+        return false;
+      }),
       Jr.subscribe(async ({ url: r, tabId: e }) => {
         pe(F.TabUpdate, { url: r }, { context: "content-script", tabId: e }),
           se(r);
