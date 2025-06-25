@@ -35,6 +35,11 @@
       "matches": ["<all_urls>", "file:///*"],
       "resources": ["assets/pkg.js", "assets/main.tsx.js"],
       "use_dynamic_url": false
+    },
+    {
+      "matches": ["*://*.ima.qq.com/*"],
+      "resources": ["assets/page-bridge.js"],
+      "use_dynamic_url": false
     }
   ],
   "content_scripts": [
