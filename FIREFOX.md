@@ -54,9 +54,9 @@ window.postMessage({ type: "FROM_PAGE", payload: "hello" }, "*");
 
 ⸻
 
-## ✅ **IMPLEMENTED SOLUTION: External Script Injection (CSP-Safe)**
+## ✅ **COMPLETED SOLUTION: Firefox Extension Authentication Bridge**
 
-We've successfully implemented a complete Firefox-compatible bridge that solves the `callNative` API issues on ima.qq.com by using **external script injection** to bypass both Firefox's context isolation and Content Security Policy restrictions.
+🎉 **SUCCESS!** We've successfully implemented a complete Firefox-compatible bridge that **enables working WeChat authentication** on ima.qq.com by using **external script injection** with **chrome.runtime.sendMessage** detection to bypass both Firefox's context isolation and Content Security Policy restrictions.
 
 ### **Root Cause Analysis**
 
@@ -67,10 +67,22 @@ We've successfully implemented a complete Firefox-compatible bridge that solves 
 Refused to execute inline script because it violates CSP … "script-src 'self' …"
 ```
 
+**Problem 3**: ⚡ **CRITICAL DISCOVERY** - The IMA system checks for `chrome.runtime.sendMessage` to detect extension context:
+```javascript
+// Extension context detection logic
+if (chrome?.runtime?.sendMessage) {
+  // Proceed with extension API calls
+} else {
+  this.logger.error("不再插件内", "MockNativePromiseInWebIFrame")
+  // Returns: { code: 995, msg: "不再插件内", data: null }
+}
+```
+
 **Evidence from logs:**
 ```javascript
 [DEBUG] callNativePromise: globalThis.chrome.imaFrame exists: false
 [DEBUG] callNativePromise: globalThis.chrome.imaFrame.invokeWithCallback exists: false  
+[MockNativePromiseInWebIFrame] 不再插件内 (Not in plugin)
 终端接口空响应 (Terminal interface empty response)
 ```
 
@@ -83,13 +95,14 @@ Content Script → Inline <script> with textContent
 Webpage Context: chrome.imaFrame → undefined
 ```
 
-**New (Working) External Script Injection:**
+**New (Working) External Script Injection with Runtime Detection:**
 ```
 1. Content script loads external script via chrome.runtime.getURL()
 2. External script runs in webpage context (CSP-exempt for extension resources)
-3. Creates chrome.imaFrame API webpage can access
-4. Uses window.postMessage for content script ↔ webpage communication
-5. Content script forwards to background script handlers
+3. Creates chrome.imaFrame API + chrome.runtime.sendMessage mock ← KEY FIX
+4. Extension context detection passes: chrome.runtime.sendMessage exists ✅
+5. Uses window.postMessage for content script ↔ webpage communication
+6. Content script forwards ALL messages to background script handlers
 ```
 
 ### **Implementation Details**
@@ -103,9 +116,14 @@ Webpage Context: chrome.imaFrame → undefined
 
 1. **External Script Loading**: Content script uses `chrome.runtime.getURL('assets/page-bridge.js')` to load the external script
 2. **CSP Compliance**: Extension resources (moz-extension://) are exempt from page CSP restrictions
-3. **API Creation**: The external script creates `chrome.imaFrame.invoke()` and `chrome.imaFrame.invokeWithCallback()` functions
-4. **Message Bridge**: Uses `window.postMessage()` for communication between webpage and content script contexts
-5. **Background Forwarding**: Content script forwards messages to background script handlers
+3. **Complete API Creation**: The external script creates:
+   - `chrome.imaFrame.invoke()` and `chrome.imaFrame.invokeWithCallback()` functions
+   - **`chrome.runtime.sendMessage()`** ← **Critical for extension detection**
+4. **Extension Context Detection**: IMA system detects `chrome.runtime.sendMessage` and proceeds with authentication
+5. **Dual Message Bridge**: Uses `window.postMessage()` for:
+   - `IMA_BRIDGE_*` messages → chrome.imaFrame calls  
+   - `IMA_RUNTIME_MESSAGE` → chrome.runtime.sendMessage calls
+6. **Background Forwarding**: Content script forwards ALL messages to background script handlers
 
 #### Supported Actions:
 - **`getAccountInfo`** → Returns user authentication data
@@ -149,13 +167,36 @@ Webpage Context: chrome.imaFrame → undefined
 }
 ```
 
-### **Expected Results:**
+### **Results: ✅ COMPLETE SUCCESS!**
 
 - ✅ `chrome.imaFrame` API available to webpage in Firefox
+- ✅ `chrome.runtime.sendMessage` API available for extension context detection  
 - ✅ No CSP violations or script execution blocks
-- ✅ Authentication flow completes successfully
+- ✅ **Authentication flow completes successfully in Firefox!** 🎉
 - ✅ Account/device info retrieved without errors
-- ✅ No more "终端接口空响应" (Terminal interface empty response) errors
+- ✅ No more "终端接口空响应" (Terminal interface empty response) errors  
+- ✅ No more "MockNativePromiseInWebIFrame 不再插件内" errors
+- ✅ WeChat QR code login works in Firefox
 - ✅ Seamless login experience across Chrome and Firefox
 
-This external script injection approach successfully resolves both Firefox's context isolation limitations and CSP restrictions while maintaining security and functionality.
+### **Live Firefox Test Results:**
+
+**Before Fix:**
+```javascript
+[MockNativePromiseInWebIFrame] 不再插件内 (Not in plugin)
+终端接口空响应 (Terminal interface empty response)
+```
+
+**After Fix:**
+```javascript
+[IMA Bridge] Runtime sendMessage called: extensionId {action: "verifyWxCode", params: "..."}
+[Login] 用户扫码登录回包: {...successful login data...} 
+🎉 Firefox login successful!
+```
+
+This external script injection approach with `chrome.runtime.sendMessage` mock successfully resolves all three major issues:
+1. ✅ Firefox's context isolation limitations
+2. ✅ CSP restrictions  
+3. ✅ Extension context detection requirements
+
+**Firefox WeChat authentication now works perfectly!** 🚀

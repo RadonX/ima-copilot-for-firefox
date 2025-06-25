@@ -217,4 +217,82 @@ Token Management ← Session Persistence → Cross-tab Authentication
 - `ima-bridge.js` loads but injection fails
 - Login page shows "Terminal interface empty response" errors
 
-**Solution**: Implement **DOM script injection** (not content script injection) using `<script>` tag insertion with `window.postMessage` communication bridge for Firefox compatibility.
+**Solution**: ✅ **SOLVED** - Implemented **external script injection** with `chrome.runtime.sendMessage` mock for complete Firefox compatibility.
+
+## 🎉 **SUCCESSFUL SOLUTION: Extension Context Detection**
+
+### The Missing Piece: chrome.runtime.sendMessage Detection
+
+**Critical Discovery**: The IMA system checks for `chrome.runtime.sendMessage` to detect if it's running inside an extension context.
+
+#### Extension Context Detection Logic
+```javascript
+// From reference/chrome/index-9xhPJVFT.js (MockNativePromiseInWebIFrame class)
+chrome.runtime.sendMessage(this.extId, { action: action, params: params }, callback)
+
+// If chrome.runtime.sendMessage doesn't exist or fails:
+this.logger.error("不再插件内", "MockNativePromiseInWebIFrame")
+// Returns: { code: 995, msg: "不再插件内", data: null }
+```
+
+#### Before Fix (Firefox Failing)
+```javascript
+[callNativePromise] 触发终端调用： getAccountInfo undefined
+[callNativePromise] 触发终端调用： getDeviceInfo undefined  
+终端接口空响应 (Terminal interface empty response)
+[MockNativePromiseInWebIFrame] 不再插件内 (Not in plugin)
+```
+
+#### After Fix (Firefox Working)
+```javascript
+[IMA Bridge] Runtime sendMessage called: extensionId {action: "verifyWxCode", params: "..."}
+[IMA Bridge] Runtime response received: {data: "...", code: 0, msg: ""}
+[Login] 用户扫码登录回包: {...successful login data...}
+```
+
+### Final Implementation Architecture
+
+**Complete Firefox Bridge System:**
+```
+1. External Script Injection (CSP-safe)
+   ├── page-bridge.js → Webpage Context
+   ├── chrome.imaFrame.invoke() & invokeWithCallback()
+   └── chrome.runtime.sendMessage() ← KEY ADDITION
+
+2. Message Bridge Communication  
+   ├── IMA_BRIDGE_SYNC/ASYNC → chrome.imaFrame calls
+   ├── IMA_RUNTIME_MESSAGE → chrome.runtime.sendMessage calls  
+   └── Content Script → Background Script forwarding
+
+3. Extension Context Detection
+   ├── chrome.runtime.sendMessage exists → Extension detected
+   ├── Proper async response handling with message IDs
+   └── Background script integration for all API calls
+```
+
+### Implementation Files
+- **`assets/page-bridge.js`** - Complete Chrome API mock in webpage context
+- **`assets/ima-bridge.js`** - Message forwarding and async response handling  
+- **`manifest.json`** - web_accessible_resources configuration
+
+### Key Features Implemented
+✅ **Chrome API Compatibility** - Full `chrome.imaFrame` and `chrome.runtime` mocking  
+✅ **Extension Context Detection** - Proper `chrome.runtime.sendMessage` implementation  
+✅ **CSP Compliance** - External script bypasses Content Security Policy  
+✅ **Async Message Handling** - Proper request/response correlation with unique IDs  
+✅ **Background Integration** - All calls properly forwarded to extension background script  
+✅ **Error Handling** - Graceful fallback for failed API calls  
+✅ **Cross-Browser Support** - Works in both Chrome and Firefox
+
+### Authentication Flow (Fixed)
+```
+1. User scans WeChat QR code
+2. WeChat redirects to ima.qq.com with auth code
+3. Login page detects extension via chrome.runtime.sendMessage ✅
+4. Calls chrome.imaFrame.invokeWithCallback("getAccountInfo") ✅  
+5. Message bridged to extension background script ✅
+6. Authentication completes and user data stored ✅
+7. Login successful in Firefox! 🎉
+```
+
+This solution completely resolves both the context isolation issue and the extension detection problem, enabling full Firefox compatibility for the IMA extension authentication system.
