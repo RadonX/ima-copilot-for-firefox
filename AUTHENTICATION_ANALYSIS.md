@@ -147,10 +147,74 @@ Use webextension-polyfill to standardize APIs, though this won't solve the `exte
 3. Confirm external pages can communicate with extension
 4. Test WeChat login flow completion
 
+## Updated Findings: Context Isolation Issue
+
+### Additional Root Cause: Content Script Context Isolation
+
+Further investigation revealed a **second critical issue** beyond `externally_connectable`:
+
+**The ima-bridge.js content script injection fails due to Firefox's strict context isolation.**
+
+#### The Expected API
+The login page (`index-9xhPJVFT.js`) expects this global API:
+```javascript
+// Synchronous calls (Tp function)
+chrome.imaFrame.invoke({ action: "getAccountInfo" });
+
+// Asynchronous calls (eL function)  
+chrome.imaFrame.invokeWithCallback({ action: "getDeviceInfo" }, callback);
+```
+
+#### Chrome vs Firefox Behavior
+**Chrome (Works):**
+```
+Content Script Context ← Can inject → Webpage Context
+window.chrome.imaFrame = {} ← Accessible → webpage sees chrome.imaFrame
+```
+
+**Firefox (Broken):**
+```
+Content Script Context ← ISOLATED → Webpage Context  
+window.chrome.imaFrame = {} ← NOT ACCESSIBLE → webpage sees undefined
+```
+
+#### Evidence from Console Logs
+**Firefox Error Pattern:**
+```javascript
+[DEBUG] callNativePromise: globalThis.chrome.imaFrame exists: false
+[DEBUG] callNativePromise: globalThis.chrome.imaFrame.invokeWithCallback exists: false  
+[DEBUG] Chrome runtime error: {message: 'Could not establish connection. Receiving end does not exist.'}
+終端接口空響應 (Terminal interface empty response)
+```
+
+**The Sophisticated Authentication System:**
+The login system includes:
+- **Multi-attempt retry logic** (multiple `callNativePromise` calls)
+- **Fallback mechanisms** for different environments  
+- **Timeout handling** (5 second timeouts)
+- **Error categorization** (`終端接口空響應`, `接口執行超時`)
+- **Device fingerprinting** (guid, qimei36, deviceId generation)
+- **Extension environment detection** (`navigator.userAgent.includes("IMA")`)
+
+#### The Complete Authentication Orchestra
+```
+Extension → ima.qq.com/universal-login/ → index-9xhPJVFT.js → WeChat QR → Auth Token → Storage
+     ↓                                           ↓
+Device Registration ← API Bridge → Account State Management
+     ↓                                           ↓  
+Token Management ← Session Persistence → Cross-tab Authentication
+```
+
 ## Conclusion
 
-**Root Cause**: Firefox lacks `externally_connectable` support, preventing external WeChat login pages from sending verification codes to the extension.
+**Root Causes**: 
+1. Firefox lacks `externally_connectable` support, preventing external WeChat login pages from sending verification codes to the extension
+2. **Firefox's strict context isolation prevents content script injection of `chrome.imaFrame` API into webpage context**
 
-**Impact**: Users can't complete WeChat authentication in Firefox, storage remains empty.
+**Impact**: 
+- Users can't complete WeChat authentication in Firefox
+- Storage remains empty  
+- `ima-bridge.js` loads but injection fails
+- Login page shows "Terminal interface empty response" errors
 
-**Solution**: Implement alternative communication method (URL monitoring or content script injection) for Firefox compatibility.
+**Solution**: Implement **DOM script injection** (not content script injection) using `<script>` tag insertion with `window.postMessage` communication bridge for Firefox compatibility.
