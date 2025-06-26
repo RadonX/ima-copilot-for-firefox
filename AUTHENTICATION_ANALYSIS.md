@@ -37,6 +37,21 @@ Investigation into Firefox extension authentication failures revealed the **root
 - **Chrome**: ✅ Can send messages via `externally_connectable`
 - **Firefox**: ❌ Cannot send messages (no `externally_connectable` support)
 
+**Sample Login URL Structure:**
+```
+https://ima.qq.com/universal-login/?extId=vh8lx6lps9@Manual_XPIPorter&extId=vh8lx6lps9%40Manual_XPIPorter&platform=4&deviceId=63wbjnntjvqunwhwaabg61nt89npf60oinvf&qua=Mozilla%2F5.0%20(Macintosh%3B%20Intel%20Mac%20OS%20X%2010.15%3B%20rv%3A140.0)%20Gecko%2F20100101%20Firefox%2F140.0&guid=ly8kdbwyosoufp08yd5knn2jrm04p9hv&qimei36=63wbjnntjvqunwhwaabg61nt89npf60oinvf&parentreport=1
+```
+
+This login page loads the JavaScript bundle `https://qbtool.static.qq.com/ima/assets/universal-login/assets/index-9xhPJVFT.js` (see reference/external/index-9xhPJVFT.js) which handles the authentication logic.
+
+**WeChat QR Code Generation:**
+The login page loads the WeChat QR code from WeChat's OAuth authorization endpoint:
+```
+https://open.weixin.qq.com/connect/qrconnect?appid=wx0d63f5de059f1d52&scope=snsapi_login&redirect_uri=https%3A%2F%2Fima.qq.com%2Funiversal-login%2F%23%2Fweixin-login&state=JTdCJTIyZ3VpZCUyMjolMjJseThrZGJ3eW9zb3VmcDA4eWQ1a25uMmpybTA0cDlodiUyMiwlMjJxaW1laTM2JTIyOiUyMjYzd2Jqbm50anZxdW53aHdhYWJnNjFudDg5bnBmNjBvaW52ZiUyMiwlMjJleHRJZCUyMjolMjJ2aDhseDZscHM5QE1hbnVhbF9YUElQb3J0ZXIlMjIlN0Q=&login_type=jssdk&self_redirect=true&styletype=&sizetype=&bgcolor=&rst=&stylelite=1&fast_login=0
+```
+After QR code scanning, WeChat redirects back to the `redirect_uri` with the authorization code.
+(See reference/external/qrconnect.html for the WeChat QR code interface HTML)
+
 #### Manifest Configuration
 ```json
 {
