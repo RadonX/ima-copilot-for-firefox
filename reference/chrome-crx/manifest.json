@@ -1,0 +1,85 @@
+{
+"update_url": "https://clients2.google.com/service/update2/crx",
+
+  "name": "ima知识库",
+  "description": "一键将浏览内容保存到您的ima知识库，从而更有效地积累信息，提升工作和学习效率。",
+  "version": "1.0.8",
+  "manifest_version": 3,
+  "minimum_chrome_version": "88.0.0.0",
+  "background": {
+    "service_worker": "service-worker-loader.js",
+    "type": "module"
+  },
+  "icons": {
+    "128": "img/ima.png"
+  },
+  "action": {
+    "default_title": "添加浏览内容至ima知识库",
+    "default_icon": "img/ima.png"
+  },
+  "web_accessible_resources": [
+    {
+      "matches": [
+        "*://*/*"
+      ],
+      "resources": [
+        "img/ima.png",
+        "img/collect-logo.png",
+        "img/collected-logo.png",
+        "img/upload-logo.png",
+        "distiller/x5_distiller.js",
+        "distiller/wechat_official_distiller.js",
+        "src/content-script/index.css"
+      ],
+      "use_dynamic_url": false
+    },
+    {
+      "matches": [
+        "<all_urls>",
+        "file://*"
+      ],
+      "resources": [
+        "assets/pkg.js",
+        "assets/main.tsx.js"
+      ],
+      "use_dynamic_url": false
+    }
+  ],
+  "content_scripts": [
+    {
+      "js": [
+        "assets/main.tsx-loader.js"
+      ],
+      "matches": [
+        "<all_urls>",
+        "file://*"
+      ],
+      "css": [
+        "./src/content-script/index.css"
+      ],
+      "run_at": "document_end"
+    }
+  ],
+  "host_permissions": [
+    "<all_urls>",
+    "*://*/",
+    "file:///*/*"
+  ],
+  "permissions": [
+    "storage",
+    "tabs",
+    "activeTab",
+    "scripting",
+    "contextMenus",
+    "webNavigation",
+    "windows"
+  ],
+  "externally_connectable": {
+    "ids": [
+      "*"
+    ],
+    "matches": [
+      "*://*.qq.com/*"
+    ]
+  }
+}
