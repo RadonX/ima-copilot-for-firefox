@@ -2,9 +2,16 @@
 
 ## Executive Summary
 
-Investigation into Firefox extension authentication failures revealed the **root cause**: Firefox does not support the `externally_connectable` manifest feature, which prevents external WeChat login pages from sending verification codes to the extension via `chrome.runtime.sendMessage()`.
+Investigation into Firefox extension authentication failures revealed **multiple root causes**:
 
-**Status**: Chrome works (has `externally_connectable` support), Firefox fails (no `externally_connectable` support).
+1. **Primary Issue**: Firefox does not support the `externally_connectable` manifest feature, preventing external WeChat login pages from sending verification codes
+2. **Extension Button Issue**: Even with working bridge, the extension button fails in Firefox due to incomplete API response handling
+3. **Context Menu Success**: The context menu workflow works because it bypasses the problematic extension button authentication flow
+
+**Status**: 
+- Context menu authentication: ✅ **WORKS** in Firefox (via external script bridge)
+- Extension button authentication: ❌ **FAILS** in Firefox (API response issues)
+- Chrome: ✅ **WORKS** completely (has `externally_connectable` support)
 
 ## Authentication Architecture
 
@@ -66,22 +73,35 @@ After QR code scanning, WeChat redirects back to the `redirect_uri` with the aut
 
 ## Evidence from Console Logs
 
-### Chrome (Working)
-```
-index.ts.js:2571 [MSG] Background: Message received: verifyWxCode from: https://ios.sspai.com/post/55130
-pkg.js:25345 [MSG] Background: External message received: verifyWxCode
-pkg.js:25348 [MSG] Background: Processing verifyWxCode, code: 021gMFkl2OVBOf4Cqdml2r9uEg4gMFkv
-pkg.js:25479 [DEBUG] GetAccountInfo: Storage result: {"userInfo":{...valid user data...}}
+### Chrome Extension Button (Working)
+```javascript
+[DEBUG] vM: Extension ID: oainkjkemlglfophnnimbahggmfjfdhk
+[DEBUG] vM: Generated client info: {"extId":"oainkjkemlglfophnnimbahggmfjfdhk",...}
+[IMA Bridge] Runtime sendMessage called: oainkjkemlglfophnnimbahggmfjfdhk {action: 'closeLoginDialog'}
+// Successful WeChat login flow with QR code processing
 ```
 
-### Firefox (Failing)  
-```
-[DEBUG] GetAccountInfo: browser.storage available: false
+### Firefox Extension Button (Failing)
+```javascript
+[DEBUG] GetAccountInfo: browser.storage available: true  // Firefox-specific
 [DEBUG] GetAccountInfo: chrome.storage available: true
-[DEBUG] GetAccountInfo: chrome.storage result: {}
+[DEBUG] GetAccountInfo: browser.storage result: {}       // Empty storage
+終端接口空響應 (Terminal interface empty response)        // Critical error
+[initLogger] -> accountInfo, deviceInfo: null null       // No user data
 ```
 
-**Key Difference**: Firefox has no `verifyWxCode` messages because external pages cannot communicate with the extension.
+### Firefox Context Menu (Working via Bridge)
+```javascript
+[IMA Bridge] Runtime sendMessage called: extensionId {action: "verifyWxCode", params: "..."}
+[Login] 用户扫码登录回包: {...successful login data...}
+// Authentication completes successfully
+```
+
+**Key Differences**: 
+1. **Storage API Detection**: Firefox detects `browser.storage` while Chrome doesn't
+2. **Extension Button Flow**: Firefox shows "終端接口空響應" errors in button flow
+3. **Context Menu Success**: Firefox bridge works properly when triggered from context menu
+4. **API Response Handling**: Chrome processes complete authentication while Firefox button flow fails
 
 ## Technical Implementation Details
 
@@ -223,16 +243,19 @@ Token Management ← Session Persistence → Cross-tab Authentication
 ## Conclusion
 
 **Root Causes**: 
-1. Firefox lacks `externally_connectable` support, preventing external WeChat login pages from sending verification codes to the extension
-2. **Firefox's strict context isolation prevents content script injection of `chrome.imaFrame` API into webpage context**
+1. **Context Menu Authentication**: ✅ **SOLVED** - Firefox lacks `externally_connectable` support, but this is bypassed by external script injection with `chrome.runtime.sendMessage` mock
+2. **Extension Button Authentication**: ❌ **STILL FAILING** - Even with working bridge, Firefox extension button shows "終端接口空響應" (Terminal interface empty response) errors
 
 **Impact**: 
-- Users can't complete WeChat authentication in Firefox
-- Storage remains empty  
-- `ima-bridge.js` loads but injection fails
-- Login page shows "Terminal interface empty response" errors
+- ✅ Context menu WeChat authentication **WORKS** in Firefox
+- ❌ Extension button authentication **FAILS** in Firefox with empty API responses
+- ✅ Chrome works completely for both context menu and extension button
+- Firefox storage API detection works (`browser.storage` available) but returns empty results in button flow
 
-**Solution**: ✅ **SOLVED** - Implemented **external script injection** with `chrome.runtime.sendMessage` mock for complete Firefox compatibility.
+**Current Status**: 
+- **Partial Success**: Firefox users can authenticate via context menu
+- **Remaining Issue**: Extension button needs additional debugging to handle API response failures
+- **Workaround**: Users should use context menu instead of extension button in Firefox
 
 ## 🎉 **SUCCESSFUL SOLUTION: Extension Context Detection**
 

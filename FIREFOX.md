@@ -54,9 +54,11 @@ window.postMessage({ type: "FROM_PAGE", payload: "hello" }, "*");
 
 ⸻
 
-## ✅ **COMPLETED SOLUTION: Firefox Extension Authentication Bridge**
+## ✅ **PARTIALLY COMPLETED SOLUTION: Firefox Extension Authentication Bridge**
 
-🎉 **SUCCESS!** We've successfully implemented a complete Firefox-compatible bridge that **enables working WeChat authentication** on ima.qq.com by using **external script injection** with **chrome.runtime.sendMessage** detection to bypass both Firefox's context isolation and Content Security Policy restrictions.
+🎉 **PARTIAL SUCCESS!** We've successfully implemented a Firefox-compatible bridge that **enables working WeChat authentication** via **context menu** on ima.qq.com by using **external script injection** with **chrome.runtime.sendMessage** detection to bypass both Firefox's context isolation and Content Security Policy restrictions.
+
+⚠️ **REMAINING ISSUE**: Extension button authentication still fails in Firefox with "終端接口空響應" (Terminal interface empty response) errors, while context menu authentication works perfectly.
 
 ### **Root Cause Analysis**
 
@@ -167,17 +169,17 @@ Webpage Context: chrome.imaFrame → undefined
 }
 ```
 
-### **Results: ✅ COMPLETE SUCCESS!**
+### **Results: ✅ PARTIAL SUCCESS!**
 
 - ✅ `chrome.imaFrame` API available to webpage in Firefox
 - ✅ `chrome.runtime.sendMessage` API available for extension context detection  
 - ✅ No CSP violations or script execution blocks
-- ✅ **Authentication flow completes successfully in Firefox!** 🎉
-- ✅ Account/device info retrieved without errors
-- ✅ No more "终端接口空响应" (Terminal interface empty response) errors  
-- ✅ No more "MockNativePromiseInWebIFrame 不再插件内" errors
-- ✅ WeChat QR code login works in Firefox
-- ✅ Seamless login experience across Chrome and Firefox
+- ✅ **Context menu authentication flow completes successfully in Firefox!** 🎉
+- ✅ Account/device info retrieved without errors via context menu
+- ⚠️ **Extension button still shows "终端接口空响应" (Terminal interface empty response) errors**
+- ✅ No more "MockNativePromiseInWebIFrame 不再插件内" errors in context menu flow
+- ✅ WeChat QR code login works in Firefox **via context menu**
+- ⚠️ **Extension button authentication fails in Firefox** (works in Chrome)
 
 ### **Live Firefox Test Results:**
 
@@ -187,16 +189,33 @@ Webpage Context: chrome.imaFrame → undefined
 终端接口空响应 (Terminal interface empty response)
 ```
 
-**After Fix:**
+**After Fix (Context Menu - Working):**
 ```javascript
 [IMA Bridge] Runtime sendMessage called: extensionId {action: "verifyWxCode", params: "..."}
 [Login] 用户扫码登录回包: {...successful login data...} 
-🎉 Firefox login successful!
+🎉 Firefox context menu login successful!
 ```
 
-This external script injection approach with `chrome.runtime.sendMessage` mock successfully resolves all three major issues:
-1. ✅ Firefox's context isolation limitations
-2. ✅ CSP restrictions  
-3. ✅ Extension context detection requirements
+**Extension Button (Still Failing):**
+```javascript
+[DEBUG] GetAccountInfo: browser.storage available: true
+[DEBUG] GetAccountInfo: chrome.storage available: true
+[DEBUG] GetAccountInfo: browser.storage result: {}
+终端接口空响应 (Terminal interface empty response)
+[initLogger] -> accountInfo, deviceInfo: null null
+```
 
-**Firefox WeChat authentication now works perfectly!** 🚀
+**Comparison with Chrome Extension Button (Working):**
+```javascript
+[DEBUG] vM: Extension ID: oainkjkemlglfophnnimbahggmfjfdhk
+[DEBUG] vM: Generated client info: {"extId":"oainkjkemlglfophnnimbahggmfjfdhk",...}
+[IMA Bridge] Runtime sendMessage called: oainkjkemlglfophnnimbahggmfjfdhk {action: 'closeLoginDialog'}
+```
+
+This external script injection approach with `chrome.runtime.sendMessage` mock successfully resolves the major context isolation issues:
+1. ✅ Firefox's context isolation limitations **for context menu**
+2. ✅ CSP restrictions  
+3. ✅ Extension context detection requirements **for context menu**
+4. ⚠️ **Extension button API response handling still needs investigation**
+
+**Current Status: Firefox WeChat authentication works via context menu, extension button needs additional fixes!** 🚀
